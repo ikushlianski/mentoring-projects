@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { PetName } from "./name/PetName";
-import { PetImage } from "./pet/PetImage";
+import { PetImage } from "./image/PetImage";
+import { PetIndicators } from "./controls/PetIndicators";
 
 export const App = () => {
   const [canContinue, setCanContinue] = useState(false);
@@ -8,9 +9,12 @@ export const App = () => {
   return (
     <>
       <PetName setCanContinue={setCanContinue} />
-      {canContinue && <div>Here will be pet image and indicators!</div>}
-      <PetImage />
-      {/*<PetIndicators />*/}
+      {canContinue && (
+        <div>
+          <PetImage />
+          <PetIndicators />
+        </div>
+      )}
     </>
   );
 };
