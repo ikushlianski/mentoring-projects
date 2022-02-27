@@ -1,19 +1,32 @@
 import React from "react";
-import { useFoodLevel } from "./useFoodLevel";
+import { MAX_AGE } from "../age/constants";
 
-export const FoodIndicator = () => {
-  const { foodLevel, foodIndicatorStyle, feed } = useFoodLevel();
+export const FoodIndicator = ({
+  getOlderWhenFed,
+  foodLevel,
+  feed,
+  foodIndicatorStyle,
+  age,
+}) => {
+  const handleFeed = () => {
+    feed();
+    getOlderWhenFed();
+  };
+
+  const isAlive = age < MAX_AGE;
 
   return (
     <div>
       <div>
         <span>Food {foodLevel}%</span>
-        <span>
-          <div className={"progress"} style={{ ...foodIndicatorStyle }} />
-        </span>
+        {isAlive && (
+          <span>
+            <div className={"progress"} style={{ ...foodIndicatorStyle }} />
+          </span>
+        )}
       </div>
       <div>
-        <button onClick={feed}>Feed</button>
+        <button onClick={handleFeed}>Feed</button>
       </div>
     </div>
   );

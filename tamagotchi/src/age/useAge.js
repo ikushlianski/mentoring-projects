@@ -1,14 +1,13 @@
 import { useState } from "react";
 
-import { DEFAULT_AGE, HOW_OFTEN_AGE_INCREMENTS_MS } from "./constants";
-import { useInterval } from "../utils/useInterval";
+import { DEFAULT_AGE } from "./constants";
 
 export const useAge = () => {
   const [age, setAge] = useState(DEFAULT_AGE);
 
-  useInterval(() => {
+  const getOlder = () => {
     setAge((prev) => prev + 1);
-  }, HOW_OFTEN_AGE_INCREMENTS_MS);
+  };
 
-  return age;
+  return { age, getOlder };
 };

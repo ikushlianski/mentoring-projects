@@ -1,8 +1,5 @@
 import React from "react";
-import { useAge } from "./useAge";
 
-export const AgeIndicator = () => {
-  const age = useAge();
-
+export const AgeIndicator = ({ age }) => {
   return <div>Age: {age}</div>;
 };

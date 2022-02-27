@@ -4,12 +4,12 @@ import { PetImage } from "./image/PetImage";
 import { PetIndicators } from "./controls/PetIndicators";
 
 export const App = () => {
-  const [canContinue, setCanContinue] = useState(false);
+  const [canStartPlaying, setCanStartPlaying] = useState(false);
 
   return (
     <>
-      <PetName setCanContinue={setCanContinue} />
-      {canContinue && (
+      <PetName setCanContinue={setCanStartPlaying} />
+      {canStartPlaying && (
         <div>
           <PetImage />
           <PetIndicators />
