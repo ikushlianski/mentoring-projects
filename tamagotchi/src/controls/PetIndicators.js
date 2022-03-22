@@ -6,24 +6,30 @@ import { AgeIndicator } from "../age/AgeIndicator";
 import { useAge } from "../age/useAge";
 import { useFoodLevel } from "../food/useFoodLevel";
 import { usePetStatus } from "../status/usePetStatus";
+import { usePetIllness } from "../illness/usePetIllness";
+import { MAX_AGE } from "../age/constants";
+import { PetControls } from "./PetControls";
 
 export const PetIndicators = () => {
   const { age, getOlder } = useAge();
-  const { foodLevel, feed, foodIndicatorStyle } = useFoodLevel(age);
+  const { isSick, isDead: diedFromIllness, treat } = usePetIllness();
 
-  const petStatus = usePetStatus({ age, foodLevel });
+  const { foodLevel, feed, foodIndicatorStyle } = useFoodLevel({ age, isSick });
+  const petStatus = usePetStatus({ age, foodLevel, isSick, diedFromIllness });
+
+  const isAlive = age < MAX_AGE && !diedFromIllness;
 
   return (
     <>
       <PetStatus status={petStatus} />
-      <FoodIndicator
-        getOlderWhenFed={getOlder}
-        foodLevel={foodLevel}
-        feed={feed}
-        foodIndicatorStyle={foodIndicatorStyle}
-        age={age}
-      />
+      {isAlive && (
+        <FoodIndicator
+          foodLevel={foodLevel}
+          foodIndicatorStyle={foodIndicatorStyle}
+        />
+      )}
       <AgeIndicator age={age} />
+      <PetControls feed={feed} getOlder={getOlder} treat={treat} />
     </>
   );
 };

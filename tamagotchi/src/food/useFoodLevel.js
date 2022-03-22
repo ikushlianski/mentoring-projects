@@ -8,7 +8,7 @@ import {
 import { MAX_AGE } from "../age/constants";
 import { greenToRed } from "../utils/hslColor";
 
-export const useFoodLevel = (age) => {
+export const useFoodLevel = ({ age, isSick }) => {
   const [foodLevel, setFoodLevel] = useState(DEFAULT_FOOD_LEVEL);
 
   const [foodIndicatorStyle, setFoodIndicatorStyle] = useState({
@@ -18,9 +18,11 @@ export const useFoodLevel = (age) => {
   });
 
   const isPetAlive = age < MAX_AGE;
+  const shouldDecrementFoodLevel =
+    foodLevel > MIN_FOOD_LEVEL && isPetAlive && !isSick;
 
   useEffect(() => {
-    if (foodLevel > MIN_FOOD_LEVEL && isPetAlive) {
+    if (shouldDecrementFoodLevel) {
       const interval = setInterval(() => {
         setFoodLevel((prevFoodLevel) => prevFoodLevel - 1);
 
@@ -35,7 +37,7 @@ export const useFoodLevel = (age) => {
 
       return () => clearInterval(interval);
     }
-  }, [foodLevel, isPetAlive]);
+  }, [foodLevel, shouldDecrementFoodLevel]);
 
   const feed = () => {
     setFoodLevel(DEFAULT_FOOD_LEVEL);
