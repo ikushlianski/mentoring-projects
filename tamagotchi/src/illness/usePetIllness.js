@@ -14,9 +14,9 @@ export const usePetIllness = () => {
 
     if (!isSick) {
       interval = setInterval(() => {
-        const gotSick = testIsSick();
+        const shouldGetSick = testIsSick();
 
-        if (gotSick) setIsSick(true);
+        if (shouldGetSick) setIsSick(true);
 
         // todo remove magic number
       }, 300);

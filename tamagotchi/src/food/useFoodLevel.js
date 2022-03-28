@@ -18,6 +18,7 @@ export const useFoodLevel = ({ age, isSick }) => {
   });
 
   const isPetAlive = age < MAX_AGE;
+
   const shouldDecrementFoodLevel =
     foodLevel > MIN_FOOD_LEVEL && isPetAlive && !isSick;
 

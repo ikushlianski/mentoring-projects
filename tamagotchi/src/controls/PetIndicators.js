@@ -29,7 +29,13 @@ export const PetIndicators = () => {
         />
       )}
       <AgeIndicator age={age} />
-      <PetControls feed={feed} getOlder={getOlder} treat={treat} />
+      <PetControls
+        feed={feed}
+        getOlder={getOlder}
+        treat={treat}
+        isSick={isSick}
+        isAlive={isAlive}
+      />
     </>
   );
 };
