@@ -14,10 +14,20 @@ export const PetIndicators = () => {
   const { age, getOlder } = useAge();
   const { isSick, isDead: diedFromIllness, treat } = usePetIllness();
 
-  const { foodLevel, feed, foodIndicatorStyle } = useFoodLevel({ age, isSick });
-  const petStatus = usePetStatus({ age, foodLevel, isSick, diedFromIllness });
+  const { foodLevel, feed, foodIndicatorStyle, diedFromHunger } = useFoodLevel({
+    age,
+    isSick,
+  });
+  const petStatus = usePetStatus({
+    age,
+    foodLevel,
+    isSick,
+    diedFromIllness,
+    diedFromHunger,
+  });
 
-  const isAlive = age < MAX_AGE && !diedFromIllness;
+  const dead = diedFromHunger || diedFromIllness;
+  const isAlive = age < MAX_AGE && !dead;
 
   return (
     <>

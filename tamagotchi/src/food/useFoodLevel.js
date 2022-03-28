@@ -22,6 +22,8 @@ export const useFoodLevel = ({ age, isSick }) => {
   const shouldDecrementFoodLevel =
     foodLevel > MIN_FOOD_LEVEL && isPetAlive && !isSick;
 
+  const diedFromHunger = foodLevel === MIN_FOOD_LEVEL;
+
   useEffect(() => {
     if (shouldDecrementFoodLevel) {
       const interval = setInterval(() => {
@@ -48,5 +50,6 @@ export const useFoodLevel = ({ age, isSick }) => {
     feed,
     foodLevel,
     foodIndicatorStyle,
+    diedFromHunger,
   };
 };
