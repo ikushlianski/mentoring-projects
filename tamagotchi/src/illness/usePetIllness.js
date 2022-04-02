@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
-import { TIME_FROM_SICK_TO_DEATH_MS } from "./constants";
-import { HOW_OFTEN_TO_CHECK_SICKNESS_MS } from "../food/constants";
+import {
+  HOW_OFTEN_TO_CHECK_SICKNESS_MS,
+  TIME_FROM_SICK_TO_DEATH_MS,
+} from "./constants";
 
 export const usePetIllness = () => {
   const [isSick, setIsSick] = useState(false);
@@ -42,7 +44,7 @@ export const usePetIllness = () => {
 
   return {
     isSick,
-    isDead,
+    diedFromIllness: isDead,
     treat,
   };
 };

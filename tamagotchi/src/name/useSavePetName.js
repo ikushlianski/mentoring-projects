@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { DEFAULT_NAME } from "./constants";
-import { usePetNameValidator } from "./validators/usePetNameValidator";
+import { usePetNameValidator } from "./validation/usePetNameValidator";
 
-export const usePetName = () => {
+export const useSavePetName = () => {
   const [savedPetName, savePetName] = useState(DEFAULT_NAME);
 
   const isNameValid = usePetNameValidator(savedPetName);

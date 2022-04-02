@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { DEFAULT_NAME } from "./constants";
-import { usePetName } from "./usePetName";
 
-export const PetName = ({ setCanContinue }) => {
+export const PetName = ({
+  setCanContinue,
+  petName,
+  savePetName,
+  isNameValid,
+}) => {
   const [nameTypedIn, setNameTypedIn] = useState(DEFAULT_NAME);
-  const { savePetName, savedPetName, isNameValid } = usePetName();
 
   const handleChange = (event) => {
     setNameTypedIn(event.target.value);
@@ -14,8 +17,8 @@ export const PetName = ({ setCanContinue }) => {
     savePetName(nameTypedIn.trim());
   };
 
-  const isNameCorrectlySet = savedPetName && isNameValid;
-  const wrongSubmitAttempt = savedPetName && !isNameValid;
+  const isNameCorrectlySet = petName && isNameValid;
+  const wrongSubmitAttempt = petName && !isNameValid;
 
   useEffect(() => {
     if (isNameCorrectlySet) {
@@ -24,11 +27,12 @@ export const PetName = ({ setCanContinue }) => {
   }, [isNameCorrectlySet, setCanContinue]);
 
   return isNameCorrectlySet ? (
-    <div>Pet name: {savedPetName}</div>
+    <div>Pet name: {petName}</div>
   ) : (
     <>
       <input value={nameTypedIn} onChange={handleChange} />
       <button onClick={handleSave}>Save</button>
+
       {wrongSubmitAttempt && (
         <p>
           Invalid name! Please use only Latin characters without special symbols

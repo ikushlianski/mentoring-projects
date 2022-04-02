@@ -9,15 +9,18 @@ import { usePetStatus } from "../status/usePetStatus";
 import { usePetIllness } from "../illness/usePetIllness";
 import { MAX_AGE } from "../age/constants";
 import { PetControls } from "./PetControls";
+import { DeathModal } from "../death/DeathModal";
+import { Modal } from "../common/Modal";
 
 export const PetIndicators = () => {
   const { age, getOlder } = useAge();
-  const { isSick, isDead: diedFromIllness, treat } = usePetIllness();
+  const { isSick, diedFromIllness, treat } = usePetIllness();
 
   const { foodLevel, feed, foodIndicatorStyle, diedFromHunger } = useFoodLevel({
     age,
     isSick,
   });
+
   const petStatus = usePetStatus({
     age,
     foodLevel,
@@ -26,8 +29,8 @@ export const PetIndicators = () => {
     diedFromHunger,
   });
 
-  const dead = diedFromHunger || diedFromIllness;
-  const isAlive = age < MAX_AGE && !dead;
+  const isDead = diedFromHunger || diedFromIllness || age >= MAX_AGE;
+  const isAlive = age < MAX_AGE && !isDead;
 
   return (
     <>
@@ -46,6 +49,15 @@ export const PetIndicators = () => {
         isSick={isSick}
         isAlive={isAlive}
       />
+      {isDead && (
+        <Modal>
+          <DeathModal
+            diedFromHunger={diedFromHunger}
+            diedFromIllness={diedFromIllness}
+            age={age}
+          />
+        </Modal>
+      )}
     </>
   );
 };
