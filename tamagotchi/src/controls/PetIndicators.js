@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 import { PetStatus } from "../status/PetStatus";
 import { FoodIndicator } from "../food/FoodIndicator";
@@ -13,13 +13,21 @@ import { DeathModal } from "../death/DeathModal";
 import { Modal } from "../common/Modal";
 
 export const PetIndicators = () => {
+  const [isDead, setIsDead] = useState(false);
+
   const { age, getOlder } = useAge();
-  const { isSick, diedFromIllness, treat } = usePetIllness();
+  const { isSick, diedFromIllness, treat, illness } = usePetIllness(isDead);
 
   const { foodLevel, feed, foodIndicatorStyle, diedFromHunger } = useFoodLevel({
     age,
     isSick,
   });
+
+  useEffect(() => {
+    if (diedFromHunger || diedFromIllness || age >= MAX_AGE) {
+      setIsDead(true);
+    }
+  }, [age, diedFromHunger, diedFromIllness]);
 
   const petStatus = usePetStatus({
     age,
@@ -29,12 +37,11 @@ export const PetIndicators = () => {
     diedFromHunger,
   });
 
-  const isDead = diedFromHunger || diedFromIllness || age >= MAX_AGE;
   const isAlive = age < MAX_AGE && !isDead;
 
   return (
     <>
-      <PetStatus status={petStatus} />
+      <PetStatus status={petStatus} illness={illness} />
       {isAlive && (
         <FoodIndicator
           foodLevel={foodLevel}
@@ -54,6 +61,7 @@ export const PetIndicators = () => {
           <DeathModal
             diedFromHunger={diedFromHunger}
             diedFromIllness={diedFromIllness}
+            illness={illness}
             age={age}
           />
         </Modal>

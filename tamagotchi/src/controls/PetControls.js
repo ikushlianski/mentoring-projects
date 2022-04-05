@@ -15,12 +15,12 @@ export const PetControls = ({ feed, getOlder, treat, isSick, isAlive }) => {
   return (
     <div>
       <div>
-        <button disabled={isSick} onClick={handleFeed}>
+        <button disabled={isDead || isSick} onClick={handleFeed}>
           Feed
         </button>
       </div>
       <div>
-        <button disabled={isDead} onClick={handleTreat}>
+        <button disabled={isDead || !isSick} onClick={handleTreat}>
           Treat
         </button>
       </div>

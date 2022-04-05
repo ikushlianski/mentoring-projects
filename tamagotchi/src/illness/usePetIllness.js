@@ -1,39 +1,51 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import {
   HOW_OFTEN_TO_CHECK_SICKNESS_MS,
   TIME_FROM_SICK_TO_DEATH_MS,
 } from "./constants";
+import { IllnessesContext } from "../index";
+import { pickRandomIllness } from "./pickRandomIllness";
 
-export const usePetIllness = () => {
+export const usePetIllness = (isDead) => {
   const [isSick, setIsSick] = useState(false);
-  const [isDead, setIsDead] = useState(false);
+  const [diedFromIllness, setDiedFromIllness] = useState(false);
+  const [illness, setIllness] = useState(null);
+
+  const illnessListString = useContext(IllnessesContext);
 
   const treat = () => {
     setIsSick(false);
+    setIllness(null);
   };
 
   useEffect(() => {
     let interval;
 
+    if (isDead) return;
+
     if (!isSick) {
       interval = setInterval(() => {
+        console.log("testing for illness");
         const shouldGetSick = testIsSick();
 
-        if (shouldGetSick) setIsSick(true);
+        if (shouldGetSick) {
+          setIsSick(true);
+          setIllness(pickRandomIllness(illnessListString));
+        }
       }, HOW_OFTEN_TO_CHECK_SICKNESS_MS);
     }
 
     return () => {
       clearInterval(interval);
     };
-  }, [isSick]);
+  }, [illnessListString, isDead, isSick]);
 
   useEffect(() => {
     let timer;
 
     if (isSick) {
       timer = setTimeout(() => {
-        setIsDead(true);
+        setDiedFromIllness(true);
       }, TIME_FROM_SICK_TO_DEATH_MS);
     }
 
@@ -43,8 +55,9 @@ export const usePetIllness = () => {
   }, [isSick]);
 
   return {
+    illness,
     isSick,
-    diedFromIllness: isDead,
+    diedFromIllness,
     treat,
   };
 };

@@ -6,7 +6,7 @@ import {
   MIN_FOOD_LEVEL,
 } from "./constants";
 import { MAX_AGE } from "../age/constants";
-import { greenToRed } from "../utils/hslColor";
+import { greenToRed } from "./hslColor";
 
 export const useFoodLevel = ({ age, isSick }) => {
   const [foodLevel, setFoodLevel] = useState(DEFAULT_FOOD_LEVEL);

@@ -6,12 +6,21 @@ import { getDeathReason } from "./deathReason";
 
 import "./DeathModal.css";
 
-export const DeathModal = ({ diedFromHunger, diedFromIllness, age }) => {
+export const DeathModal = ({
+  diedFromHunger,
+  diedFromIllness,
+  illness,
+  age,
+}) => {
   const deathReason = getDeathReason({ diedFromHunger, diedFromIllness, age });
-  const deathReasonUIText = DEATH_REASONS_TO_UI_TEXT[deathReason];
+
+  let deathReasonUIText = DEATH_REASONS_TO_UI_TEXT[deathReason];
+
+  if (diedFromIllness && illness) {
+    deathReasonUIText += ` (${illness})`;
+  }
 
   const diedFromAge = deathReason === DEATH_REASONS["age"];
-
   const petName = useContext(PetNameContext);
 
   return (
