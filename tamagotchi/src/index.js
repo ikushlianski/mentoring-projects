@@ -2,18 +2,16 @@ import React from "react";
 import ReactDOM from "react-dom";
 
 import { App } from "./App";
-import { checkIllnesses } from "./illness/checkIllnesses";
-import { createIllnessContext } from "./illness/illnessContext";
+import { checkIllnessesConfig } from "./illness/checkIllnessesConfig";
+import { checkAgeConfig } from "./age/checkAgeConfig";
 
-checkIllnesses();
-
-export const IllnessesContext = createIllnessContext();
+// these could be extracted into their own function like `setupApp`
+checkIllnessesConfig();
+checkAgeConfig();
 
 ReactDOM.render(
   <React.StrictMode>
-    <IllnessesContext.Provider value={process.env.REACT_APP_ILLNESSES}>
-      <App />
-    </IllnessesContext.Provider>
+    <App />
   </React.StrictMode>,
   document.getElementById("root")
 );

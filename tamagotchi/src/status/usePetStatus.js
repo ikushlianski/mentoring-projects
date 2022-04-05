@@ -1,5 +1,5 @@
 import { possibleStatuses } from "./possibleStatuses";
-import { MAX_AGE } from "../age/constants";
+import { DEATH_AGE } from "../age/constants";
 
 export const usePetStatus = ({
   age,
@@ -9,7 +9,7 @@ export const usePetStatus = ({
   diedFromHunger,
 }) => {
   // could be a switch-case statement as well
-  if (age === MAX_AGE) {
+  if (age === DEATH_AGE) {
     return possibleStatuses.dead;
   }
 

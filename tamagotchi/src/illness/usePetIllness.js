@@ -3,8 +3,8 @@ import {
   HOW_OFTEN_TO_CHECK_SICKNESS_MS,
   TIME_FROM_SICK_TO_DEATH_MS,
 } from "./constants";
-import { IllnessesContext } from "../index";
 import { pickRandomIllness } from "./pickRandomIllness";
+import { IllnessesContext } from "../App";
 
 export const usePetIllness = (isDead) => {
   const [isSick, setIsSick] = useState(false);

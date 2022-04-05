@@ -7,7 +7,7 @@ import { useAge } from "../age/useAge";
 import { useFoodLevel } from "../food/useFoodLevel";
 import { usePetStatus } from "../status/usePetStatus";
 import { usePetIllness } from "../illness/usePetIllness";
-import { MAX_AGE } from "../age/constants";
+import { DEATH_AGE } from "../age/constants";
 import { PetControls } from "./PetControls";
 import { DeathModal } from "../death/DeathModal";
 import { Modal } from "../common/Modal";
@@ -24,7 +24,7 @@ export const PetIndicators = () => {
   });
 
   useEffect(() => {
-    if (diedFromHunger || diedFromIllness || age >= MAX_AGE) {
+    if (diedFromHunger || diedFromIllness || age >= DEATH_AGE) {
       setIsDead(true);
     }
   }, [age, diedFromHunger, diedFromIllness]);
@@ -37,7 +37,7 @@ export const PetIndicators = () => {
     diedFromHunger,
   });
 
-  const isAlive = age < MAX_AGE && !isDead;
+  const isAlive = age < DEATH_AGE && !isDead;
 
   return (
     <>

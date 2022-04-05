@@ -3,8 +3,10 @@ import { PetName } from "./name/PetName";
 import { PetImage } from "./image/PetImage";
 import { PetIndicators } from "./controls/PetIndicators";
 import { useSavePetName } from "./name/useSavePetName";
+import { createIllnessContext } from "./illness/illnessContext";
 
 export const PetNameContext = createContext("");
+export const IllnessesContext = createIllnessContext();
 
 export const App = () => {
   const [canStartPlaying, setCanStartPlaying] = useState(false);
@@ -12,8 +14,8 @@ export const App = () => {
   const { savePetName, savedPetName, isNameValid } = useSavePetName();
 
   return (
-    <PetNameContext.Provider value={savedPetName}>
-      <>
+    <IllnessesContext.Provider value={process.env.REACT_APP_ILLNESSES}>
+      <PetNameContext.Provider value={savedPetName}>
         <PetName
           petName={savedPetName}
           setCanContinue={setCanStartPlaying}
@@ -26,7 +28,7 @@ export const App = () => {
             <PetIndicators />
           </div>
         )}
-      </>
-    </PetNameContext.Provider>
+      </PetNameContext.Provider>
+    </IllnessesContext.Provider>
   );
 };

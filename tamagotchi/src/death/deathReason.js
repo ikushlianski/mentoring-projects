@@ -1,8 +1,8 @@
-import { MAX_AGE } from "../age/constants";
+import { DEATH_AGE } from "../age/constants";
 import { DEATH_REASONS } from "./constants";
 
 export function getDeathReason({ diedFromHunger, diedFromIllness, age }) {
-  if (age >= MAX_AGE) return DEATH_REASONS["age"];
+  if (age >= DEATH_AGE) return DEATH_REASONS["age"];
 
   if (diedFromHunger) return DEATH_REASONS["hunger"];
 

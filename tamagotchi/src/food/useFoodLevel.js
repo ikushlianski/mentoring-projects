@@ -5,7 +5,7 @@ import {
   HOW_OFTEN_FOOD_LEVEL_DECREMENTS_MS,
   MIN_FOOD_LEVEL,
 } from "./constants";
-import { MAX_AGE } from "../age/constants";
+import { DEATH_AGE } from "../age/constants";
 import { greenToRed } from "./hslColor";
 
 export const useFoodLevel = ({ age, isSick }) => {
@@ -17,7 +17,7 @@ export const useFoodLevel = ({ age, isSick }) => {
     background: greenToRed(foodLevel),
   });
 
-  const isPetAlive = age < MAX_AGE;
+  const isPetAlive = age < DEATH_AGE;
 
   const shouldDecrementFoodLevel =
     foodLevel > MIN_FOOD_LEVEL && isPetAlive && !isSick;
