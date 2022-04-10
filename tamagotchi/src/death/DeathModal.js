@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 
-import { PetNameContext } from "../App";
+import { GameOverContext, PetNameContext } from "../App";
 import { DEATH_REASONS, DEATH_REASONS_TO_UI_TEXT } from "./constants";
 import { getDeathReason } from "./deathReason";
 
@@ -22,6 +22,7 @@ export const DeathModal = ({
 
   const diedFromAge = deathReason === DEATH_REASONS["age"];
   const petName = useContext(PetNameContext);
+  const restartGame = useContext(GameOverContext);
 
   return (
     <div className={"DeathModal"}>
@@ -39,6 +40,7 @@ export const DeathModal = ({
           </p>
         </div>
       )}
+      <button onClick={restartGame}>Restart</button>
     </div>
   );
 };

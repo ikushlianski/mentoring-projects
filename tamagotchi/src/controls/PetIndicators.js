@@ -10,7 +10,7 @@ import { usePetIllness } from "../illness/usePetIllness";
 import { DEATH_AGE } from "../age/constants";
 import { PetControls } from "./PetControls";
 import { DeathModal } from "../death/DeathModal";
-import { Modal } from "../common/Modal";
+import { Modal } from "../common/components/Modal";
 
 export const PetIndicators = () => {
   const [isDead, setIsDead] = useState(false);
