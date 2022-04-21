@@ -2,3 +2,6 @@
 
 # OS
 .DS_Store
+
+# IaC
+.terraform
