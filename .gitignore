@@ -5,3 +5,6 @@
 
 # IaC
 .terraform
+*.tfstate
+*.tfstate.backup
+out.plan
