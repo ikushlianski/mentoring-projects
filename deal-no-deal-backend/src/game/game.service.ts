@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { CreateGameInput } from './dto/create-game.input';
-import { UpdateGameInput } from './dto/update-game.input';
+import { CreateGameDto } from './dto/create-game.dto';
+import { UpdateGameDto } from './dto/update-game.dto';
 
 @Injectable()
 export class GameService {
-  create(createGameInput: CreateGameInput) {
+  create(createGameDto: CreateGameDto) {
     return 'This action adds a new game';
   }
 
@@ -16,7 +16,7 @@ export class GameService {
     return `This action returns a #${id} game`;
   }
 
-  update(id: number, updateGameInput: UpdateGameInput) {
+  update(id: number, updateGameDto: UpdateGameDto) {
     return `This action updates a #${id} game`;
   }
 
