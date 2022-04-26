@@ -8,9 +8,10 @@ import { GameController } from './game/game.controller';
 import { GameService } from './game/game.service';
 import { AuthService } from './auth/auth.service';
 import { AuthController } from './auth/auth.controller';
+import { GameModule } from './game/game.module';
 
 @Module({
-  imports: [DbModule, UserModule],
+  imports: [DbModule, UserModule, GameModule],
   controllers: [AppController, GameController, AuthController],
   providers: [AppService, GameService, AuthService, DbService],
 })
