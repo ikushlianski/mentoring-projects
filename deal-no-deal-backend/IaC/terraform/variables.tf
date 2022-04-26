@@ -10,3 +10,10 @@ variable "COGNITO_DEFAULT_USER_PASSWORD" {
   type = string
 }
 
+variable "COGNITO_CALLBACK_URL" {
+  type = string
+}
+
+variable "COGNITO_LOGOUT_URL" {
+  type = string
+}
