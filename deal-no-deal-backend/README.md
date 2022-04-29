@@ -9,6 +9,7 @@ $ yarn install
 ```
 
 ## Running the app
+Make sure you have a valid `.env` file in your root directory.
 
 The app is launched in Docker containers. Please run
 
@@ -21,6 +22,16 @@ To stop the app correctly, hit Ctrl+C and then
 ```bash
 yarn docker:stop
 ```
+
+## User registration
+Authentication is done via AWS Cognito.
+
+To test user registration multiple times you will need to remove the created user. Use the following command to remove the user from your Cognito user pool.
+
+```
+aws cognito-idp admin-delete-user --user-pool-id <user-pool-id> --username <your-username> --profile <your-aws-cli-profile>
+```
+
 
 ## Test
 
