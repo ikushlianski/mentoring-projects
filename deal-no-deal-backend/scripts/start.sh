@@ -1,7 +1,8 @@
 #!/bin/bash
 
-# source all env variables
-. .env
+yarn loadenv
+
+. .env.exported
 
 cd ./IaC/docker || exit
 

@@ -26,6 +26,8 @@ yarn docker:stop
 ## User registration
 Authentication is done via AWS Cognito.
 
+Ensure you have `aws` CLI installed and configured (region is `eu-west-1`).
+
 To test user registration multiple times you will need to remove the created user. Use the following command to remove the user from your Cognito user pool.
 
 ```
