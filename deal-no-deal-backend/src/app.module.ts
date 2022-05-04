@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
 import { DbService } from 'src/db/db.service';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -10,7 +11,13 @@ import { SettingsModule } from './settings/settings.module';
 import { AuthModule } from './auth/auth.module';
 
 @Module({
-  imports: [DbModule, GameModule, SettingsModule, AuthModule],
+  imports: [
+    DbModule,
+    GameModule,
+    SettingsModule,
+    AuthModule,
+    ConfigModule.forRoot(),
+  ],
   controllers: [AppController, AuthController],
   providers: [AppService, AuthService, DbService],
 })
