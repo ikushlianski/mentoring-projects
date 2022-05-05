@@ -9,7 +9,8 @@ export class AuthController {
   @Post('cognito/signup')
   signUp(@Body() signUpUserDto: SignUpUserDto) {
     try {
-      return this.authService.signUpWithCognito(signUpUserDto);
+      console.log('signUpUserDto', signUpUserDto);
+      // return this.authService.signUpWithCognito(signUpUserDto);
     } catch (error: unknown) {
       console.log('Error during sign up', error);
 
