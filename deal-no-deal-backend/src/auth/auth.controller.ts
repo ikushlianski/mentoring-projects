@@ -1,6 +1,7 @@
 import { Body, Controller, Post } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { AuthErrorHandler } from 'src/auth/auth-error.service';
+import { SignInUserDto } from 'src/auth/dto/signInUserDto';
 import { SignUpUserDto } from 'src/auth/dto/signUpUserDto';
 import { AuthService } from './auth.service';
 
@@ -19,6 +20,17 @@ export class AuthController {
       return await this.authService.signUpWithCognito(signUpUserDto);
     } catch (error: unknown) {
       this.authErrorHandler.handleSignUpError(error);
+    }
+  }
+
+  @Post('cognito/signin')
+  @ApiTags('signin')
+  @ApiOperation({ description: 'Sign in (log in) user' })
+  async signIn(@Body() signInUserDto: SignInUserDto) {
+    try {
+      return await this.authService.signInWithCognito(signInUserDto);
+    } catch (error: unknown) {
+      this.authErrorHandler.handleSignInError(error);
     }
   }
 }

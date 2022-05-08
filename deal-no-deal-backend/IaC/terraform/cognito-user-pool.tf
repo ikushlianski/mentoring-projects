@@ -16,7 +16,8 @@ resource "aws_cognito_user_pool_client" "app_client" {
 
   allowed_oauth_flows     = ["code"]
   callback_urls           = [var.COGNITO_CALLBACK_URL]
-  enable_token_revocation = true
-  logout_urls             = [var.COGNITO_LOGOUT_URL]
   default_redirect_uri    = var.COGNITO_CALLBACK_URL
+  enable_token_revocation = true
+  explicit_auth_flows = ["USER_PASSWORD_AUTH"]
+  logout_urls             = [var.COGNITO_LOGOUT_URL]
 }
