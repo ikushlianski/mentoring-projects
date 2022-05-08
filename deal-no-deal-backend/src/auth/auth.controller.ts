@@ -1,27 +1,24 @@
-import { Body, Controller, Post, UnauthorizedException } from '@nestjs/common';
+import { Body, Controller, Post } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
+import { AuthErrorHandler } from 'src/auth/auth-error.service';
 import { SignUpUserDto } from 'src/auth/dto/signUpUserDto';
 import { AuthService } from './auth.service';
 
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(
+    private readonly authService: AuthService,
+    private readonly authErrorHandler: AuthErrorHandler,
+  ) {}
 
   @Post('cognito/signup')
   @ApiTags('signup')
-  @ApiOperation({ description: 'Sign up (create) the user' })
-  signUp(@Body() signUpUserDto: SignUpUserDto) {
+  @ApiOperation({ description: 'Sign up (create) user' })
+  async signUp(@Body() signUpUserDto: SignUpUserDto) {
     try {
-      console.log('signUpUserDto', signUpUserDto);
-      // return this.authService.signUpWithCognito(signUpUserDto);
+      return await this.authService.signUpWithCognito(signUpUserDto);
     } catch (error: unknown) {
-      console.log('Error during sign up', error);
-
-      if (error instanceof Error) {
-        throw new UnauthorizedException(error.message);
-      }
-
-      throw new UnauthorizedException('Error occurred when signing you up');
+      this.authErrorHandler.handleSignUpError(error);
     }
   }
 }

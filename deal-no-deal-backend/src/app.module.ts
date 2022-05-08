@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
+import { AuthErrorHandler } from 'src/auth/auth-error.service';
 import { DbService } from 'src/db/db.service';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -19,6 +20,6 @@ import { AuthModule } from './auth/auth.module';
     ConfigModule.forRoot(),
   ],
   controllers: [AppController, AuthController],
-  providers: [AppService, AuthService, DbService],
+  providers: [AppService, AuthService, AuthErrorHandler, DbService],
 })
 export class AppModule {}
