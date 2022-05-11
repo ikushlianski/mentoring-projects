@@ -16,7 +16,7 @@ export default withAuth(HOC);
 //
 //   return (
 //     <div>
-//       {loggedIn && <HOC icon={'icon'} text={'Log out'} />}
+//       {loggedIn && <use-cases icon={'icon'} text={'Log out'} />}
 //
 //     </div>
 //   );
