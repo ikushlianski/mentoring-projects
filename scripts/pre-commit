@@ -11,6 +11,8 @@ if [[ $output =~ .*"deal-no-deal-backend"*. ]]; then
 
   yarn tsc --noEmit
 
+  yarn lint
+
   yarn test
 
   cd ..
