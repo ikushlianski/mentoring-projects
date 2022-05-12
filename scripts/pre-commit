@@ -1,0 +1,15 @@
+#!/bin/bash
+
+pwd
+#
+#set -e
+#
+## DND project
+#
+#cd deal-no-deal-backend || exit
+#
+#yarn tsc --noEmit
+#
+#yarn test
+#
+#cd ..

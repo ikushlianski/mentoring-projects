@@ -1,0 +1,9 @@
+{
+  "name": "mentoring-projects",
+  "repository": "git@github.com:ikushlianski/mentoring-projects.git",
+  "author": "Ilya Kushlianski <kushliansky@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "hooks": "cp scripts/pre-commit .git/hooks/ && chmod +x .git/hooks/pre-commit && echo 'hook set up'"
+  }
+}
