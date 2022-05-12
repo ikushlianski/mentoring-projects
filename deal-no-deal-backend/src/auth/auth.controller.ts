@@ -1,9 +1,9 @@
 import { Body, Controller, Post } from '@nestjs/common';
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
-import { AuthErrorHandler } from 'src/auth/auth-error.service';
-import { SignInUserDto } from 'src/auth/dto/signInUserDto';
-import { SignUpUserDto } from 'src/auth/dto/signUpUserDto';
+import { AuthErrorHandler } from './auth-error.service';
 import { AuthService } from './auth.service';
+import { SignInUserDto } from './dto/signInUserDto';
+import { SignUpUserDto } from './dto/signUpUserDto';
 
 @Controller('auth')
 export class AuthController {
