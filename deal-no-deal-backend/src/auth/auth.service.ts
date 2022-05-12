@@ -7,8 +7,11 @@ import {
   SignUpCommand,
 } from '@aws-sdk/client-cognito-identity-provider';
 import { Injectable } from '@nestjs/common';
+import { CognitoJwtVerifier } from 'aws-jwt-verify';
 import { SignInUserDto } from 'src/auth/dto/signInUserDto';
 import { SignUpUserDto } from 'src/auth/dto/signUpUserDto';
+
+const region = 'eu-west-1';
 
 @Injectable()
 export class AuthService {
@@ -17,7 +20,7 @@ export class AuthService {
     password,
   }: SignUpUserDto): Promise<AdminConfirmSignUpCommandOutput> => {
     const client = new CognitoIdentityProviderClient({
-      region: 'eu-west-1',
+      region,
     });
 
     const signUpCommand = new SignUpCommand({
@@ -38,7 +41,7 @@ export class AuthService {
 
   signInWithCognito = async ({ username, password }: SignInUserDto) => {
     const client = new CognitoIdentityProviderClient({
-      region: 'eu-west-1',
+      region,
     });
 
     const signInCommand = new InitiateAuthCommand({
@@ -50,8 +53,22 @@ export class AuthService {
       },
     });
 
-    const result = await client.send(signInCommand);
+    return await client.send(signInCommand);
+  };
 
-    console.log({ result });
+  isCognitoTokenValid = async (token: string) => {
+    const verifier = CognitoJwtVerifier.create({
+      userPoolId: process.env.COGNITO_USER_POOL_ID,
+      clientId: process.env.COGNITO_CLIENT_ID,
+      tokenUse: 'access',
+    });
+
+    try {
+      await verifier.verify(token);
+
+      return true;
+    } catch {
+      return false;
+    }
   };
 }

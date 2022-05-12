@@ -12,7 +12,7 @@
     "docker:start": "./scripts/start.sh",
     "docker:stop": "./scripts/stop.sh",
     "loadenv": "./scripts/load-env.sh",
-    "preinstall": "cp scripts/pre-commit ../.git/hooks/ && chmod +x ../.git/hooks/pre-commit && echo 'Git hooks set up'",
+    "preinstall": "cp ../scripts/pre-commit ../.git/hooks/ && chmod +x ../.git/hooks/pre-commit && echo 'Git hooks set up'",
     "start": "nest start",
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
@@ -36,6 +36,7 @@
     "aws-jwt-verify": "^3.0.0",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.13.2",
+    "cookie-parser": "^1.4.6",
     "reflect-metadata": "^0.1.13",
     "rimraf": "^3.0.2",
     "rxjs": "^7.2.0",
@@ -45,6 +46,7 @@
     "@nestjs/cli": "^8.0.0",
     "@nestjs/schematics": "^8.0.0",
     "@nestjs/testing": "^8.0.0",
+    "@types/cookie-parser": "^1.4.3",
     "@types/express": "^4.17.13",
     "@types/jest": "27.4.1",
     "@types/node": "^16.0.0",
@@ -71,7 +73,13 @@
       "ts"
     ],
     "rootDir": "src",
-    "moduleDirectories": ["node_modules", "."],
+    "moduleDirectories": [
+      "node_modules",
+      "."
+    ],
+    "moduleNameMapper": {
+      "#node-web-compat": "./node-web-compat-node.js"
+    },
     "testRegex": ".*\\.spec\\.ts$",
     "transform": {
       "^.+\\.(t|j)s$": "ts-jest"
