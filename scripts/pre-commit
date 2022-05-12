@@ -1,15 +1,21 @@
 #!/bin/bash
 
-pwd
-#
-#set -e
-#
-## DND project
-#
-#cd deal-no-deal-backend || exit
-#
-#yarn tsc --noEmit
-#
-#yarn test
-#
-#cd ..
+set -e
+
+# list all staged files
+output=$(git diff --name-only --cached)
+
+echo $output
+
+if [[ $output =~ .*"deal-no-deal-backend"*. ]]; then
+  # DND project
+  cd deal-no-deal-backend || exit
+
+  yarn tsc --noEmit
+
+  yarn test
+
+  cd ..
+fi
+
+

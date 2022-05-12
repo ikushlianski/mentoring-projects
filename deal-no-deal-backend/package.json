@@ -12,6 +12,7 @@
     "docker:start": "./scripts/start.sh",
     "docker:stop": "./scripts/stop.sh",
     "loadenv": "./scripts/load-env.sh",
+    "preinstall": "cp scripts/pre-commit ../.git/hooks/ && chmod +x ../.git/hooks/pre-commit && echo 'Git hooks set up'",
     "start": "nest start",
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
