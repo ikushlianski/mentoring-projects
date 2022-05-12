@@ -70,6 +70,7 @@
       "ts"
     ],
     "rootDir": "src",
+    "moduleDirectories": ["node_modules", "."],
     "testRegex": ".*\\.spec\\.ts$",
     "transform": {
       "^.+\\.(t|j)s$": "ts-jest"

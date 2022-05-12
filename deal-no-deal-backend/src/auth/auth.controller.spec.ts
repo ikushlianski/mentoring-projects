@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { AuthErrorHandler } from './auth-error.service';
+import { AuthErrorHandler } from 'src/auth/auth-error.service';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 
