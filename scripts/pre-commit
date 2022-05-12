@@ -5,8 +5,6 @@ set -e
 # list all staged files
 output=$(git diff --name-only --cached)
 
-echo $output
-
 if [[ $output =~ .*"deal-no-deal-backend"*. ]]; then
   # DND project
   cd deal-no-deal-backend || exit

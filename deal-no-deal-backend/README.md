@@ -8,6 +8,8 @@ Backend for Deal or Not Deal Game. Uses MongoDB, AWS Cognito and Nest.js.
 $ yarn install
 ```
 
+This will install all dependencies and set up pre-commit hooks for Deal No Deal project automatically.
+
 ## Running the app
 Make sure you have a valid `.env` file in your root directory.
 
