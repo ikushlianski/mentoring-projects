@@ -13,7 +13,7 @@ This will install all dependencies and set up pre-commit hooks for Deal No Deal 
 ## Running the app
 Make sure you have a valid `.env` file in your root directory.
 
-The app is launched in Docker containers. Please run
+The app runs in Docker containers. To start the container, do
 
 ```bash
 yarn docker:start
@@ -30,7 +30,7 @@ Authentication is done via AWS Cognito.
 
 Ensure you have `aws` CLI installed and configured (region is `eu-west-1`).
 
-To test user registration multiple times you will need to remove the created user. Use the following command to remove the user from your Cognito user pool.
+To test user registration multiple times you will need to remove the created user. Use the following command to quickly remove the user from your Cognito user pool.
 
 ```
 aws cognito-idp admin-delete-user --user-pool-id <user-pool-id> --username <your-username> --profile <your-aws-cli-profile>
