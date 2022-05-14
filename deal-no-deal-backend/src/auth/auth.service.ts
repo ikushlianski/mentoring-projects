@@ -71,4 +71,22 @@ export class AuthService {
       return false;
     }
   };
+
+  refreshToken = async (refreshToken: string) => {
+    const client = new CognitoIdentityProviderClient({
+      region,
+    });
+
+    const refreshTokenCommand = new InitiateAuthCommand({
+      AuthFlow: AuthFlowType.REFRESH_TOKEN_AUTH,
+      ClientId: process.env.COGNITO_CLIENT_ID,
+      AuthParameters: {
+        REFRESH_TOKEN: refreshToken,
+        // SECRET_HASH: '',
+        // DEVICE_KEY: ''
+      },
+    });
+
+    return await client.send(refreshTokenCommand);
+  };
 }

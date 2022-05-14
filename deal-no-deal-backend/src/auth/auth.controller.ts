@@ -1,18 +1,21 @@
 import {
+  BadRequestException,
   Body,
   Controller,
   HttpStatus,
+  Headers,
   Post,
   Req,
   Res,
   UnauthorizedException,
 } from '@nestjs/common';
+
 import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Request, Response } from 'express';
 
 import { AuthErrorHandler } from 'src/auth/auth-error.service';
 import { AuthService } from 'src/auth/auth.service';
-import { jwtCookieName } from 'src/auth/constants';
+import { jwtCookieName, refreshTokenHeaderName } from 'src/auth/constants';
 import { SignInUserDto } from 'src/auth/dto/signInUserDto';
 import { SignUpUserDto } from 'src/auth/dto/signUpUserDto';
 
@@ -76,5 +79,35 @@ export class AuthController {
     }
 
     return response.sendStatus(HttpStatus.OK);
+  }
+
+  @Post('cognito/token/refresh')
+  @ApiTags('token')
+  @ApiOperation({
+    description: 'Get a new access token using your refresh token',
+  })
+  async refreshToken(
+    @Headers(refreshTokenHeaderName) refreshToken,
+    @Res() response: Response,
+  ) {
+    if (!refreshToken) {
+      throw new BadRequestException('No refresh token provided');
+    }
+
+    try {
+      const {
+        AuthenticationResult: { AccessToken, ExpiresIn },
+      } = await this.authService.refreshToken(refreshToken);
+
+      return response.status(HttpStatus.OK).send({
+        AccessToken,
+        ExpiresIn,
+      });
+    } catch {
+      // todo differentiate between situations: when RT is not valid and when RT expired - send different messages to the client so they know how to act on it
+      return response
+        .status(HttpStatus.BAD_REQUEST)
+        .send('Could not refresh the token');
+    }
   }
 }
