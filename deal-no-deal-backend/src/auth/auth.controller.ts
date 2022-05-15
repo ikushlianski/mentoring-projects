@@ -53,7 +53,7 @@ export class AuthController {
         httpOnly: true,
       });
 
-      return response.status(200).send({
+      return response.status(HttpStatus.OK).send({
         RefreshToken,
         ExpiresIn,
       });
@@ -99,8 +99,11 @@ export class AuthController {
         AuthenticationResult: { AccessToken, ExpiresIn },
       } = await this.authService.refreshToken(refreshToken);
 
+      response.cookie(jwtCookieName, AccessToken, {
+        httpOnly: true,
+      });
+
       return response.status(HttpStatus.OK).send({
-        AccessToken,
         ExpiresIn,
       });
     } catch {
