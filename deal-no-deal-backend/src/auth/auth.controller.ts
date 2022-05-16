@@ -1,3 +1,4 @@
+import { NotAuthorizedException } from '@aws-sdk/client-cognito-identity-provider';
 import {
   BadRequestException,
   Body,
@@ -106,11 +107,43 @@ export class AuthController {
       return response.status(HttpStatus.OK).send({
         ExpiresIn,
       });
-    } catch {
-      // todo differentiate between situations: when RT is not valid and when RT expired - send different messages to the client so they know how to act on it
+    } catch (e: unknown) {
+      if (e instanceof NotAuthorizedException) {
+        return response.status(HttpStatus.BAD_REQUEST).send(e.message);
+      }
+
       return response
         .status(HttpStatus.BAD_REQUEST)
         .send('Could not refresh the token');
+    }
+  }
+
+  @Post('cognito/signout')
+  @ApiTags('signout')
+  @ApiOperation({
+    description: 'Sign out of the application',
+  })
+  async signOut(
+    @Headers(refreshTokenHeaderName) refreshToken,
+    @Res() response: Response,
+  ) {
+    if (!refreshToken) {
+      throw new BadRequestException('No refresh token provided');
+    }
+
+    try {
+      await this.authService.signOut(refreshToken);
+
+      // todo ensure the access token cookie gets removed
+      // response.cookie(jwtCookieName, AccessToken, {
+      //   httpOnly: true,
+      // });
+
+      return response.status(HttpStatus.OK);
+    } catch (e: unknown) {
+      return response
+        .status(HttpStatus.UNAUTHORIZED)
+        .send('Could not you log out');
     }
   }
 }

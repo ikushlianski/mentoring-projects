@@ -1,5 +1,5 @@
 resource "aws_cognito_user_pool" "pool" {
-  name                     = "dnd_user_pool"
+  name = "dnd_user_pool"
 
   # for simplicity our backend will auto-confirm accounts
   auto_verified_attributes = []
@@ -18,6 +18,11 @@ resource "aws_cognito_user_pool_client" "app_client" {
   callback_urls           = [var.COGNITO_CALLBACK_URL]
   default_redirect_uri    = var.COGNITO_CALLBACK_URL
   enable_token_revocation = true
-  explicit_auth_flows = ["USER_PASSWORD_AUTH"]
+  explicit_auth_flows     = ["USER_PASSWORD_AUTH"]
   logout_urls             = [var.COGNITO_LOGOUT_URL]
+}
+
+resource "aws_cognito_user_pool_domain" "dnd_domain" {
+  domain       = "dnd-domain"
+  user_pool_id = aws_cognito_user_pool.pool.id
 }

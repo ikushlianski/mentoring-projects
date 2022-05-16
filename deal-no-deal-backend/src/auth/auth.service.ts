@@ -82,11 +82,32 @@ export class AuthService {
       ClientId: process.env.COGNITO_CLIENT_ID,
       AuthParameters: {
         REFRESH_TOKEN: refreshToken,
-        // SECRET_HASH: '',
-        // DEVICE_KEY: ''
       },
     });
 
     return await client.send(refreshTokenCommand);
+  };
+
+  signOut = async (refreshToken: string) => {
+    const cognitoDomain = process.env.COGNITO_DOMAIN;
+    const clientId = process.env.COGNITO_CLIENT_ID;
+
+    if (!cognitoDomain || !clientId) {
+      throw new Error('Cognito configuration is invalid');
+    }
+
+    await fetch(
+      `${cognitoDomain}.auth.eu-west-1.amazoncognito.com/oauth2/revoke`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: new URLSearchParams({
+          token: refreshToken,
+          client_id: clientId,
+        }),
+      },
+    );
   };
 }
