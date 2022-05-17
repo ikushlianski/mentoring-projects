@@ -6,7 +6,7 @@ import {
   InitiateAuthCommand,
   SignUpCommand,
 } from '@aws-sdk/client-cognito-identity-provider';
-import { Injectable } from '@nestjs/common';
+import { HttpStatus, Injectable } from '@nestjs/common';
 import { CognitoJwtVerifier } from 'aws-jwt-verify';
 import { SignInUserDto } from 'src/auth/dto/signInUserDto';
 import { SignUpUserDto } from 'src/auth/dto/signUpUserDto';
@@ -96,18 +96,24 @@ export class AuthService {
       throw new Error('Cognito configuration is invalid');
     }
 
-    await fetch(
-      `${cognitoDomain}.auth.eu-west-1.amazoncognito.com/oauth2/revoke`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-        },
-        body: new URLSearchParams({
-          token: refreshToken,
-          client_id: clientId,
-        }),
-      },
+    const url = new URL(
+      `https://${cognitoDomain}.auth.eu-west-1.amazoncognito.com/oauth2/revoke`,
     );
+
+    url.searchParams.append('token', refreshToken);
+    url.searchParams.append('client_id', clientId);
+
+    const response = await fetch(url.href, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+    });
+
+    if (response.status === HttpStatus.OK) {
+      return await response.text();
+    }
+
+    throw new Error(response.statusText);
   };
 }

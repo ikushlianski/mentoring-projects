@@ -132,17 +132,14 @@ export class AuthController {
     }
 
     try {
-      const result = await this.authService.signOut(refreshToken);
+      await this.authService.signOut(refreshToken);
 
-      console.log({ result });
-      // todo ensure the access token cookie gets removed
       response.cookie(jwtCookieName, '', {
         httpOnly: true,
       });
 
       return response.sendStatus(HttpStatus.OK);
     } catch (e: unknown) {
-      console.log({ e });
       return response
         .status(HttpStatus.UNAUTHORIZED)
         .send('Could not you log out');
