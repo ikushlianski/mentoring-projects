@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# todo automate the following comment
+# Changes to the pre-commit hook will apply only after running `yarn install`
+
 set -e
 
 # list all staged files
@@ -14,6 +17,8 @@ if [[ $output =~ .*"deal-no-deal-backend"*. ]]; then
   yarn lint
 
   yarn test
+
+  yarn test:e2e
 
   cd ..
 fi

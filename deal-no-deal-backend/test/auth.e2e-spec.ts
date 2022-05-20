@@ -16,6 +16,13 @@ describe('Auth module', () => {
         .expect(400);
     });
 
+    it(`Should not allow requests with empty username`, () => {
+      return request(app.getHttpServer())
+        .post('/auth/cognito/signup')
+        .send({ username: '' })
+        .expect(400);
+    });
+
     it(`Should not allow requests without password`, () => {
       return request(app.getHttpServer())
         .post('/auth/cognito/signup')
