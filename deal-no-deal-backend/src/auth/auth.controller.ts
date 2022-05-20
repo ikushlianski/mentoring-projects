@@ -32,6 +32,7 @@ export class AuthController {
   @ApiOperation({ description: 'Sign up (create) user' })
   async signUp(@Body() signUpUserDto: SignUpUserDto) {
     try {
+      console.log('WE SHOULD NOT GET HERE');
       return await this.authService.signUpWithCognito(signUpUserDto);
     } catch (error: unknown) {
       this.authErrorHandler.handleSignUpError(error);

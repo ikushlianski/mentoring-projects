@@ -1,5 +1,12 @@
 {
   "moduleFileExtensions": ["js", "json", "ts"],
+  "moduleDirectories": [
+    "node_modules",
+    "."
+  ],
+  "moduleNameMapper": {
+    "#node-web-compat": "./node-web-compat-node.js"
+  },
   "rootDir": ".",
   "testEnvironment": "node",
   "testRegex": ".e2e-spec.ts$",
