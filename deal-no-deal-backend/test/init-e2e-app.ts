@@ -1,12 +1,12 @@
 import { INestApplication, ValidationPipe } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
 import { Test } from '@nestjs/testing';
-import { AuthModule } from 'src/auth/auth.module';
 
 let app: INestApplication;
 
-export const initE2eApp = async () => {
+export const initE2eApp = async (modules: any[]) => {
   const moduleRef = await Test.createTestingModule({
-    imports: [AuthModule],
+    imports: [...modules, ConfigModule.forRoot()],
   }).compile();
 
   app = moduleRef.createNestApplication();
