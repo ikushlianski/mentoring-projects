@@ -1,10 +1,7 @@
 import * as request from 'supertest';
 import { INestApplication } from '@nestjs/common';
 import { AuthModule } from 'src/auth/auth.module';
-import { initE2eApp } from 'test/init-e2e-app';
-import * as util from 'util';
-
-const exec = util.promisify(require('node:child_process').exec);
+import { initE2eApp, removeTestUser } from 'test/e2e-utils';
 
 describe('Auth module', () => {
   const username = 'e2e_test_user';
@@ -13,6 +10,11 @@ describe('Auth module', () => {
 
   beforeAll(async () => {
     app = await initE2eApp([AuthModule]);
+
+    // remove the e2e test user from DB if it was not removed for some reason
+    try {
+      await removeTestUser(username);
+    } catch (e) {}
   });
 
   describe('Sign Up', () => {
@@ -24,15 +26,9 @@ describe('Auth module', () => {
         .send({ username, password })
         .expect(201);
 
+      await removeTestUser(username);
+
       expect(response.body['$metadata'].httpStatusCode).toBe(200);
-
-      const { error } = await exec(
-        `aws cognito-idp admin-delete-user --user-pool-id ${process.env.COGNITO_USER_POOL_ID} --username ${username} --profile dnd-profile`,
-      );
-
-      if (error) {
-        console.error(error);
-      }
     });
 
     it(`Should not allow requests without username`, () => {
@@ -64,6 +60,13 @@ describe('Auth module', () => {
   });
 
   afterAll(async () => {
-    await app.close();
+    // remove the e2e test user from DB if it was not removed for some reason
+    try {
+      await removeTestUser(username);
+    } catch (e) {
+      // do nothing
+    } finally {
+      await app.close();
+    }
   });
 });
