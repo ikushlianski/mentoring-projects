@@ -1,8 +1,15 @@
 #!/bin/bash
 
 # source all env variables
-. .env
+yarn loadenv
+
+. .env.exported
 
 cd ./IaC/docker || exit
 
+# for dev purposes
 docker-compose down
+
+docker container prune -f
+
+docker volume rm MONGO_DATA || echo "Volume MONGO_DATA was already removed"
