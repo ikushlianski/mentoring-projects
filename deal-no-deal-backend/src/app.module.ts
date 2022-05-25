@@ -19,6 +19,7 @@ import { AuthModule } from './auth/auth.module';
     AuthModule,
     ConfigModule.forRoot(),
   ],
+
   controllers: [AppController, AuthController],
   providers: [AppService, AuthService, AuthErrorHandler, DbService],
 })
