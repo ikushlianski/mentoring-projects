@@ -18,7 +18,5 @@ if [[ $output =~ .*"deal-no-deal-backend"*.*\.ts ]]; then
 
   yarn test
 
-  yarn test:e2e
-
   cd ..
 fi
