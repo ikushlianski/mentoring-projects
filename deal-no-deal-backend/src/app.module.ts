@@ -17,7 +17,9 @@ import { AuthModule } from './auth/auth.module';
     GameModule,
     SettingsModule,
     AuthModule,
-    ConfigModule.forRoot(),
+    ConfigModule.forRoot({
+      expandVariables: true,
+    }),
   ],
 
   controllers: [AppController, AuthController],

@@ -25,6 +25,21 @@ To stop the app correctly, hit Ctrl+C and then
 yarn docker:stop
 ```
 
+## Infrastructure
+
+### Tech
+Infrastructure is created using Terraform. The app uses MongoDB as a storage and Cognito as an auth mechanism.
+
+### Environment variables
+Variables are located in `.env` file. See `.env.example` as a starting point.
+
+Nest.js supports variable expansion, so try using them as much as possible to be DRY.
+
+For Terraform the variables are transformed into `export` bash statements with `yarn loadenv` script. It produces a copy of `.env` file called `.env.exported`. 
+
+### Seed data
+A test user is created upon app start (see `.env` file - `TF_VAR_COGNITO_DEFAULT_USER_NAME`).
+
 ## User registration
 Authentication is done via AWS Cognito.
 
