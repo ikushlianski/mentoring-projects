@@ -4,7 +4,9 @@ import { PrismaClient } from '@prisma/client';
 @Injectable()
 export class DbService extends PrismaClient implements OnModuleInit {
   async onModuleInit() {
+    console.log('db url', process.env.DATABASE_URL);
     await this.$connect();
+    console.log('connected successfully');
   }
 
   async enableShutdownHooks(app: INestApplication) {
@@ -13,3 +15,5 @@ export class DbService extends PrismaClient implements OnModuleInit {
     });
   }
 }
+
+// export class DbService {}
