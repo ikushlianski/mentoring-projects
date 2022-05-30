@@ -15,5 +15,3 @@ export class DbService extends PrismaClient implements OnModuleInit {
     });
   }
 }
-
-// export class DbService {}

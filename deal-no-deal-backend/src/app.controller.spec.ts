@@ -6,8 +6,8 @@ import { AppService } from './app.service';
 describe('AppController', () => {
   let appController: AppController;
 
-  const mockPrisma = {
-    user: { findMany: () => [] },
+  const mockDb = {
+    user: { findMany: () => Promise.resolve([]) },
   };
 
   beforeEach(async () => {
@@ -15,8 +15,8 @@ describe('AppController', () => {
       controllers: [AppController],
       providers: [AppService, DbService],
     })
-      .overrideProvider('DbService')
-      .useValue(mockPrisma)
+      .overrideProvider(DbService)
+      .useValue(mockDb)
       .compile();
 
     appController = app.get<AppController>(AppController);
@@ -24,7 +24,7 @@ describe('AppController', () => {
 
   describe('root', () => {
     it('should return "Hello World!"', () => {
-      expect(appController.getHello()).toBe('Hello World!');
+      expect(appController.getHello()).resolves.toBe('Hello World!');
     });
   });
 });

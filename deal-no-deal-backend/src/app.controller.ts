@@ -11,8 +11,6 @@ export class AppController {
 
   @Get()
   async getHello(): Promise<string> {
-    console.log('this.prisma', this.prisma);
-
     const result = await this.prisma.user.findMany();
 
     console.log('result', result);
