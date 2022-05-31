@@ -9,6 +9,6 @@ cd ./IaC/docker || exit
 
 docker-compose up -d
 
-sleep 14
+sleep 5
 
 docker exec mongo3 /scripts/init-mongo.sh

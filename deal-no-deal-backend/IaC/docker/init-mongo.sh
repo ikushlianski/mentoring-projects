@@ -2,7 +2,7 @@
 
 set -e
 
-mongo <<EOF
+mongo <<EOF1
 
 var config = {
     "_id": "dbrs",
@@ -21,7 +21,7 @@ var config = {
         {
             "_id": 3,
             "host": "mongo3:27017",
-            "priority": 10
+            "priority": 3
         }
     ]
 };
@@ -29,6 +29,14 @@ var config = {
 rs.initiate(config);
 
 rs.status();
+
+EOF1
+
+echo "Preparing database..."
+
+sleep 15
+
+mongo <<EOF2
 
 use $MONGO_INITDB_DATABASE
 
@@ -43,5 +51,5 @@ db.user.insert(
   { writeConcern: { w: "majority", wtimeout: 5000 } }
 );
 
-EOF
+EOF2
 
