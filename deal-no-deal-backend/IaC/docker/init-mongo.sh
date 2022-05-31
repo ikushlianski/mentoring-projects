@@ -6,9 +6,9 @@ mongo <<EOF
 
 use $MONGO_INITDB_DATABASE
 
-db.createCollection('users')
+db.createCollection('user')
 
-db.users.insert({
+db.user.insert({
   username: "$TF_VAR_COGNITO_DEFAULT_USER_NAME",
   role: 'admin',
   customprop: 'something-test'
