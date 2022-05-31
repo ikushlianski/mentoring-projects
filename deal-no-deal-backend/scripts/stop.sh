@@ -12,4 +12,5 @@ docker-compose down
 
 docker container prune -f
 
-docker volume rm MONGO_DATA || echo "Volume MONGO_DATA was already removed"
+docker volume rm MONGO_DATA1
+docker volume rm MONGO_DATA2
