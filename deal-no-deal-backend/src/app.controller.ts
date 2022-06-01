@@ -12,7 +12,6 @@ export class AppController {
   @Get()
   async getHello(): Promise<string> {
     const result = await this.prisma.user.findMany();
-
     console.log('result', result);
 
     return this.appService.getHello();

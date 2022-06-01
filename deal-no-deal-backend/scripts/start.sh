@@ -7,8 +7,10 @@ yarn loadenv
 
 cd ./IaC/docker || exit
 
+#docker-compose build
+
 docker-compose up -d
 
 sleep 5
 
-docker exec mongo3 /scripts/init-mongo.sh
+docker exec mongo-container /scripts/init-mongo.sh
