@@ -28,13 +28,13 @@ echo "Preparing database..."
 
 mongo <<EOF2
 
-use admin
+use $MONGO_INITDB_DATABASE
 
 db.createUser(
     {
         user: "ilya",
         pwd: "pass",
-        roles: [ { role: "dbOwner", db: "admin"} ],
+        roles: [ { role: "dbOwner", db: "$MONGO_INITDB_DATABASE"} ],
         passwordDigestor: "server",
     }
 )

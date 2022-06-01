@@ -23,6 +23,11 @@ import { AuthModule } from './auth/auth.module';
   ],
 
   controllers: [AppController, AuthController],
-  providers: [AppService, AuthService, AuthErrorHandler, DbService],
+  providers: [
+    AppService,
+    AuthService,
+    AuthErrorHandler,
+    // DbService
+  ],
 })
 export class AppModule {}
