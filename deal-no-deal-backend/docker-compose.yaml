@@ -18,23 +18,23 @@ services:
     restart: unless-stopped
     volumes:
       - type: volume
-        source: MONGO_DATA3
+        source: MONGO_DATA1
         target: /data/db
       - ./IaC/docker/init-mongo.sh:/scripts/init-mongo.sh
     entrypoint: [ "/usr/bin/mongod", "--bind_ip_all", "--replSet", "dbrs" ]
 
-#  mongo-ilya:
-#    image: mongo:4.4
-#    container_name: mongo-ilya
-#    networks:
-#      - mongo-network
-#    ports:
-#      - "3001:27017"
-#    restart: always
-#    depends_on:
-#      - mongo-container
-#    env_file:
-#      - .env
+  mongo-ilya:
+    image: mongo:4.4
+    container_name: mongo-ilya
+    networks:
+      - mongo-network
+    ports:
+      - "3001:27017"
+    restart: always
+    depends_on:
+      - mongo-container
+    env_file:
+      - .env
 
   webapp:
     build: .
@@ -61,10 +61,7 @@ services:
     ports:
       - ${MONGO_EXPRESS_PORT}:${MONGO_EXPRESS_PORT}
     environment:
-#      ME_CONFIG_MONGODB_ADMINUSERNAME: ${MONGO_INITDB_ROOT_USERNAME}
-#      ME_CONFIG_MONGODB_ADMINPASSWORD: ${MONGO_INITDB_ROOT_PASSWORD}
-      ME_CONFIG_MONGODB_SERVER: mongo-container
-      ME_CONFIG_MONGODB_PORT: 27017
+      ME_CONFIG_MONGODB_URL: "mongodb://mongo-container:27017/?replicaSet=dbrs"
     depends_on:
       - mongo-container
     networks:

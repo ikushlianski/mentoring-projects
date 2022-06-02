@@ -8,7 +8,7 @@ yarn loadenv
 cd ./IaC/docker || exit
 
 # for dev purposes
-docker-compose down
+docker-compose down --remove-orphans
 
 docker container prune -f
 
