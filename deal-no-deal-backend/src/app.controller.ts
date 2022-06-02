@@ -1,24 +1,35 @@
-import { Controller, Get } from '@nestjs/common';
-import { MongoClient } from 'mongodb';
+import { Controller, Get, Post } from '@nestjs/common';
+import { DbService } from 'src/db/db.service';
 import { AppService } from './app.service';
 
 @Controller()
 export class AppController {
-  constructor(private readonly appService: AppService) {}
+  constructor(
+    private readonly appService: AppService,
+    private readonly prisma: DbService,
+  ) {}
 
   @Get()
   async getHello(): Promise<any> {
-    // const client = new MongoClient(process.env.DATABASE_URL);
-    //
-    // // Database Name
-    // const dbName = process.env.MONGO_INITDB_DATABASE;
-    //
-    // await client.connect();
-    // const db = client.db(dbName);
-    // const users = db.collection('user');
-    //
-    // console.log({ users });
+    const result = await this.prisma.user.findMany();
 
-    return this.appService.getHello();
+    console.log('findmany', result);
+
+    return result;
+  }
+
+  @Post()
+  async postHello(): Promise<any> {
+    const result = await this.prisma.user.create({
+      data: {
+        username: 'iii',
+        customprop: 'some other data',
+        role: 'some-role',
+      },
+    });
+
+    console.log('create', result);
+
+    return result;
   }
 }

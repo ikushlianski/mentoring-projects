@@ -23,8 +23,8 @@ describe('AppController', () => {
   });
 
   describe('root', () => {
-    it('should return "Hello World!"', () => {
-      expect(appController.getHello()).resolves.toBe('Hello World!');
+    it('should return empty array', () => {
+      expect(appController.getHello()).resolves.toEqual([]);
     });
   });
 });

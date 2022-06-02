@@ -12,8 +12,4 @@ RUN yarn install --ignore-scripts --frozen-lockfile
 
 RUN yarn prisma generate
 
-#RUN yarn build
-
-CMD ["nest", "start", "--watch"]
-
 EXPOSE 3000
