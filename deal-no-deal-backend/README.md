@@ -10,7 +10,7 @@ $ yarn install
 
 This will install all dependencies and set up pre-commit hooks for Deal No Deal project automatically.
 
-## Running the app
+## Running the backend app
 Make sure you have a valid `.env` file in your root directory.
 
 The app runs in Docker containers. To start the container, do
@@ -24,6 +24,8 @@ To stop the app correctly, hit Ctrl+C and then
 ```bash
 yarn docker:stop
 ```
+
+The backend app will be running on `http://localhost:3000`
 
 ## Infrastructure
 
