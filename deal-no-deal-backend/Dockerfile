@@ -1,4 +1,4 @@
-# todo move this to IaC/docker
+# todo optimize image size
 
 FROM node:18
 

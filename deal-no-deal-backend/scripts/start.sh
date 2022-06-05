@@ -2,17 +2,19 @@
 
 # source all env variables
 yarn loadenv
-
 . .env.exported
 
-cd ./IaC/docker || exit
+# Pull each service without starting containers
+docker-compose pull mongo
+docker-compose pull webapp
+docker-compose pull mongo-express
 
-#docker-compose build
-
+# Init containers
 docker-compose up -d
 
 printf "\nContainers initializing..."
 
+# Give initialization some time
 sleep 5
 
 docker exec mongo-container /scripts/init-mongo.sh

@@ -20,7 +20,7 @@ services:
       - type: volume
         source: MONGO_DATA3
         target: /data/db
-      - ./IaC/docker/init-mongo.sh:/scripts/init-mongo.sh
+      - ./scripts/init-mongo.sh:/scripts/init-mongo.sh
     entrypoint: [ "/usr/bin/mongod", "--bind_ip_all", "--replSet", "dbrs" ]
 
   mongo-ilya:
@@ -51,7 +51,7 @@ services:
     env_file:
       - .env
     command:
-      - ./start-webapp.sh
+      - ./scripts/start-webapp.sh
 
   mongo-express:
     image: mongo-express
