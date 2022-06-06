@@ -5,8 +5,6 @@ yarn loadenv
 
 . .env.exported
 
-cd ./IaC/docker || exit
-
 # for dev purposes
 docker-compose down --remove-orphans
 
