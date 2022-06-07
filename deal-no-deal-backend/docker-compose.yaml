@@ -40,8 +40,7 @@ services:
     build:
       context: .
       dockerfile: .
-      # todo find a way to conditionally specify dev or prod stages
-      target: dev
+      target: ${DOCKER_ENV}
     container_name: webapp
     ports:
       - "3000:3000"

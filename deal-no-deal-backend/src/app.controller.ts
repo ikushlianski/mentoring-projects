@@ -22,7 +22,7 @@ export class AppController {
   async postHello(): Promise<any> {
     const result = await this.prisma.user.create({
       data: {
-        username: 'iii',
+        username: 'xxxxxx',
         customprop: 'some other data',
         role: 'some-role',
       },

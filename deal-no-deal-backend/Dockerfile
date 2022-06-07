@@ -39,8 +39,9 @@ FROM node:18 as prod
 
 WORKDIR /app
 
-COPY "package.json" .
-COPY "yarn.lock" .
+RUN npm install -g @nestjs/cli
+
+COPY . .
 
 RUN yarn install --ignore-scripts --frozen-lockfile && yarn cache clean
 
