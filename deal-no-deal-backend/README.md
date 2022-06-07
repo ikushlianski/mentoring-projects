@@ -13,19 +13,33 @@ This will install all dependencies and set up pre-commit hooks for Deal No Deal 
 ## Running the backend app
 Make sure you have a valid `.env` file in your root directory.
 
-The app runs in Docker containers. To start the container, do
+The app runs in Docker containers. 
+
+1. If you are going to consume the backend: 
+- set `DOCKER_ENV=prod` in your `.env` file
+- run the script
+
+```bash
+yarn docker:start-prod
+```
+
+2. If you are going to develop the backend:
+
+- set `DOCKER_ENV=dev` in your `.env` file
+- run the script
 
 ```bash
 yarn docker:start
 ```
 
-To stop the app correctly, hit Ctrl+C and then 
+The backend app will be running on `http://localhost:3000`
+
+To stop the app correctly, hit Ctrl+C and then
 
 ```bash
 yarn docker:stop
 ```
 
-The backend app will be running on `http://localhost:3000`
 
 ## Infrastructure
 
