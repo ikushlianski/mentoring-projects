@@ -2,7 +2,7 @@
 
 set -e
 
-mongo <<EOF1
+mongo <<INIT_REPLICA_SET
 
 var config = {
     "_id": "dbrs",
@@ -20,26 +20,26 @@ rs.initiate(config);
 
 rs.status();
 
-EOF1
+INIT_REPLICA_SET
 
 echo "Preparing database..."
 
 sleep 5
 
-mongo <<EOF2
+mongo <<DATA
 
 use $MONGO_INITDB_DATABASE
 
-db.createUser(
-    {
-        user: "ilya",
-        pwd: "pass",
-        roles: [ { role: "dbOwner", db: "$MONGO_INITDB_DATABASE"} ],
-        passwordDigestor: "server",
-    }
-)
-
 db.createCollection('User')
+
+db.User.createIndex(
+  {
+      "username": 1
+  },
+  {
+      unique: true,
+  }
+)
 
 db.User.insert(
   {
@@ -49,5 +49,5 @@ db.User.insert(
   }
 );
 
-EOF2
+DATA
 
