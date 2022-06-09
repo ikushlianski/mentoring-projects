@@ -3,8 +3,9 @@ import {
   appSettingsLocalStorageKey,
   ConfigurableAppSettings,
 } from "src/settings/constants";
+import { IAppSettings } from "src/settings/types";
 
-class SettingsManager {
+export class SettingsManager {
   getSetting(key: keyof typeof ConfigurableAppSettings) {
     const rawAppSettings = SettingsManager.retrieveRawAppSettings();
     const parsedAppConfig = SettingsManager.parseSettings(rawAppSettings);
@@ -17,10 +18,7 @@ class SettingsManager {
     return setting;
   }
 
-  setSetting(
-    key: keyof typeof ConfigurableAppSettings,
-    value: string | number | boolean
-  ): void {
+  setSetting(key: keyof IAppSettings, value: string | number | boolean): void {
     const rawAppSettings = SettingsManager.retrieveRawAppSettings();
     const parsedAppConfig = SettingsManager.parseSettings(rawAppSettings);
     const newAppConfig = {
@@ -34,9 +32,7 @@ class SettingsManager {
     );
   }
 
-  private static parseSettings(
-    rawSettings: string
-  ): typeof ConfigurableAppSettings {
+  private static parseSettings(rawSettings: string): IAppSettings {
     try {
       return JSON.parse(rawSettings);
     } catch (e) {
