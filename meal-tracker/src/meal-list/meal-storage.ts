@@ -42,7 +42,7 @@ export class MealStorage {
     const rawList = localStorage.getItem(mealListLocalStorageKey);
 
     if (!rawList) {
-      throw new Error(appErrors.noMealList);
+      return [] as Meal[];
     }
 
     return JSON.parse(rawList) as Meal[];
