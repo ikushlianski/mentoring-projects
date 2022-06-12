@@ -21,11 +21,13 @@ export class TimeManager {
 
     // We mean "4 hrs after last meal"
     const longPastThresholdHours = 4;
-    const lastMealTime = list[list.length - 1].time;
+    const lastMealTime = list[list.length - 1]?.time;
 
-    return dayjs(Date.now()).isAfter(
-      dayjs(lastMealTime).add(longPastThresholdHours, "hours")
-    );
+    return lastMealTime
+      ? dayjs(Date.now()).isAfter(
+          dayjs(lastMealTime).add(longPastThresholdHours, "hours")
+        )
+      : true;
   }
 
   private static getApproxHoursTillMidnight() {

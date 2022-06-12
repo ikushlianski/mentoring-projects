@@ -39,6 +39,16 @@ describe("TimeManager", () => {
 
       expect(timeManager.isLongPastLastMeal(mockMeals)).toBe(false);
     });
+
+    it("should return true if there are no meals stored", () => {
+      const mockNow = new Date(Date.parse("Jun 11 2022 23:18:39"));
+
+      jest.spyOn(Date, "now").mockReturnValue(+mockNow);
+
+      const timeManager = new TimeManager(settingsManager);
+
+      expect(timeManager.isLongPastLastMeal([])).toBe(true);
+    });
   });
 
   describe("How many meals fit in time remaining until midnight", () => {
