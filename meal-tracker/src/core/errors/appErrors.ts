@@ -1,4 +1,4 @@
-import { minMealsPerDay } from "src/settings/constants";
+import { minMealsPerDay } from "src/core/settings/constants";
 
 export const appErrors = {
   invalidMealList: "Invalid meal list",

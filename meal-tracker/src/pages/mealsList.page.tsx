@@ -1,8 +1,8 @@
 import React from "react";
-import { GoodMorning } from "src/meal-list/goodMorning.component";
-import { mealListManager } from "src/meal-list/mealList";
+import { GoodMorning } from "src/components/goodMorning.component";
+import { mealListManager } from "src/core/meal-list/mealList";
+import { timeManager } from "src/core/time/TimeManager";
 import { Layout } from "src/pages/layout";
-import { timeManager } from "src/time/TimeManager";
 
 export const MealsListPage = () => {
   const mealList = mealListManager.getList();

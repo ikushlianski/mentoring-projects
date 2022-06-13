@@ -1,10 +1,10 @@
-import { Meal } from "src/meal/meal";
+import { Meal } from "src/core/meal/meal";
 import {
   appSettingsLocalStorageKey,
   ConfigurableAppSettings,
-} from "src/settings/constants";
-import { SettingsManager } from "src/settings/settingsManager";
-import { TimeManager } from "src/time/TimeManager";
+} from "src/core/settings/constants";
+import { SettingsManager } from "src/core/settings/settingsManager";
+import { TimeManager } from "src/core/time/TimeManager";
 
 describe("TimeManager", () => {
   describe("isLongPastLastMeal", () => {

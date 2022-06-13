@@ -1,6 +1,9 @@
 import dayjs from "dayjs";
-import { Meal } from "src/meal/meal";
-import { settingsManager, SettingsManager } from "src/settings/settingsManager";
+import { Meal } from "src/core/meal/meal";
+import {
+  settingsManager,
+  SettingsManager,
+} from "src/core/settings/settingsManager";
 
 export class TimeManager {
   constructor(private settingsManager: SettingsManager) {}

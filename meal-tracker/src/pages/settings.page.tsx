@@ -2,12 +2,12 @@ import React from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import { Link } from "react-router-dom";
-import { Layout } from "src/pages/layout";
-import { RoutesEnum } from "src/pages/routes.enum";
 import {
   ConfigurableAppSettings,
   defaultAppSettings,
-} from "src/settings/constants";
+} from "src/core/settings/constants";
+import { Layout } from "src/pages/layout";
+import { RoutesEnum } from "src/pages/routes.enum";
 
 export const SettingsPage = () => {
   return (

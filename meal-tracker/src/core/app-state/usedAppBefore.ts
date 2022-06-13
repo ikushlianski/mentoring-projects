@@ -1,6 +1,6 @@
-import { usedAppBeforeLocalStorageKey } from "src/welcome-screen/constants";
+import { usedAppBeforeLocalStorageKey } from "src/core/app-state/constants";
 
-class AppState {
+export class AppState {
   usedAppBefore(): boolean {
     return Boolean(localStorage.getItem(usedAppBeforeLocalStorageKey));
   }

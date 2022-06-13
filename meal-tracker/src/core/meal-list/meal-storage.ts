@@ -1,6 +1,6 @@
-import { appErrors } from "src/errors/appErrors";
-import { mealListLocalStorageKey } from "src/meal-list/constants";
-import { Meal } from "src/meal/meal";
+import { appErrors } from "src/core/errors/appErrors";
+import { mealListLocalStorageKey } from "src/core/meal-list/constants";
+import { Meal } from "src/core/meal/meal";
 
 export class MealStorage {
   getMealList(): Meal[] {

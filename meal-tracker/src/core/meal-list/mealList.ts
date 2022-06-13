@@ -1,8 +1,11 @@
-import { mealStorage, MealStorage } from "src/meal-list/meal-storage";
-import { Meal } from "src/meal/meal";
-import { settingsManager, SettingsManager } from "src/settings/settingsManager";
-import { timeManager, TimeManager } from "src/time/TimeManager";
-import { appState, AppState } from "src/welcome-screen/usedAppBefore";
+import { mealStorage, MealStorage } from "src/core/meal-list/meal-storage";
+import { Meal } from "src/core/meal/meal";
+import {
+  settingsManager,
+  SettingsManager,
+} from "src/core/settings/settingsManager";
+import { timeManager, TimeManager } from "src/core/time/TimeManager";
+import { appState, AppState } from "src/core/app-state/usedAppBefore";
 
 class MealListManager {
   readonly settingsManager: SettingsManager;

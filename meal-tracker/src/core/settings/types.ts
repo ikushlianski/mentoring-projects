@@ -1,4 +1,4 @@
-import { ConfigurableAppSettings } from "src/settings/constants";
+import { ConfigurableAppSettings } from "src/core/settings/constants";
 
 export interface IAppSettings {
   [ConfigurableAppSettings.TimeFromWakeUpTillBreakfastMinutes]: number;

@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
 import Spinner from "react-bootstrap/Spinner";
 import { useNavigate } from "react-router-dom";
+import { appState } from "src/core/app-state/usedAppBefore";
 import { RoutesEnum } from "src/pages/routes.enum";
-import { appState } from "src/welcome-screen/usedAppBefore";
 
 import "./App.css";
 

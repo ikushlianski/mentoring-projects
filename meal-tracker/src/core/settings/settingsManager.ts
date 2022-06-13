@@ -1,9 +1,9 @@
-import { appErrors } from "src/errors/appErrors";
+import { appErrors } from "src/core/errors/appErrors";
 import {
   appSettingsLocalStorageKey,
   ConfigurableAppSettings,
-} from "src/settings/constants";
-import { IAppSettings } from "src/settings/types";
+} from "src/core/settings/constants";
+import { IAppSettings } from "src/core/settings/types";
 
 export class SettingsManager {
   getSetting(key: keyof typeof ConfigurableAppSettings) {
