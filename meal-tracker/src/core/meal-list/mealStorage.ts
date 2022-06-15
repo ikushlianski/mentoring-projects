@@ -1,11 +1,12 @@
 import { appErrors } from "src/core/errors/appErrors";
 import { mealListLocalStorageKey } from "src/core/meal-list/constants";
-import { Meal } from "src/core/meal/meal";
+import { IRawMeal, Meal } from "src/core/meal/meal";
+import { toDomain } from "src/data-mappers/meal.mapper";
 
 export class MealStorage {
   getMealList(): Meal[] {
     try {
-      const parsedList = MealStorage.parseMealList();
+      const parsedList = MealStorage.parseMealList().map(toDomain);
 
       this.sortMealsByTimeDestructively(parsedList);
 
@@ -28,7 +29,7 @@ export class MealStorage {
   }
 
   removeOne(id: string) {
-    const parsedList = MealStorage.parseMealList();
+    const parsedList = this.getMealList();
     const newList = parsedList.filter((meal) => meal.id !== id);
 
     this.storeMeals(newList);
@@ -42,10 +43,10 @@ export class MealStorage {
     const rawList = localStorage.getItem(mealListLocalStorageKey);
 
     if (!rawList) {
-      return [] as Meal[];
+      return [] as IRawMeal[];
     }
 
-    return JSON.parse(rawList) as Meal[];
+    return JSON.parse(rawList) as IRawMeal[];
   }
 
   private sortMealsByTimeDestructively(

@@ -1,5 +1,5 @@
 import React from "react";
-import { GoodMorning } from "src/components/goodMorning.component";
+import { GoodMorning } from "src/components/goodMorning";
 import { mealListManager } from "src/core/meal-list/mealList";
 import { timeManager } from "src/core/time/TimeManager";
 import { Layout } from "src/pages/layout";
