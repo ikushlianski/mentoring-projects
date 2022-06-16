@@ -1,4 +1,4 @@
-interface IMeal {
+export interface IMeal {
   id: string;
   time: Date;
   eaten: boolean;
