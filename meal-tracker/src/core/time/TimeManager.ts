@@ -1,21 +1,35 @@
 import dayjs from "dayjs";
+import utc from "dayjs/plugin/utc";
 import { Meal } from "src/core/meal/meal";
 import {
   settingsManager,
   SettingsManager,
 } from "src/core/settings/settingsManager";
 
+dayjs.extend(utc);
+
 export class TimeManager {
   constructor(private settingsManager: SettingsManager) {}
 
   public howManyMealsFitUntilDayEnds(): number {
-    const roughHoursTillMidnight = TimeManager.getApproxHoursTillMidnight();
-
     const minutesBetweenMeals = this.settingsManager.getSetting(
       "IntervalBetweenMealsMinutes"
     );
+    const maxMealsPerDay = this.settingsManager.getSetting("MealsPerDay");
 
-    return Math.round((roughHoursTillMidnight * 60) / minutesBetweenMeals);
+    let meals = 0;
+    let timeNow = dayjs();
+    const endOfDay = dayjs().endOf("day");
+
+    while (timeNow.isBefore(endOfDay)) {
+      meals++;
+
+      if (meals === maxMealsPerDay) break;
+
+      timeNow = timeNow.add(minutesBetweenMeals, "minutes");
+    }
+
+    return meals;
   }
 
   public isLongPastLastMeal(list: Meal[]) {
@@ -31,12 +45,6 @@ export class TimeManager {
           dayjs(lastMealTime).add(longPastThresholdHours, "hours")
         )
       : true;
-  }
-
-  private static getApproxHoursTillMidnight() {
-    const endOfDay = dayjs(Date.now()).endOf("day");
-
-    return Math.floor(endOfDay.diff(dayjs(Date.now()), "hours"));
   }
 }
 

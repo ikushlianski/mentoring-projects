@@ -39,18 +39,32 @@ class MealListManager {
     return currentMealList;
   }
 
-  // CREATE
-  generateMealList() {
-    const currentMealList = this.getList();
-    const noMeals = currentMealList.length === 0;
+  // CREATE if no list existed
+  generateMealList(): Meal[] {
+    const mealsCount = this.timeManager.howManyMealsFitUntilDayEnds();
 
-    const mealsCount = noMeals
-      ? this.timeManager.howManyMealsFitUntilDayEnds()
-      : this.settingsManager.getSetting("MealsPerDay");
+    const intervalBetweenMeals = this.settingsManager.getSetting(
+      "IntervalBetweenMealsMinutes"
+    );
 
-    const newMealsForDay = Array(mealsCount).fill(new Meal());
+    const newMealsForDay = [...new Array(mealsCount)].reduce(
+      (acc: Meal[], _: undefined, i) => {
+        const meal = new Meal();
+
+        meal.time = dayjs()
+          .add(i * intervalBetweenMeals, "minutes")
+          .toDate();
+
+        acc.push(meal);
+
+        return acc;
+      },
+      []
+    );
 
     this.storeMealList(newMealsForDay);
+
+    return newMealsForDay;
   }
 
   // UPDATE

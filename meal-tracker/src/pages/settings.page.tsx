@@ -1,7 +1,8 @@
 import React from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { appState } from "src/core/app-state/usedAppBefore";
 import {
   ConfigurableAppSettings,
   defaultAppSettings,
@@ -10,6 +11,14 @@ import { Layout } from "src/pages/layout";
 import { RoutesEnum } from "src/pages/routes.enum";
 
 export const SettingsPage = () => {
+  const navigate = useNavigate();
+
+  const handleSaveSettings = () => {
+    appState.setUsedAppBefore();
+
+    navigate(RoutesEnum.mealsList);
+  };
+
   return (
     <Layout showNavMenu={true}>
       <Form>
@@ -51,7 +60,9 @@ export const SettingsPage = () => {
         </Form.Group>
 
         <Link to={RoutesEnum.mealsList}>
-          <Button variant={"primary"}>Save & close</Button>
+          <Button variant={"primary"} onClick={handleSaveSettings}>
+            Save & close
+          </Button>
         </Link>
       </Form>
     </Layout>

@@ -74,33 +74,23 @@ describe("TimeManager", () => {
     const settingsManager = new SettingsManager();
 
     it("should say there are 2 meals remaining until the end of day", () => {
-      const mockNow = new Date(Date.parse("Jun 11 2022 19:55:01"));
+      const mockNow = new Date("Jun 11 2022 19:55:01");
 
-      jest.spyOn(Date, "now").mockReturnValue(+mockNow);
+      jest.useFakeTimers().setSystemTime(mockNow);
 
       const timeManager = new TimeManager(settingsManager);
 
       expect(timeManager.howManyMealsFitUntilDayEnds()).toBe(2);
     });
 
-    it("should say there is one meal remaining until the end of day", () => {
-      const mockNow = new Date(Date.parse("Jun 10 2022 21:18:39"));
+    it("should say there is 1 meal remaining until the end of day", () => {
+      const mockNow = new Date("Jun 10 2022 21:48:39");
 
-      jest.spyOn(Date, "now").mockReturnValue(+mockNow);
+      jest.useFakeTimers().setSystemTime(mockNow);
 
       const timeManager = new TimeManager(settingsManager);
 
       expect(timeManager.howManyMealsFitUntilDayEnds()).toBe(1);
-    });
-
-    it("should say there are no meals remaining until the end of day", () => {
-      const mockNow = new Date(Date.parse("Jun 10 2022 22:30:39"));
-
-      jest.spyOn(Date, "now").mockReturnValue(+mockNow);
-
-      const timeManager = new TimeManager(settingsManager);
-
-      expect(timeManager.howManyMealsFitUntilDayEnds()).toBe(0);
     });
   });
 });

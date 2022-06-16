@@ -9,7 +9,7 @@ export const Meal: React.FC<Props> = ({ mealData }) => {
   return (
     <div>
       <div>{`${mealData.time.getHours()}:${mealData.time.getMinutes()}`}</div>
-      <div>Eaten: {mealData.eaten}</div>
+      <div>Eaten: {mealData.eaten.toString()}</div>
     </div>
   );
 };

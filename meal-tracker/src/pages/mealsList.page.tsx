@@ -1,19 +1,45 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { GoodMorning } from "src/components/goodMorning";
+import { Meal } from "src/components/meal";
+import { appState } from "src/core/app-state/usedAppBefore";
 import { mealListManager } from "src/core/meal-list/mealList";
-import { timeManager } from "src/core/time/TimeManager";
+import { mealStorage } from "src/core/meal-list/mealStorage";
 import { Layout } from "src/pages/layout";
+import { RoutesEnum } from "src/pages/routes.enum";
 
 export const MealsListPage = () => {
-  const mealList = mealListManager.getList();
-  const shouldShowGoodMorning = timeManager.isLongPastLastMeal(mealList);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!appState.usedAppBefore()) {
+      navigate(RoutesEnum.welcome);
+    }
+  }, [navigate]);
+
+  const [wokenUp, setWokenUp] = useState(
+    () => mealStorage.getMealList().length > 0
+  );
+
+  const [mealList, setMealList] = useState(() => mealListManager.getList());
+
+  const handleWakeUp = () => {
+    const mealsForNewDay = mealListManager.generateMealList();
+
+    setMealList(mealsForNewDay);
+    setWokenUp(true);
+  };
 
   return (
     <Layout showNavMenu={true}>
-      {shouldShowGoodMorning ? (
-        <GoodMorning />
+      {!wokenUp ? (
+        <GoodMorning handleWakeUp={handleWakeUp} />
       ) : (
-        <div>List of meals will be here</div>
+        <div>
+          {mealList.map((meal) => (
+            <Meal mealData={meal} key={meal.id} />
+          ))}
+        </div>
       )}
     </Layout>
   );

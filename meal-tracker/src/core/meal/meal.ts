@@ -15,11 +15,11 @@ export class Meal implements IMeal {
   time: Date;
   eaten = false;
 
-  static counter: number;
+  static counter: number = 0;
 
   constructor() {
     // increment an internal counter each time we create a new meal
-    const counter = Meal.counter++;
+    const counter = ++Meal.counter;
 
     const date = new Date();
     const timestamp = +date;
