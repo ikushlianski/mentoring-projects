@@ -2,6 +2,7 @@ import { appErrors } from "src/core/errors/appErrors";
 import {
   appSettingsLocalStorageKey,
   ConfigurableAppSettings,
+  defaultAppSettings,
 } from "src/core/settings/constants";
 import { IAppSettings } from "src/core/settings/types";
 
@@ -29,6 +30,13 @@ export class SettingsManager {
     localStorage.setItem(
       appSettingsLocalStorageKey,
       JSON.stringify(newAppConfig)
+    );
+  }
+
+  saveDefaultSettings() {
+    localStorage.setItem(
+      appSettingsLocalStorageKey,
+      JSON.stringify(defaultAppSettings)
     );
   }
 
