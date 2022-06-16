@@ -7,7 +7,6 @@ import {
 } from "src/core/settings/settingsManager";
 import { timeManager, TimeManager } from "src/core/time/TimeManager";
 import { appState, AppState } from "src/core/app-state/usedAppBefore";
-import { toDomain } from "src/data-mappers/meal.mapper";
 
 class MealListManager {
   readonly settingsManager: SettingsManager;
@@ -50,6 +49,8 @@ class MealListManager {
       : this.settingsManager.getSetting("MealsPerDay");
 
     const newMealsForDay = Array(mealsCount).fill(new Meal());
+
+    this.storeMealList(newMealsForDay);
   }
 
   // UPDATE

@@ -10,7 +10,6 @@ export interface IRawMeal {
   eaten: boolean;
 }
 
-// todo separate meal from DB and meal as a domain object
 export class Meal implements IMeal {
   id: string;
   time: Date;
