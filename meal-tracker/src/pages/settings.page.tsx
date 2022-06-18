@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import { Link, useNavigate } from "react-router-dom";
@@ -7,14 +7,42 @@ import {
   ConfigurableAppSettings,
   defaultAppSettings,
 } from "src/core/settings/constants";
+import { settingsManager } from "src/core/settings/settingsManager";
 import { Layout } from "src/pages/layout";
 import { RoutesEnum } from "src/pages/routes.enum";
 
 export const SettingsPage = () => {
   const navigate = useNavigate();
 
+  const [mPd, setMPD] = useState<number>(
+    () =>
+      settingsManager.getSetting("MealsPerDay") ||
+      defaultAppSettings[ConfigurableAppSettings.MealsPerDay]
+  );
+
+  const [mealsInterval, setMealsInterval] = useState<number>(
+    () =>
+      settingsManager.getSetting("IntervalBetweenMealsMinutes") ||
+      defaultAppSettings[ConfigurableAppSettings.IntervalBetweenMealsMinutes]
+  );
+
+  const [timeTillBreakfast, setTimeTillBreakfast] = useState<number>(
+    () =>
+      settingsManager.getSetting("TimeFromWakeUpTillBreakfastMinutes") ||
+      defaultAppSettings[
+        ConfigurableAppSettings.TimeFromWakeUpTillBreakfastMinutes
+      ]
+  );
+
   const handleSaveSettings = () => {
     appState.setUsedAppBefore();
+
+    settingsManager.saveUpdatedSettings({
+      [ConfigurableAppSettings.MealsPerDay]: mPd,
+      [ConfigurableAppSettings.IntervalBetweenMealsMinutes]: mealsInterval,
+      [ConfigurableAppSettings.TimeFromWakeUpTillBreakfastMinutes]:
+        timeTillBreakfast,
+    });
 
     navigate(RoutesEnum.mealsList);
   };
@@ -23,13 +51,15 @@ export const SettingsPage = () => {
     <Layout showNavMenu={true}>
       <Form>
         <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-          <Form.Label>Meals per day (default is 5)</Form.Label>
+          <Form.Label>Meals per day (default is 6)</Form.Label>
           <Form.Control
             type="number"
             placeholder="How many meals per day do I need?"
-            defaultValue={
-              defaultAppSettings[ConfigurableAppSettings.MealsPerDay]
-            }
+            value={mPd}
+            onChange={(event) => {
+              // todo could validate user input in a real app
+              setMPD(Number(event.target.value));
+            }}
           />
 
           <Form.Label>
@@ -38,11 +68,10 @@ export const SettingsPage = () => {
           <Form.Control
             type="number"
             placeholder="How much time between meals would I prefer?"
-            defaultValue={
-              defaultAppSettings[
-                ConfigurableAppSettings.IntervalBetweenMealsMinutes
-              ]
-            }
+            value={mealsInterval}
+            onChange={(event) => {
+              setMealsInterval(Number(event.target.value));
+            }}
           />
 
           <Form.Label>
@@ -51,11 +80,10 @@ export const SettingsPage = () => {
           <Form.Control
             type="number"
             placeholder="How soon do I have breakfast after waking up?"
-            defaultValue={
-              defaultAppSettings[
-                ConfigurableAppSettings.TimeFromWakeUpTillBreakfastMinutes
-              ]
-            }
+            value={timeTillBreakfast}
+            onChange={(event) => {
+              setTimeTillBreakfast(Number(event.target.value));
+            }}
           />
         </Form.Group>
 

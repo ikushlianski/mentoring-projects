@@ -33,6 +33,21 @@ export class SettingsManager {
     );
   }
 
+  saveUpdatedSettings(updatedSettings: typeof defaultAppSettings) {
+    const rawAppSettings = SettingsManager.retrieveRawAppSettings();
+    const parsedAppConfig = SettingsManager.parseSettings(rawAppSettings);
+
+    const newAppConfig = {
+      ...parsedAppConfig,
+      ...updatedSettings,
+    };
+
+    localStorage.setItem(
+      appSettingsLocalStorageKey,
+      JSON.stringify(newAppConfig)
+    );
+  }
+
   saveDefaultSettings() {
     localStorage.setItem(
       appSettingsLocalStorageKey,
