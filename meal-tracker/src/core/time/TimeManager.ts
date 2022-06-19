@@ -18,7 +18,13 @@ export class TimeManager {
     const maxMealsPerDay = this.settingsManager.getSetting("MealsPerDay");
 
     let meals = 0;
-    let timeNow = dayjs();
+
+    const breakFastDelay = this.settingsManager.getSetting(
+      "TimeFromWakeUpTillBreakfastMinutes"
+    );
+
+    let timeNow = dayjs().add(breakFastDelay);
+
     const endOfDay = dayjs().endOf("day");
 
     while (timeNow.isBefore(endOfDay)) {

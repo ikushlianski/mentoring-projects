@@ -26,7 +26,7 @@ describe("MealList", () => {
       jest.useFakeTimers().setSystemTime(mockDateNow);
 
       const list = mealListManager.generateMealList();
-      expect(dayjs(list[0].time).format("HH:mm")).toEqual("20:40");
+      expect(dayjs(list[0].time).format("HH:mm")).toEqual("21:00");
     });
 
     it("should generate a list of 2 meals at 20:40 and interval between meals of 2h 20min", () => {
@@ -109,7 +109,7 @@ describe("MealList", () => {
       const list = mealListManager.generateMealList();
 
       expect(list).toHaveLength(6);
-      expect(list[5].time).toEqual(new Date("Jun 15 2022 18:40"));
+      expect(list[5].time).toEqual(new Date("Jun 15 2022 19:00"));
     });
   });
 });

@@ -47,12 +47,17 @@ class MealListManager {
       "IntervalBetweenMealsMinutes"
     );
 
+    const breakfastOffset = this.settingsManager.getSetting(
+      "TimeFromWakeUpTillBreakfastMinutes"
+    );
+
     const newMealsForDay = [...new Array(mealsCount)].reduce(
       (acc: Meal[], _: undefined, i) => {
         const meal = new Meal();
 
         meal.time = dayjs()
           .add(i * intervalBetweenMeals, "minutes")
+          .add(breakfastOffset, "minutes")
           .toDate();
 
         acc.push(meal);
