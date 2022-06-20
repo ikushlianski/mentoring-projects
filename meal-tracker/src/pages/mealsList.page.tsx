@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { GoodMorning } from "src/components/goodMorning";
-import { Meal } from "src/components/meal";
+import { MealList } from "src/components/mealList";
+import { EatFunction } from "src/components/types";
 import { appState } from "src/core/app-state/usedAppBefore";
 import { mealListManager } from "src/core/meal-list/mealList";
-import { mealStorage } from "src/core/meal-list/mealStorage";
 import { timeManager } from "src/core/time/TimeManager";
 import { Layout } from "src/pages/layout";
 import { RoutesEnum } from "src/pages/routes.enum";
@@ -19,7 +19,7 @@ export const MealsListPage = () => {
   }, [navigate]);
 
   const [wokenUp, setWokenUp] = useState(() => {
-    const mealList = mealStorage.getMealList();
+    const mealList = mealListManager.getList();
     const hasMeals = mealList.length > 0;
     const ateToday = !timeManager.isLongPastLastMeal(mealList);
 
@@ -35,16 +35,18 @@ export const MealsListPage = () => {
     setWokenUp(true);
   };
 
+  const handleEat: EatFunction = (meal) => () => {
+    mealListManager.eatMeal(meal.id);
+
+    setMealList(mealListManager.getList());
+  };
+
   return (
     <Layout showNavMenu={true}>
       {!wokenUp ? (
         <GoodMorning handleWakeUp={handleWakeUp} />
       ) : (
-        <div>
-          {mealList.map((meal) => (
-            <Meal mealData={meal} key={meal.id} />
-          ))}
-        </div>
+        <MealList handleEat={handleEat} list={mealList} />
       )}
     </Layout>
   );

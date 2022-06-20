@@ -1,12 +1,12 @@
 import { appErrors } from "src/core/errors/appErrors";
 import { mealListLocalStorageKey } from "src/core/meal-list/constants";
 import { IRawMeal, Meal } from "src/core/meal/meal";
-import { toDomain } from "src/data-mappers/meal.mapper";
+import { rawMealToDomain } from "src/data-mappers/meal.mapper";
 
 export class MealStorage {
   getMealList(): Meal[] {
     try {
-      const parsedList = MealStorage.parseMealList().map(toDomain);
+      const parsedList = MealStorage.parseMealList().map(rawMealToDomain);
 
       this.sortMealsByTimeDestructively(parsedList);
 
