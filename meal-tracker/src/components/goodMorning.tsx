@@ -10,11 +10,11 @@ interface Props {
 export const GoodMorning: React.FC<Props> = ({ handleWakeUp }) => {
   return (
     <>
-      <div>Good morning!</div>
+      <div>Nice to see you!</div>
 
       <Link to={RoutesEnum.mealsList}>
         <Button variant={"primary"} onClick={handleWakeUp}>
-          Wake up
+          Plan meals
         </Button>
       </Link>
     </>
