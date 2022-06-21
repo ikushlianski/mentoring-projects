@@ -14,21 +14,17 @@ export const Layout: React.FC<Props> = ({ children, showNavMenu }) => {
       {showNavMenu && (
         <Navbar bg="dark" variant="dark" expand="lg">
           <Container>
-            <Link to={"/"}>
-              <Nav className="">
-                <Navbar.Brand>Meal Tracker</Navbar.Brand>
-              </Nav>
-            </Link>
+            <Navbar.Brand>
+              <Link to={"/"}>Meal Tracker</Link>
+            </Navbar.Brand>
 
-            <Nav className="me-auto">
-              <Nav.Link>
-                <Link to={RoutesEnum.settings}>Settings</Link>
-              </Nav.Link>
+            <Nav>
+              <Link to={RoutesEnum.settings}>Settings</Link>
             </Nav>
           </Container>
         </Navbar>
       )}
-      <div>{children}</div>
+      <Container>{children}</Container>
     </div>
   );
 };
