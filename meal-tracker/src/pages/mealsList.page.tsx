@@ -63,7 +63,7 @@ export const MealsListPage = () => {
 
   return (
     <Layout showNavMenu={true}>
-      {!wokenUp ? (
+      {!wokenUp || mealList.length === 0 ? (
         <GoodMorning handleWakeUp={handleWakeUp} />
       ) : (
         <MealList
