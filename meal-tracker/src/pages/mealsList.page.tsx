@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { GoodMorning } from "src/components/goodMorning";
 import { MealList } from "src/components/mealList";
-import { EatFunction } from "src/components/types";
+import { EatFunction, EditFunction } from "src/components/types";
 import { appState } from "src/core/app-state/usedAppBefore";
 import { mealListManager } from "src/core/meal-list/mealList";
 import { timeManager } from "src/core/time/TimeManager";
@@ -42,12 +42,24 @@ export const MealsListPage = () => {
     setMealList(mealListManager.getList());
   };
 
+  const handleEdit: EditFunction = (meal, time) => {
+    if (time) {
+      mealListManager.updateMealTime(meal.id, time);
+
+      setMealList(mealListManager.getList());
+    }
+  };
+
   return (
     <Layout showNavMenu={true}>
       {!wokenUp ? (
         <GoodMorning handleWakeUp={handleWakeUp} />
       ) : (
-        <MealList handleEat={handleEat} list={mealList} />
+        <MealList
+          handleEat={handleEat}
+          handleEdit={handleEdit}
+          list={mealList}
+        />
       )}
     </Layout>
   );

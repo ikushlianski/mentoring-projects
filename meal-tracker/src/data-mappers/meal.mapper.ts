@@ -1,5 +1,5 @@
 import { UIMeal } from "src/components/types";
-import { IRawMeal, Meal } from "src/core/meal/meal";
+import { IMeal, IRawMeal, Meal } from "src/core/meal/meal";
 
 export const rawMealToDomain = (rawMeal: IRawMeal) => {
   const meal = new Meal();
@@ -19,4 +19,16 @@ export const UIMealToDomain = (uiMeal: UIMeal) => {
   meal.eaten = uiMeal.eaten;
 
   return meal;
+};
+
+export const domainToUiMeal = (
+  meal: IMeal,
+  key: number,
+  isEatButtonDisabled: boolean
+): UIMeal => {
+  return {
+    ...meal,
+    key,
+    isEatButtonDisabled,
+  };
 };
