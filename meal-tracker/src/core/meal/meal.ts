@@ -35,7 +35,7 @@ export class Meal implements IMeal {
     this.updateTime(new Date());
   }
 
-  updateTime(newTime: Date) {
-    this.time = newTime;
+  updateTime(timeToSet: Date) {
+    this.time = timeToSet;
   }
 }

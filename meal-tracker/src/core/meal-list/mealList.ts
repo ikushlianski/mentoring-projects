@@ -72,29 +72,95 @@ class MealListManager {
     return newMealsForDay;
   }
 
-  // UPDATE
-  updateSingleMeal(list: Meal[], mealToUpdate: Meal): Meal[] {
-    const newList = list.filter((meal) => meal.id !== mealToUpdate.id);
-
-    newList.push(mealToUpdate);
-
-    return newList;
+  // SAVE
+  storeMealList(meals: Meal[]) {
+    this.mealStorage.storeMeals(meals);
   }
 
+  // UPDATE
   eatMeal(mealId: string) {
     const meals = this.getList();
     const targetMeal = meals.find((meal) => meal.id === mealId);
 
     if (targetMeal) {
       targetMeal.markEaten();
-      const updatedList = this.updateSingleMeal(meals, targetMeal);
-      const shifted = this.shiftRemainingMealTimes(updatedList);
+
+      const updatedList = this.updateMealInList(targetMeal);
+      const shifted = this.adjustNotEatenMealTimes(updatedList);
 
       this.mealStorage.storeMeals(shifted);
     }
   }
 
-  private shiftRemainingMealTimes(meals: Meal[]) {
+  updateMealTime(mealId: string, newTime: Date) {
+    const meals = this.getList();
+    const targetMeal = meals.find((meal) => meal.id === mealId);
+
+    if (targetMeal) {
+      targetMeal.updateTime(newTime);
+
+      this.updateMealInList(targetMeal);
+
+      const shifted = this.adjustRemainingMealTimes(targetMeal.id);
+
+      this.storeMealList(shifted);
+    }
+  }
+
+  // UPDATE
+  private updateMealInList(mealToUpdate: Meal): Meal[] {
+    const list = this.getList();
+    const newList = list.filter((meal) => meal.id !== mealToUpdate.id);
+
+    newList.push(mealToUpdate);
+
+    this.storeMealList(newList);
+
+    return newList;
+  }
+
+  // DELETE
+  removeSingleMeal(id: string) {
+    this.mealStorage.removeOne(id);
+  }
+
+  removeOldMealList() {
+    this.mealStorage.removeAll();
+  }
+
+  private adjustRemainingMealTimes(mealId: string) {
+    const meals = this.getList();
+    const eatenMealIndex = meals.findIndex((meal) => meal.id === mealId);
+    const mealsToAdjust = meals.slice(eatenMealIndex);
+
+    const mealsShifted = mealsToAdjust.reduce((acc: Meal[], cur, i) => {
+      const timeOfAdjustedMeal = mealsToAdjust[0].time;
+      const intervalBwMeals = this.settingsManager.getSetting(
+        "IntervalBetweenMealsMinutes"
+      );
+
+      if (i !== 0) {
+        const offset = intervalBwMeals * i;
+
+        const newTime = dayjs(timeOfAdjustedMeal)
+          .add(offset, "minutes")
+          .toDate();
+
+        cur.updateTime(newTime);
+      }
+
+      acc.push(cur);
+
+      return acc;
+    }, []);
+
+    // meals whose time we did not need to adjust
+    const irrelevantMeals = meals.slice(0, eatenMealIndex);
+
+    return [...irrelevantMeals, ...mealsShifted];
+  }
+
+  private adjustNotEatenMealTimes(meals: Meal[]) {
     const eatenMeals = meals.filter((meal) => meal.eaten);
     const lastEatenMeal = eatenMeals[eatenMeals.length - 1];
 
@@ -118,20 +184,6 @@ class MealListManager {
     }, []);
 
     return [...eatenMeals, ...notEatenMealsShifted];
-  }
-
-  // SAVE
-  storeMealList(meals: Meal[]) {
-    this.mealStorage.storeMeals(meals);
-  }
-
-  // DELETE
-  removeSingleMeal(id: string) {
-    this.mealStorage.removeOne(id);
-  }
-
-  removeOldMealList() {
-    this.mealStorage.removeAll();
   }
 }
 

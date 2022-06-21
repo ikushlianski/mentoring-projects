@@ -36,6 +36,7 @@ export const MealsListPage = () => {
   };
 
   const handleEat: EatFunction = (meal) => () => {
+    // marks meal as eaten and stores the update
     mealListManager.eatMeal(meal.id);
 
     setMealList(mealListManager.getList());
