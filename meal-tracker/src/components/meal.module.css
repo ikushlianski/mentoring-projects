@@ -1,6 +1,10 @@
 .meal {
     display: flex;
-    justify-content: space-evenly;
+    justify-content: start;
     align-items: center;
     padding: 1rem;
+}
+
+.meal > * {
+    padding-right: 1rem;
 }

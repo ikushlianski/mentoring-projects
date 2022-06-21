@@ -24,11 +24,13 @@ export const UIMealToDomain = (uiMeal: UIMeal) => {
 export const domainToUiMeal = (
   meal: IMeal,
   key: number,
-  isEatButtonDisabled: boolean
+  isEatButtonDisabled: boolean,
+  isLastMeal: boolean
 ): UIMeal => {
   return {
     ...meal,
     key,
     isEatButtonDisabled,
+    isLastMeal,
   };
 };

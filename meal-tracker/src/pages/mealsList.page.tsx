@@ -2,7 +2,11 @@ import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { GoodMorning } from "src/components/goodMorning";
 import { MealList } from "src/components/mealList";
-import { EatFunction, EditFunction } from "src/components/types";
+import {
+  DeleteFunction,
+  EatFunction,
+  EditFunction,
+} from "src/components/types";
 import { appState } from "src/core/app-state/usedAppBefore";
 import { mealListManager } from "src/core/meal-list/mealList";
 import { timeManager } from "src/core/time/TimeManager";
@@ -50,6 +54,13 @@ export const MealsListPage = () => {
     }
   };
 
+  const handleDelete: DeleteFunction = (meal) => () => {
+    // marks meal as eaten and stores the update
+    mealListManager.removeSingleMeal(meal.id);
+
+    setMealList(mealListManager.getList());
+  };
+
   return (
     <Layout showNavMenu={true}>
       {!wokenUp ? (
@@ -58,6 +69,7 @@ export const MealsListPage = () => {
         <MealList
           handleEat={handleEat}
           handleEdit={handleEdit}
+          handleDelete={handleDelete}
           list={mealList}
         />
       )}

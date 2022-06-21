@@ -2,20 +2,28 @@ import dayjs from "dayjs";
 import React, { useState } from "react";
 import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
+import ButtonGroup from "react-bootstrap/ButtonGroup";
 
-import { EatFunction, EditFunction, UIMeal } from "src/components/types";
+import {
+  DeleteFunction,
+  EatFunction,
+  EditFunction,
+  UIMeal,
+} from "src/components/types";
 import classes from "src/components/meal.module.css";
 
 interface Props {
   mealData: UIMeal;
   handleEat: EatFunction;
   handleEdit: EditFunction;
+  handleDelete: DeleteFunction;
 }
 
 export const Meal: React.FC<Props> = ({
   mealData,
   handleEat,
   handleEdit: handleSaveNewTime,
+  handleDelete,
 }) => {
   const [newTime, setNewTime] = useState<Date | null>(null);
   const [isEditing, setIsEditing] = useState(false);
@@ -46,23 +54,30 @@ export const Meal: React.FC<Props> = ({
 
         <div>{dayjs(mealData.time).format("HH:mm")}</div>
 
-        {mealData.eaten ? (
-          <div>Eaten</div>
-        ) : (
-          <Button
-            variant="outline-primary"
-            disabled={mealData.isEatButtonDisabled}
-            onClick={handleEat(mealData)}
-          >
-            Eat
-          </Button>
-        )}
+        <ButtonGroup aria-label="Basic example">
+          {mealData.eaten ? (
+            <div>Eaten</div>
+          ) : (
+            <Button
+              variant="outline-primary"
+              disabled={mealData.isEatButtonDisabled}
+              onClick={handleEat(mealData)}
+            >
+              Eat
+            </Button>
+          )}
 
-        {!mealData.eaten && (
-          <Button variant="secondary" onClick={handleLocalEdit}>
-            Edit
-          </Button>
-        )}
+          {!mealData.eaten && (
+            <Button variant="secondary" onClick={handleLocalEdit}>
+              Edit
+            </Button>
+          )}
+          {mealData.isLastMeal && (
+            <Button variant="outline-danger" onClick={handleDelete(mealData)}>
+              Delete
+            </Button>
+          )}
+        </ButtonGroup>
       </div>
 
       {isEditing && (
@@ -83,7 +98,7 @@ export const Meal: React.FC<Props> = ({
               </Button>
               <Button
                 variant="primary"
-                onClick={(event) => {
+                onClick={() => {
                   handleSaveNewTime(mealData, newTime);
                   setIsEditing(false);
                 }}

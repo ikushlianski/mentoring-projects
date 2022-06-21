@@ -28,11 +28,13 @@ export class MealStorage {
     }
   }
 
-  removeOne(id: string) {
+  removeOne(id: string): Meal[] {
     const parsedList = this.getMealList();
     const newList = parsedList.filter((meal) => meal.id !== id);
 
     this.storeMeals(newList);
+
+    return newList;
   }
 
   removeAll() {
