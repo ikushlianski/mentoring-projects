@@ -7,7 +7,6 @@ import { WelcomePage } from "src/pages/welcome.page";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 
-import "bootstrap/dist/css/bootstrap.min.css";
 import "./index.css";
 
 const root = ReactDOM.createRoot(
