@@ -112,4 +112,53 @@ describe("MealList", () => {
       expect(list[5].time).toEqual(new Date("Jun 15 2022 19:00"));
     });
   });
+
+  describe("updateMealTime", () => {
+    beforeEach(() => {
+      localStorage.setItem(
+        mealListLocalStorageKey,
+        JSON.stringify([
+          { id: "meal3", time: new Date("Jun 21 2022 19:40"), eaten: false },
+          { id: "meal2", time: new Date("Jun 21 2022 17:20"), eaten: false },
+          { id: "meal1", time: new Date("Jun 21 2022 15:00"), eaten: true },
+        ] as Meal[])
+      );
+
+      localStorage.setItem(
+        appSettingsLocalStorageKey,
+        JSON.stringify(defaultAppSettings)
+      );
+    });
+
+    afterEach(() => {
+      localStorage.removeItem(mealListLocalStorageKey);
+      localStorage.removeItem(appSettingsLocalStorageKey);
+
+      jest.useRealTimers();
+    });
+
+    it("should update target meal time", () => {
+      const mockDateNow = new Date("Jun 21 2022 17:19");
+
+      jest.useFakeTimers().setSystemTime(mockDateNow);
+
+      mealListManager.updateMealTime("meal2", new Date("Jun 21 2022 17:40"));
+
+      const meals = mealListManager.getList();
+
+      expect(meals[1].time).toEqual(new Date("Jun 21 2022 17:40"));
+    });
+
+    it("should the time of meal third meal after second meal time was changed", () => {
+      const mockDateNow = new Date("Jun 21 2022 17:19");
+
+      jest.useFakeTimers().setSystemTime(mockDateNow);
+
+      mealListManager.updateMealTime("meal2", new Date("Jun 21 2022 17:40"));
+
+      const meals = mealListManager.getList();
+
+      expect(meals[2].time).toEqual(new Date("Jun 21 2022 20:00"));
+    });
+  });
 });
