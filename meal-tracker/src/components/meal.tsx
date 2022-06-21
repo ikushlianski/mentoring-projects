@@ -56,10 +56,12 @@ export const Meal: React.FC<Props> = ({
 
         <ButtonGroup aria-label="Basic example">
           {mealData.eaten ? (
-            <div>Eaten</div>
+            <Button disabled={true} variant={"success"}>
+              Eaten
+            </Button>
           ) : (
             <Button
-              variant="outline-primary"
+              variant="primary"
               disabled={mealData.isEatButtonDisabled}
               onClick={handleEat(mealData)}
             >
@@ -67,11 +69,11 @@ export const Meal: React.FC<Props> = ({
             </Button>
           )}
 
-          {!mealData.eaten && (
-            <Button variant="secondary" onClick={handleLocalEdit}>
+          {
+            <Button variant="outline-secondary" onClick={handleLocalEdit}>
               Edit
             </Button>
-          )}
+          }
           {mealData.isLastMeal && (
             <Button variant="outline-danger" onClick={handleDelete(mealData)}>
               Delete

@@ -14,3 +14,5 @@ export type EditFunction = (meal: UIMeal, time: Date | null) => void;
 export type DeleteFunction = (
   meal: UIMeal
 ) => (event: React.MouseEvent) => void;
+
+export type ResetFunction = (event: React.MouseEvent) => void;

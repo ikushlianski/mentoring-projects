@@ -1,10 +1,12 @@
 import React from "react";
+import Button from "react-bootstrap/Button";
 
 import { Meal } from "src/components/meal";
 import {
   DeleteFunction,
   EatFunction,
   EditFunction,
+  ResetFunction,
 } from "src/components/types";
 import { IMeal } from "src/core/meal/meal";
 import { domainToUiMeal } from "src/data-mappers/meal.mapper";
@@ -14,6 +16,7 @@ interface Props {
   handleEat: EatFunction;
   handleEdit: EditFunction;
   handleDelete: DeleteFunction;
+  handleReset: ResetFunction;
 }
 
 export const MealList: React.FC<Props> = ({
@@ -21,13 +24,15 @@ export const MealList: React.FC<Props> = ({
   handleEat,
   handleEdit,
   handleDelete,
+  handleReset,
 }) => {
   return (
     <div>
       {list.map((currentMeal, index, arr) => {
         // todo needs to be simplified
         const isEatButtonDisabled = Boolean(
-          index > 0 && !currentMeal.eaten && !arr[index + 1]?.eaten
+          (index > 0 && !arr[index - 1].eaten) ||
+            (index === 0 && currentMeal.eaten)
         );
 
         const isLastMeal = index === arr.length - 1;
@@ -50,6 +55,8 @@ export const MealList: React.FC<Props> = ({
           />
         );
       })}
+
+      <Button onClick={handleReset}>Reset my day</Button>
     </div>
   );
 };

@@ -6,6 +6,7 @@ import {
   DeleteFunction,
   EatFunction,
   EditFunction,
+  ResetFunction,
 } from "src/components/types";
 import { appState } from "src/core/app-state/usedAppBefore";
 import { mealListManager } from "src/core/meal-list/mealList";
@@ -61,6 +62,13 @@ export const MealsListPage = () => {
     setMealList(mealListManager.getList());
   };
 
+  const handleReset: ResetFunction = () => {
+    // marks meal as eaten and stores the update
+    mealListManager.removeOldMealList();
+
+    setMealList(mealListManager.getList());
+  };
+
   return (
     <Layout showNavMenu={true}>
       {!wokenUp || mealList.length === 0 ? (
@@ -70,6 +78,7 @@ export const MealsListPage = () => {
           handleEat={handleEat}
           handleEdit={handleEdit}
           handleDelete={handleDelete}
+          handleReset={handleReset}
           list={mealList}
         />
       )}
