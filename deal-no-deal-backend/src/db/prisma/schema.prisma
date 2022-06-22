@@ -2,7 +2,8 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-  provider = "prisma-client-js"
+  provider      = "prisma-client-js"
+  binaryTargets = ["native"]
 }
 
 datasource db {
@@ -11,8 +12,42 @@ datasource db {
 }
 
 model User {
-  id String @id @default(auto()) @map("_id") @db.ObjectId
-  username String
-  role String
-  customprop String
+  id       String @id @default(auto()) @map("_id") @db.ObjectId
+  username String @unique
+  games    Game[]
+}
+
+model Game {
+  id         String      @id @default(auto()) @map("_id") @db.ObjectId
+  user       User        @relation(fields: [userId], references: [id])
+  userId     String      @db.ObjectId
+  createdAt  DateTime    @default(now())
+  mode       GameMode    @default(NORMAL)
+  moneyWon   Int?
+  bankOffers BankOffer[]
+  state      GameState
+}
+
+// ignore error in WebStorm IDE, it's a valid Prisma schema
+type BankOffer {
+  id        Int
+  createdAt DateTime @default(now())
+  amount    Int
+}
+
+type GameState {
+  cases        Case[]
+  updatedAt    DateTime @default(now())
+  bankOffering Boolean?
+}
+
+type Case {
+  caseNumber  Int
+  amountInside Int
+  opened       Boolean
+}
+
+enum GameMode {
+  NORMAL
+  EXTREME
 }

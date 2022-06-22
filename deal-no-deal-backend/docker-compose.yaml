@@ -23,6 +23,7 @@ services:
       - ./scripts/init-mongo.sh:/scripts/init-mongo.sh
     entrypoint: [ "/usr/bin/mongod", "--bind_ip_all", "--replSet", "dbrs" ]
 
+  # todo remove this debug container
   mongo-ilya:
     image: mongo:4.4
     container_name: mongo-ilya
