@@ -40,7 +40,7 @@ services:
   webapp:
     build:
       context: .
-      dockerfile: .
+      dockerfile: ./Dockerfile
       target: ${DOCKER_ENV}
     container_name: webapp
     ports:
