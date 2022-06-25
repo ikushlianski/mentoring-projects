@@ -15,7 +15,7 @@ import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Request, Response } from 'express';
 
 import { AuthErrorHandler } from 'src/auth/auth-error.service';
-import { AuthService } from 'src/auth/auth.service';
+import { AuthCore } from 'src/auth/auth.core';
 import { jwtCookieName, refreshTokenHeaderName } from 'src/auth/constants';
 import { SignInUserDto } from 'src/auth/dto/signInUserDto';
 import { SignUpUserDto } from 'src/auth/dto/signUpUserDto';
@@ -23,16 +23,21 @@ import { SignUpUserDto } from 'src/auth/dto/signUpUserDto';
 @Controller('auth')
 export class AuthController {
   constructor(
-    private readonly authService: AuthService,
+    private readonly authService: AuthCore,
     private readonly authErrorHandler: AuthErrorHandler,
   ) {}
 
   @Post('cognito/signup')
   @ApiTags('signup')
   @ApiOperation({ description: 'Sign up (create) user' })
-  async signUp(@Body() signUpUserDto: SignUpUserDto) {
+  async signUp(
+    @Res() response: Response,
+    @Body() signUpUserDto: SignUpUserDto,
+  ) {
     try {
-      return await this.authService.signUpWithCognito(signUpUserDto);
+      await this.authService.signUpWithCognito(signUpUserDto);
+
+      return response.sendStatus(201);
     } catch (error: unknown) {
       this.authErrorHandler.handleSignUpError(error);
     }

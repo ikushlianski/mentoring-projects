@@ -1,17 +1,24 @@
-import { INestApplication, Injectable, OnModuleInit } from '@nestjs/common';
-import { PrismaClient } from '@prisma/client';
+import { Injectable } from '@nestjs/common';
+import { User } from '@prisma/client';
+import { SignUpUserDto } from 'src/auth/dto/signUpUserDto';
+import { PrismaService } from 'src/db/prisma.service';
 
 @Injectable()
-export class DbService extends PrismaClient implements OnModuleInit {
-  async onModuleInit() {
-    console.log('db url', process.env.DATABASE_URL);
-    await this.$connect();
-    console.log('connected successfully');
+export class DatabaseService {
+  constructor(private readonly prisma: PrismaService) {}
+  async checkUserExists(username: string): Promise<null | User> {
+    return await this.prisma.user.findUnique({
+      where: {
+        username,
+      },
+    });
   }
 
-  async enableShutdownHooks(app: INestApplication) {
-    this.$on('beforeExit', async () => {
-      await app.close();
+  async createUser({ username }: Partial<SignUpUserDto>) {
+    await this.prisma.user.create({
+      data: {
+        username,
+      },
     });
   }
 }

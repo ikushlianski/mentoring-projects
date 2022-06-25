@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { DbService } from 'src/db/db.service';
+import { PrismaService } from 'src/db/prisma.service';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 
@@ -13,9 +13,9 @@ describe('AppController', () => {
   beforeEach(async () => {
     const app: TestingModule = await Test.createTestingModule({
       controllers: [AppController],
-      providers: [AppService, DbService],
+      providers: [AppService, PrismaService],
     })
-      .overrideProvider(DbService)
+      .overrideProvider(PrismaService)
       .useValue(mockDb)
       .compile();
 
