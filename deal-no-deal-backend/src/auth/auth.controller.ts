@@ -15,7 +15,7 @@ import { ApiOperation, ApiTags } from '@nestjs/swagger';
 import { Request, Response } from 'express';
 
 import { AuthErrorHandler } from 'src/auth/auth-error.service';
-import { AuthCore } from 'src/auth/auth.core';
+import { CognitoService } from 'src/auth/cognito.service';
 import { jwtCookieName, refreshTokenHeaderName } from 'src/auth/constants';
 import { SignInUserDto } from 'src/auth/dto/signInUserDto';
 import { SignUpUserDto } from 'src/auth/dto/signUpUserDto';
@@ -23,7 +23,7 @@ import { SignUpUserDto } from 'src/auth/dto/signUpUserDto';
 @Controller('auth')
 export class AuthController {
   constructor(
-    private readonly authService: AuthCore,
+    private readonly authService: CognitoService,
     private readonly authErrorHandler: AuthErrorHandler,
   ) {}
 
@@ -35,9 +35,9 @@ export class AuthController {
     @Body() signUpUserDto: SignUpUserDto,
   ) {
     try {
-      await this.authService.signUpWithCognito(signUpUserDto);
+      await this.authService.signUp(signUpUserDto);
 
-      return response.sendStatus(201);
+      return response.sendStatus(HttpStatus.CREATED);
     } catch (error: unknown) {
       this.authErrorHandler.handleSignUpError(error);
     }
@@ -51,17 +51,16 @@ export class AuthController {
     @Res() response: Response,
   ) {
     try {
-      const {
-        AuthenticationResult: { AccessToken, RefreshToken, ExpiresIn },
-      } = await this.authService.signInWithCognito(signInUserDto);
+      const { accessToken, refreshToken, expires } =
+        await this.authService.signIn(signInUserDto);
 
-      response.cookie(jwtCookieName, AccessToken, {
+      response.cookie(jwtCookieName, accessToken, {
         httpOnly: true,
       });
 
       return response.status(HttpStatus.OK).send({
-        RefreshToken,
-        ExpiresIn,
+        refreshToken,
+        expires,
       });
     } catch (error: unknown) {
       this.authErrorHandler.handleSignInError(error);

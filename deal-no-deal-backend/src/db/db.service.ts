@@ -14,10 +14,12 @@ export class DatabaseService {
     });
   }
 
-  async createUser({ username }: Partial<SignUpUserDto>) {
-    await this.prisma.user.create({
+  async createUser({
+    username: userToCreate,
+  }: Partial<SignUpUserDto>): Promise<User> {
+    return await this.prisma.user.create({
       data: {
-        username,
+        username: userToCreate,
       },
     });
   }
