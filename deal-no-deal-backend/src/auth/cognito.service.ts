@@ -130,6 +130,8 @@ export class CognitoService extends AuthService {
     });
 
     await this.cognitoClient.send(confirmSignUpCommand);
+
+    console.log('Confirmed the user in Cognito!!');
   };
 
   private signInUser = async ({ username, password }: SignInUserDto) => {

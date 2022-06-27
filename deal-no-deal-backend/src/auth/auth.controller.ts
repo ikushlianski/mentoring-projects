@@ -23,7 +23,7 @@ import { SignUpUserDto } from 'src/auth/dto/signUpUserDto';
 @Controller('auth')
 export class AuthController {
   constructor(
-    private readonly authService: CognitoService,
+    private readonly cognitoService: CognitoService,
     private readonly authErrorHandler: AuthErrorHandler,
   ) {}
 
@@ -35,7 +35,7 @@ export class AuthController {
     @Body() signUpUserDto: SignUpUserDto,
   ) {
     try {
-      await this.authService.signUp(signUpUserDto);
+      await this.cognitoService.signUp(signUpUserDto);
 
       return response.sendStatus(HttpStatus.CREATED);
     } catch (error: unknown) {
@@ -52,7 +52,7 @@ export class AuthController {
   ) {
     try {
       const { accessToken, refreshToken, expires } =
-        await this.authService.signIn(signInUserDto);
+        await this.cognitoService.signIn(signInUserDto);
 
       response.cookie(jwtCookieName, accessToken, {
         httpOnly: true,
@@ -77,7 +77,7 @@ export class AuthController {
       throw new UnauthorizedException('No access token provided');
     }
 
-    const valid = await this.authService.isCognitoTokenValid(token);
+    const valid = await this.cognitoService.isCognitoTokenValid(token);
 
     if (!valid) {
       throw new UnauthorizedException('Invalid access token');
@@ -102,7 +102,7 @@ export class AuthController {
     try {
       const {
         AuthenticationResult: { AccessToken, ExpiresIn },
-      } = await this.authService.refreshToken(refreshToken);
+      } = await this.cognitoService.refreshToken(refreshToken);
 
       response.cookie(jwtCookieName, AccessToken, {
         httpOnly: true,
@@ -136,7 +136,7 @@ export class AuthController {
     }
 
     try {
-      await this.authService.signOut(refreshToken);
+      await this.cognitoService.signOut(refreshToken);
 
       response.cookie(jwtCookieName, '', {
         httpOnly: true,
