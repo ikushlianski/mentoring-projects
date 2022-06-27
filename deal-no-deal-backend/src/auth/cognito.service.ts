@@ -43,7 +43,7 @@ export class CognitoService extends AuthService {
       throw new BadRequestException(authErrors.userAlreadyExists);
     }
 
-    await this.registerUser({ username, password });
+    await this.registerCognitoUser({ username, password });
 
     const { username: createdUser, id } = await this.databaseService.createUser(
       { username },
@@ -68,22 +68,6 @@ export class CognitoService extends AuthService {
       refreshToken: RefreshToken,
       expires: ExpiresIn,
     };
-  };
-
-  isCognitoTokenValid = async (token: string) => {
-    const verifier = CognitoJwtVerifier.create({
-      userPoolId: process.env.COGNITO_USER_POOL_ID,
-      clientId: process.env.COGNITO_CLIENT_ID,
-      tokenUse: 'access',
-    });
-
-    try {
-      await verifier.verify(token);
-
-      return true;
-    } catch {
-      return false;
-    }
   };
 
   override signOut = async (refreshToken: string) => {
@@ -115,7 +99,42 @@ export class CognitoService extends AuthService {
     throw new Error(response.statusText);
   };
 
-  private registerUser = async ({ username, password }: SignUpUserDto) => {
+  override verifyToken(token: string): Promise<boolean> {
+    return this.isCognitoTokenValid(token);
+  }
+
+  refreshToken = async (refreshToken: string) => {
+    const refreshTokenCommand = new InitiateAuthCommand({
+      AuthFlow: AuthFlowType.REFRESH_TOKEN_AUTH,
+      ClientId: process.env.COGNITO_CLIENT_ID,
+      AuthParameters: {
+        REFRESH_TOKEN: refreshToken,
+      },
+    });
+
+    return await this.cognitoClient.send(refreshTokenCommand);
+  };
+
+  private isCognitoTokenValid = async (token: string) => {
+    const verifier = CognitoJwtVerifier.create({
+      userPoolId: process.env.COGNITO_USER_POOL_ID,
+      clientId: process.env.COGNITO_CLIENT_ID,
+      tokenUse: 'access',
+    });
+
+    try {
+      await verifier.verify(token);
+
+      return true;
+    } catch {
+      return false;
+    }
+  };
+
+  private registerCognitoUser = async ({
+    username,
+    password,
+  }: SignUpUserDto) => {
     const signUpCommand = new SignUpCommand({
       Username: username,
       Password: password,
@@ -145,17 +164,5 @@ export class CognitoService extends AuthService {
     });
 
     return await this.cognitoClient.send(signInCommand);
-  };
-
-  refreshToken = async (refreshToken: string) => {
-    const refreshTokenCommand = new InitiateAuthCommand({
-      AuthFlow: AuthFlowType.REFRESH_TOKEN_AUTH,
-      ClientId: process.env.COGNITO_CLIENT_ID,
-      AuthParameters: {
-        REFRESH_TOKEN: refreshToken,
-      },
-    });
-
-    return await this.cognitoClient.send(refreshTokenCommand);
   };
 }

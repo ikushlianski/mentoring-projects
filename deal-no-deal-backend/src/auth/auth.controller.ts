@@ -60,6 +60,7 @@ export class AuthController {
 
       return response.status(HttpStatus.OK).send({
         refreshToken,
+        // add a comment to Swagger that `expires` is about the access token, not the refresh token
         expires,
       });
     } catch (error: unknown) {
@@ -77,7 +78,7 @@ export class AuthController {
       throw new UnauthorizedException('No access token provided');
     }
 
-    const valid = await this.cognitoService.isCognitoTokenValid(token);
+    const valid = await this.cognitoService.verifyToken(token);
 
     if (!valid) {
       throw new UnauthorizedException('Invalid access token');
