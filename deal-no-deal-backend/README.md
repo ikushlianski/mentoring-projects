@@ -2,6 +2,8 @@
 
 Backend for Deal or Not Deal Game. Uses MongoDB, AWS Cognito and Nest.js.
 
+Frontend is to be done by mentees.
+
 ## Installation
 
 ```bash
