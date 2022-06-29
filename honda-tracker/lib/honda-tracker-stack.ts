@@ -1,4 +1,5 @@
 import { aws_dynamodb, Stack, StackProps } from "aws-cdk-lib";
+import { ServicePrincipal } from "aws-cdk-lib/aws-iam";
 import { Construct } from "constructs";
 import * as lambda from "aws-cdk-lib/aws-lambda";
 import * as api from "aws-cdk-lib/aws-apigateway";
@@ -22,27 +23,31 @@ export class HondaTrackerStack extends Stack {
       billingMode: aws_dynamodb.BillingMode.PAY_PER_REQUEST,
     });
 
-    const { apiGateway, lambdaFunction } = new ApiGatewayToLambda(
-      this,
-      "ApiGatewayToLambdaPattern",
-      {
-        lambdaFunctionProps: {
-          runtime: lambda.Runtime.NODEJS_16_X,
-          handler: "handlers.getBooking",
-          code: lambda.Code.fromAsset(`src/booking`),
-        },
-        apiGatewayProps: {
-          defaultMethodOptions: {
-            authorizationType: api.AuthorizationType.NONE,
-          },
-          restApiName: "honda-rest-api",
-        },
-      }
+    const getBookingLambda = new lambda.Function(this, "getBookingLambda", {
+      runtime: lambda.Runtime.NODEJS_16_X,
+      code: lambda.Code.fromAsset("src/booking"),
+      handler: "getBooking.handler",
+    });
+
+    // IMPORTANT: Lambda grant invoke to APIGateway
+    getBookingLambda.grantInvoke(
+      new ServicePrincipal("apigateway.amazonaws.com")
     );
+
+    const restApi = new api.RestApi(this, "HondaRestApi", {
+      restApiName: `honda-rest-api`,
+      cloudWatchRole: false,
+    });
+
+    const integration = new api.LambdaIntegration(getBookingLambda);
+
+    const bookingsPath = restApi.root.addResource("bookings");
+
+    bookingsPath.addMethod("GET", integration);
 
     // todo extract into a separate file
     const deployment = new api.Deployment(this, "Deployment", {
-      api: apiGateway,
+      api: restApi,
     });
 
     const devStage = new api.Stage(this, "dev", {
@@ -50,6 +55,6 @@ export class HondaTrackerStack extends Stack {
       stageName: "dev",
     });
 
-    apiGateway.deploymentStage = devStage;
+    restApi.deploymentStage = devStage;
   }
 }
