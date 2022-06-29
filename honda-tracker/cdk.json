@@ -16,6 +16,7 @@
       "test"
     ]
   },
+  "profile": "honda-tracker",
   "context": {
     "@aws-cdk/aws-apigateway:usagePlanKeyOrderInsensitiveId": true,
     "@aws-cdk/core:stackRelativeExports": true,

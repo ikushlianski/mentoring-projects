@@ -1,6 +1,8 @@
-import { Stack, StackProps } from 'aws-cdk-lib';
-import { Construct } from 'constructs';
-// import * as sqs from 'aws-cdk-lib/aws-sqs';
+import { aws_dynamodb, Stack, StackProps } from "aws-cdk-lib";
+import { Construct } from "constructs";
+import * as lambda from "aws-cdk-lib/aws-lambda";
+import * as api from "aws-cdk-lib/aws-apigateway";
+import { ApiGatewayToLambda } from "@aws-solutions-constructs/aws-apigateway-lambda";
 
 export class HondaTrackerStack extends Stack {
   constructor(scope: Construct, id: string, props?: StackProps) {
@@ -8,9 +10,29 @@ export class HondaTrackerStack extends Stack {
 
     // The code that defines your stack goes here
 
-    // example resource
-    // const queue = new sqs.Queue(this, 'HondaTrackerQueue', {
-    //   visibilityTimeout: cdk.Duration.seconds(300)
-    // });
+    const table = new aws_dynamodb.Table(this, "honda_tracker_dev_table", {
+      partitionKey: {
+        name: "pk",
+        type: aws_dynamodb.AttributeType.STRING,
+      },
+      sortKey: {
+        name: "sk",
+        type: aws_dynamodb.AttributeType.STRING,
+      },
+      billingMode: aws_dynamodb.BillingMode.PAY_PER_REQUEST,
+    });
+
+    new ApiGatewayToLambda(this, "ApiGatewayToLambdaPattern", {
+      lambdaFunctionProps: {
+        runtime: lambda.Runtime.NODEJS_16_X,
+        handler: "handlers.getBooking",
+        code: lambda.Code.fromAsset(`src/booking`),
+      },
+      apiGatewayProps: {
+        defaultMethodOptions: {
+          authorizationType: api.AuthorizationType.NONE,
+        },
+      },
+    });
   }
 }

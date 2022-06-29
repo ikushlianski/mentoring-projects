@@ -4,6 +4,7 @@ import * as cdk from "aws-cdk-lib";
 import { HondaTrackerStack } from "../lib/honda-tracker-stack";
 
 const app = new cdk.App();
+
 new HondaTrackerStack(app, "HondaTrackerStack", {
   /* If you don't specify 'env', this stack will be environment-agnostic.
    * Account/Region-dependent features and context lookups will not work,
