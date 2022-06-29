@@ -22,17 +22,34 @@ export class HondaTrackerStack extends Stack {
       billingMode: aws_dynamodb.BillingMode.PAY_PER_REQUEST,
     });
 
-    new ApiGatewayToLambda(this, "ApiGatewayToLambdaPattern", {
-      lambdaFunctionProps: {
-        runtime: lambda.Runtime.NODEJS_16_X,
-        handler: "handlers.getBooking",
-        code: lambda.Code.fromAsset(`src/booking`),
-      },
-      apiGatewayProps: {
-        defaultMethodOptions: {
-          authorizationType: api.AuthorizationType.NONE,
+    const { apiGateway, lambdaFunction } = new ApiGatewayToLambda(
+      this,
+      "ApiGatewayToLambdaPattern",
+      {
+        lambdaFunctionProps: {
+          runtime: lambda.Runtime.NODEJS_16_X,
+          handler: "handlers.getBooking",
+          code: lambda.Code.fromAsset(`src/booking`),
         },
-      },
+        apiGatewayProps: {
+          defaultMethodOptions: {
+            authorizationType: api.AuthorizationType.NONE,
+          },
+          restApiName: "honda-rest-api",
+        },
+      }
+    );
+
+    // todo extract into a separate file
+    const deployment = new api.Deployment(this, "Deployment", {
+      api: apiGateway,
     });
+
+    const devStage = new api.Stage(this, "dev", {
+      deployment,
+      stageName: "dev",
+    });
+
+    apiGateway.deploymentStage = devStage;
   }
 }
