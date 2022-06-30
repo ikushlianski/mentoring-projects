@@ -1,9 +1,10 @@
 import { aws_dynamodb, Stack, StackProps } from "aws-cdk-lib";
 import { ServicePrincipal } from "aws-cdk-lib/aws-iam";
+import { Runtime } from "aws-cdk-lib/aws-lambda";
+import { NodejsFunction } from "aws-cdk-lib/aws-lambda-nodejs";
 import { Construct } from "constructs";
-import * as lambda from "aws-cdk-lib/aws-lambda";
 import * as api from "aws-cdk-lib/aws-apigateway";
-import { ApiGatewayToLambda } from "@aws-solutions-constructs/aws-apigateway-lambda";
+import { TABLE_NAME_DEV } from "../src/constants";
 
 export class HondaTrackerStack extends Stack {
   constructor(scope: Construct, id: string, props?: StackProps) {
@@ -21,40 +22,37 @@ export class HondaTrackerStack extends Stack {
         type: aws_dynamodb.AttributeType.STRING,
       },
       billingMode: aws_dynamodb.BillingMode.PAY_PER_REQUEST,
+      tableName: TABLE_NAME_DEV,
     });
 
-    const getBookingLambda = new lambda.Function(this, "getBookingLambda", {
-      runtime: lambda.Runtime.NODEJS_16_X,
-      code: lambda.Code.fromAsset("src/booking"),
-      handler: "getBooking.handler",
+    const getBookingLambda = new NodejsFunction(this, "getBookingLambda", {
+      runtime: Runtime.NODEJS_16_X,
+      handler: "handler",
+      entry: "src/booking/getBooking.ts",
+      functionName: "getBookingLambda",
     });
 
-    // IMPORTANT: Lambda grant invoke to APIGateway
+    // Lambda grant invoke to APIGateway
     getBookingLambda.grantInvoke(
       new ServicePrincipal("apigateway.amazonaws.com")
     );
 
+    // Lambda grant read/write to DynamoDB
+    table.grantReadWriteData(getBookingLambda);
+
     const restApi = new api.RestApi(this, "HondaRestApi", {
       restApiName: `honda-rest-api`,
-      cloudWatchRole: false,
+      deployOptions: {
+        stageName: "dev",
+      },
     });
 
-    const integration = new api.LambdaIntegration(getBookingLambda);
+    const getBookingLambdaIntegration = new api.LambdaIntegration(
+      getBookingLambda
+    );
 
     const bookingsPath = restApi.root.addResource("bookings");
 
-    bookingsPath.addMethod("GET", integration);
-
-    // todo extract into a separate file
-    const deployment = new api.Deployment(this, "Deployment", {
-      api: restApi,
-    });
-
-    const devStage = new api.Stage(this, "dev", {
-      deployment,
-      stageName: "dev",
-    });
-
-    restApi.deploymentStage = devStage;
+    bookingsPath.addMethod("GET", getBookingLambdaIntegration);
   }
 }
