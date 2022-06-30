@@ -1,6 +1,7 @@
 {
   "name": "honda-tracker",
   "version": "0.1.0",
+  "private": true,
   "bin": {
     "honda-tracker": "bin/honda-tracker.js"
   },
@@ -22,7 +23,10 @@
     "typescript": "~3.9.7"
   },
   "dependencies": {
+    "@aws-sdk/client-dynamodb": "^3.118.1",
+    "@aws-sdk/util-dynamodb": "^3.118.1",
     "@aws-solutions-constructs/aws-apigateway-lambda": "^2.9.0",
+    "@aws-solutions-constructs/aws-lambda-dynamodb": "^2.9.0",
     "aws-cdk-lib": "2.29.1",
     "constructs": "^10.0.0",
     "source-map-support": "^0.5.21"
