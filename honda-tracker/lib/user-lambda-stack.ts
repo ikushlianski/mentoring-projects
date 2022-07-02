@@ -21,14 +21,14 @@ export class UserLambdaStack extends Stack {
     this.initGetUserLambda(props.api, props.stage);
   }
 
-  private initGetUserLambda(restApi: RestApi | undefined, stage: Stages) {
+  private initGetUserLambda(restApi: RestApi, stage: Stages) {
     const getUserLambda = new NodejsFunction(this, "getUserLambda", {
       runtime: Runtime.NODEJS_16_X,
       handler: "handler",
       entry: "./src/user/get-user.ts",
       functionName: "getUserLambda",
       environment: {
-        stage: stage,
+        stage,
       },
     });
 

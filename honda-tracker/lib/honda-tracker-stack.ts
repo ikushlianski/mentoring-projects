@@ -3,17 +3,18 @@ import { RestApi } from "aws-cdk-lib/aws-apigateway";
 import { Table } from "aws-cdk-lib/aws-dynamodb";
 import { ServicePrincipal } from "aws-cdk-lib/aws-iam";
 import { Construct } from "constructs";
-import { TABLE_NAME } from "../src/constants";
+import { Stages, TABLE_NAME } from "../src/constants";
 import { Lambdas } from "./types";
 
 interface HondaStackProps extends StackProps {
-  stage?: string;
+  stage: Stages;
   api: RestApi;
   bookingLambdas: Lambdas;
   userLambdas: Lambdas;
 }
 
 export class HondaTrackerStack extends Stack {
+  stage: Stages;
   tableName: string;
   table: Table;
   bookingLambdas: Lambdas;
@@ -21,6 +22,8 @@ export class HondaTrackerStack extends Stack {
 
   constructor(scope: Construct, id: string, props: HondaStackProps) {
     super(scope, id, props);
+
+    this.stage = props.stage;
 
     this.tableName = `${TABLE_NAME}_${props.stage}`;
     this.table = this.buildTable();
@@ -43,7 +46,10 @@ export class HondaTrackerStack extends Stack {
         type: aws_dynamodb.AttributeType.STRING,
       },
       billingMode: aws_dynamodb.BillingMode.PAY_PER_REQUEST,
-      removalPolicy: RemovalPolicy.DESTROY,
+      removalPolicy:
+        this.stage === Stages.DEV
+          ? RemovalPolicy.DESTROY
+          : RemovalPolicy.RETAIN,
     });
   };
 
