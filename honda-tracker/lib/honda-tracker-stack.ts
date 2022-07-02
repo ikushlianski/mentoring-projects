@@ -1,57 +1,39 @@
 import { aws_dynamodb, RemovalPolicy, Stack, StackProps } from "aws-cdk-lib";
 import { RestApi } from "aws-cdk-lib/aws-apigateway";
-import * as api from "aws-cdk-lib/aws-apigateway";
 import { Table } from "aws-cdk-lib/aws-dynamodb";
 import { ServicePrincipal } from "aws-cdk-lib/aws-iam";
-import { Runtime } from "aws-cdk-lib/aws-lambda";
-import { NodejsFunction } from "aws-cdk-lib/aws-lambda-nodejs";
 import { Construct } from "constructs";
-import { REST_API_NAME, Stages, TABLE_NAME } from "../src/constants";
+import { TABLE_NAME } from "../src/constants";
+import { Lambdas } from "./types";
 
 interface HondaStackProps extends StackProps {
   stage?: string;
+  api: RestApi;
+  bookingLambdas: Lambdas;
+  userLambdas: Lambdas;
 }
 
 export class HondaTrackerStack extends Stack {
-  static tableName: string;
+  tableName: string;
   table: Table;
-  api: RestApi;
+  bookingLambdas: Lambdas;
+  userLambdas: Lambdas;
 
-  constructor(scope: Construct, id: string, props?: HondaStackProps) {
+  constructor(scope: Construct, id: string, props: HondaStackProps) {
     super(scope, id, props);
 
-    HondaTrackerStack.tableName = `${TABLE_NAME}_${props?.stage}`;
-
+    this.tableName = `${TABLE_NAME}_${props.stage}`;
     this.table = this.buildTable();
-    this.api = this.buildRestApi();
 
-    const getBookingLambda = new NodejsFunction(this, "getBookingLambda", {
-      runtime: Runtime.NODEJS_16_X,
-      handler: "handler",
-      entry: "./src/booking/get-booking.ts",
-      functionName: "getBookingLambda",
-    });
+    this.bookingLambdas = props.bookingLambdas;
+    this.userLambdas = props.userLambdas;
 
-    // Lambda grant invoke to APIGateway
-    getBookingLambda.grantInvoke(
-      new ServicePrincipal("apigateway.amazonaws.com")
-    );
-
-    // Lambda grant read/write to DynamoDB
-    this.table.grantReadWriteData(getBookingLambda);
-
-    const getBookingLambdaIntegration = new api.LambdaIntegration(
-      getBookingLambda
-    );
-
-    const bookingsPath = this.api.root.addResource("bookings");
-
-    bookingsPath.addMethod("GET", getBookingLambdaIntegration);
+    this.setUpLambdaPermissions();
   }
 
   private buildTable = () => {
-    return new aws_dynamodb.Table(this, HondaTrackerStack.tableName, {
-      tableName: HondaTrackerStack.tableName,
+    return new aws_dynamodb.Table(this, this.tableName, {
+      tableName: this.tableName,
       partitionKey: {
         name: "pk",
         type: aws_dynamodb.AttributeType.STRING,
@@ -65,12 +47,22 @@ export class HondaTrackerStack extends Stack {
     });
   };
 
-  private buildRestApi = () => {
-    return new api.RestApi(this, REST_API_NAME, {
-      restApiName: REST_API_NAME,
-      deployOptions: {
-        stageName: Stages.DEV,
-      },
-    });
-  };
+  private setUpLambdaPermissions() {
+    // todo group together all lambda groups like bookingLambda, userLambda etc. and run this loop once over all of them
+    for (const [, lambda] of this.bookingLambdas) {
+      // grant DynamoDB permissions
+      this.table.grantReadWriteData(lambda);
+
+      // grant API Gateway invoke permissions
+      lambda.grantInvoke(new ServicePrincipal("apigateway.amazonaws.com"));
+    }
+
+    for (const [, lambda] of this.userLambdas) {
+      // grant DynamoDB permissions
+      this.table.grantReadWriteData(lambda);
+
+      // grant API Gateway invoke permissions
+      lambda.grantInvoke(new ServicePrincipal("apigateway.amazonaws.com"));
+    }
+  }
 }
