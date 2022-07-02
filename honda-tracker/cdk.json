@@ -17,6 +17,7 @@
     ]
   },
   "profile": "honda-tracker",
+  "requireApproval": "never",
   "context": {
     "@aws-cdk/aws-apigateway:usagePlanKeyOrderInsensitiveId": true,
     "@aws-cdk/core:stackRelativeExports": true,
