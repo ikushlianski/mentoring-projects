@@ -7,3 +7,9 @@ export enum Stages {
   DEV = "dev",
   PROD = "prod",
 }
+
+export enum Entities {
+  Booking = "booking",
+  Settings = "settings",
+  User = "user",
+}

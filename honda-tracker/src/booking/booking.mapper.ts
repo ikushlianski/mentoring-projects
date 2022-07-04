@@ -1,15 +1,19 @@
+import { marshall } from "@aws-sdk/util-dynamodb";
+import { DynamoDBRecord } from "../db/db.types";
+import { Username } from "../user/user.mapper";
+
 type BookingId = string;
 type BookingStartTime = number;
 type BookingEndTime = number;
 type BookingDate = Date;
-type BookingOwner = string;
+type BookingOwner = Username;
 type BookingNotes = {
   carParkLocationText: string;
   carParkLongitude: string;
   carParkLatitude: string;
 };
 
-export interface IBookingFromDB {
+export interface IBookingFromDB extends DynamoDBRecord {
   pk: BookingId;
   sk: BookingDate;
   bookingStartTime: BookingStartTime;
@@ -29,7 +33,7 @@ export interface IBookingDomain {
   bookingNotes: BookingNotes;
 }
 
-export const bookingMapper = (
+export const bookingMapperToDomain = (
   bookingFromDB: IBookingFromDB
 ): IBookingDomain => {
   return {
@@ -44,4 +48,19 @@ export const bookingMapper = (
       carParkLatitude: bookingFromDB.carParkLatitude,
     },
   };
+};
+
+export const bookingMapperToDAL = (bookingDomain: IBookingDomain) => {
+  const bookingForDAL: IBookingFromDB = {
+    pk: bookingDomain.bookingId,
+    sk: bookingDomain.bookingDate,
+    bookingStartTime: bookingDomain.bookingStartTime,
+    bookingEndTime: bookingDomain.bookingEndTime,
+    bookingOwner: bookingDomain.bookingOwner,
+    carParkLocationText: bookingDomain.bookingNotes.carParkLocationText,
+    carParkLongitude: bookingDomain.bookingNotes.carParkLongitude,
+    carParkLatitude: bookingDomain.bookingNotes.carParkLatitude,
+  };
+
+  return marshall(bookingForDAL);
 };
