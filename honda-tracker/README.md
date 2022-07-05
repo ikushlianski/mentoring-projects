@@ -28,5 +28,8 @@ aws dynamodb batch-write-item --request-items file://src/seeds/defaultData_dev.j
 For local testing of lambdas, use AWS SAM CLI. For example, to run a getBookingLambda, use this code:
 
 ```
-NODE_ENV=dev cdk synth --no-staging && sam local invoke getBookingLambda --no-event -t ./cdk.out/bookingLambdaStack.template.json
+NODE_ENV=dev cdk synth --no-staging \
+&& sam local invoke getUserLambda \
+-e ./src/user/getUser.event.json \
+-t ./cdk.out/userLambdaStack.template.json
 ```
