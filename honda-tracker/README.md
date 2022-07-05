@@ -16,8 +16,6 @@ The `cdk.json` file tells the CDK Toolkit how to execute your app.
 ## Database
 DynamoDB is used for this project, a single-table design is attempted.
 
-
-
 ## Seed data
 Seed data is located in unversioned files, as it contains secrets like passwords for initial users.
 
@@ -26,4 +24,9 @@ After your stack is deployed, ensure you have these seeds in `./src/seeds` and r
 aws dynamodb batch-write-item --request-items file://src/seeds/defaultData_dev.json --profile <AWS profile for honda-tracker project>
 ```
 
-See [this DynamoDB seed data manual](https://docs.aws.amazon.com/amazondynamodb/latest/developerguide/SampleData.LoadData.html) for details.
+## Local testing
+For local testing of lambdas, use AWS SAM CLI. For example, to run a getBookingLambda, use this code:
+
+```
+NODE_ENV=dev cdk synth --no-staging && sam local invoke getBookingLambda --no-event -t ./cdk.out/bookingLambdaStack.template.json
+```
