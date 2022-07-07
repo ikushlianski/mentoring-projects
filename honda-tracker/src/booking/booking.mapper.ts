@@ -1,6 +1,6 @@
 import { marshall } from "@aws-sdk/util-dynamodb";
 import { DynamoDBRecord } from "../db/db.types";
-import { Username } from "../user/user.mapper";
+import { Username } from "../user/user.types";
 
 type BookingId = string;
 type BookingStartTime = number;

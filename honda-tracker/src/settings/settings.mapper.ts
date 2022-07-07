@@ -1,7 +1,7 @@
 import { marshall, unmarshall } from "@aws-sdk/util-dynamodb";
 import { Entities } from "../constants";
 import { DynamoDBRecord, RawDbItem } from "../db/db.types";
-import { Username } from "../user/user.mapper";
+import { Username } from "../user/user.types";
 
 export interface ISettingsFromDB extends DynamoDBRecord {
   pk: Entities.Settings;
