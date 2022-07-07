@@ -4,10 +4,11 @@ import * as apiGateway from "aws-cdk-lib/aws-apigateway";
 import { Runtime } from "aws-cdk-lib/aws-lambda";
 import { NodejsFunction } from "aws-cdk-lib/aws-lambda-nodejs";
 import { Construct } from "constructs";
+import { Stages } from "../src/constants";
 import { Lambdas } from "./types";
 
 interface BookingLambdaStackProps extends StackProps {
-  stage?: string;
+  stage: Stages;
   api: RestApi;
 }
 
@@ -17,15 +18,15 @@ export class BookingLambdaStack extends Stack {
   constructor(scope: Construct, id: string, props: BookingLambdaStackProps) {
     super(scope, id, props);
 
-    this.initGetBookingLambda(props.api);
+    this.initGetBookingLambda(props.api, props.stage);
   }
 
-  private initGetBookingLambda(restApi: RestApi | undefined) {
+  private initGetBookingLambda(restApi: RestApi, stage: Stages) {
     const getBookingLambda = new NodejsFunction(this, "getBookingLambda", {
       runtime: Runtime.NODEJS_16_X,
       handler: "handler",
       entry: "./src/booking/get-booking.ts",
-      functionName: "getBookingLambda",
+      functionName: `getBookingLambda_${stage}`,
     });
 
     this.lambdas.set("get-booking", getBookingLambda);
