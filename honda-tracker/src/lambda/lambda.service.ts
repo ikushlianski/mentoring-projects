@@ -5,7 +5,7 @@ export class LambdaService {
   toSuccessResponse = (
     body: unknown,
     headers = {},
-    // cookies = [],
+    cookies: string[] = [],
     code = StatusCodes.OK,
   ): APIGatewayProxyStructuredResultV2 => {
     const isBodyString = (body: unknown): body is string => {
@@ -14,8 +14,8 @@ export class LambdaService {
 
     return {
       statusCode: code,
-      headers,
-      // cookies,
+      // todo for now we only support one cookie (sessionId)
+      headers: { ...headers, 'Set-Cookie': `${cookies[0]}` },
       body: isBodyString(body) ? body : JSON.stringify(body),
     };
   };
@@ -23,7 +23,7 @@ export class LambdaService {
   toErrorResponse = (
     error: unknown,
     code: StatusCodes,
-    // cookies = [],
+    // cookies: string[] = [],
   ): APIGatewayProxyStructuredResultV2 => {
     return error instanceof Error
       ? {
