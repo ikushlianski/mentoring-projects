@@ -18,6 +18,10 @@ export class CookieService {
         return acc;
       }, '');
   };
+
+  makeCookie = (key: string, value: string) => {
+    return `${key}=${value}`;
+  };
 }
 
 export const cookieService = new CookieService();

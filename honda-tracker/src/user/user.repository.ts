@@ -6,32 +6,29 @@ import {
   UpdateItemCommandInput,
 } from '@aws-sdk/client-dynamodb';
 import { AWS_REGION, TABLE_NAME } from '../constants';
-import { userMapperToDomain } from './user.mapper';
+import { userMapToDAL, userMapToDomain } from './user.mapper';
 import { IUserDomain } from './user.types';
 
 const client = new DynamoDBClient({ region: AWS_REGION });
 const TableName = `${TABLE_NAME}_${process.env.stage}`;
 
 export class UserRepository {
-  getOneByCredentials = async ({
-    username,
-    password,
-  }: IUserDomain): Promise<IUserDomain | null> => {
-    const passwordInDbFormat = Buffer.from(password).toString('base64');
-
-    console.log({ passwordInDbFormat });
+  getOneByCredentials = async (
+    domainUser: IUserDomain,
+  ): Promise<IUserDomain | null> => {
+    const { pk, sk, password } = userMapToDAL(domainUser);
 
     const input: QueryCommandInput = {
       TableName,
       KeyConditionExpression: 'pk = :pk and sk = :sk',
       ExpressionAttributeValues: {
         ':pk': {
-          S: `user#${username}`,
+          S: pk,
         },
         ':sk': {
-          S: `user#${username}`,
+          S: sk,
         },
-        ':password': { S: passwordInDbFormat },
+        ':password': { S: password },
       },
       FilterExpression: 'password = :password',
     };
@@ -45,7 +42,7 @@ export class UserRepository {
 
       const userFromDB = Items?.[0];
 
-      return userFromDB ? userMapperToDomain(userFromDB) : null;
+      return userFromDB ? userMapToDomain(userFromDB) : null;
     } catch (e) {
       console.error('getOneByCredentials query failed', e);
 
@@ -53,26 +50,22 @@ export class UserRepository {
     }
   };
 
-  updateSessionId = async (user: IUserDomain): Promise<void> => {
-    if (!user.sessionId) {
+  updateSessionId = async (_user: IUserDomain): Promise<void> => {
+    const userForDbLayer = userMapToDAL(_user);
+
+    if (!userForDbLayer.sessionId) {
       throw new Error('User does not have sessionId');
     }
 
     const input: UpdateItemCommandInput = {
-      Key: {
-        pk: {
-          S: `user#${user.username}`,
-        },
-        sk: {
-          S: `user#${user.username}`,
-        },
-      },
       TableName,
+      Key: {
+        pk: { S: userForDbLayer.pk },
+        sk: { S: userForDbLayer.pk },
+      },
       UpdateExpression: `SET sessionId = :sid`,
       ExpressionAttributeValues: {
-        ':sid': {
-          S: user.sessionId,
-        },
+        ':sid': { S: userForDbLayer.sessionId },
       },
     };
 

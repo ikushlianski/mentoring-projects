@@ -1,5 +1,6 @@
 import { APIGatewayEvent } from 'aws-lambda';
 import { StatusCodes } from 'http-status-codes';
+import { CookieKeys, cookieService } from '../lambda/cookie.service';
 import { lambdaService } from '../lambda/lambda.service';
 import { wrongUserOrPassword } from './auth.errors';
 import { loginService } from './services/login.service';
@@ -29,8 +30,12 @@ exports.handler = async function (event: APIGatewayEvent) {
     }
 
     return loginSuccess
-      ? // todo add sessionId in cookie header here
-        lambdaService.toSuccessResponse('Success')
+      ? lambdaService.toSuccessResponse('Success', undefined, [
+          cookieService.makeCookie(
+            CookieKeys.SESSION_ID,
+            loginSuccess.sessionId,
+          ),
+        ])
       : lambdaService.toErrorResponse(
           wrongUserOrPassword,
           StatusCodes.BAD_REQUEST,

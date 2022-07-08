@@ -1,3 +1,4 @@
+import { CookieService, cookieService } from '../../lambda/cookie.service';
 import { Maybe } from '../../types';
 import {
   userRepository,
@@ -10,11 +11,14 @@ import { ILoginSuccess } from '../auth.types';
 const crypto = require('crypto');
 
 export class LoginService {
-  constructor(private userRepo: UserRepository) {}
+  constructor(
+    private userRepo: UserRepository,
+    private cookieService: CookieService,
+  ) {}
 
   getUserFromRequest = (
     requestBody: string | null,
-    sessionCookie: string | undefined,
+    rawCookieString: string | undefined,
   ): Maybe<IUserDomain> => {
     if (!requestBody) {
       return [noCredentialsError, undefined];
@@ -22,9 +26,9 @@ export class LoginService {
 
     let sessionId: SessionId = '';
 
-    if (sessionCookie) {
-      // todo take into account a case when we have multiple cookies and we need to find a `sessionId` cookie
-      [, sessionId] = sessionCookie.split('=');
+    if (rawCookieString) {
+      sessionId =
+        this.cookieService.getSessionIdFromCookie(rawCookieString);
     }
 
     try {
@@ -89,4 +93,7 @@ export class LoginService {
   };
 }
 
-export const loginService = new LoginService(userRepository);
+export const loginService = new LoginService(
+  userRepository,
+  cookieService,
+);
