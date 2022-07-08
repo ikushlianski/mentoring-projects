@@ -1,6 +1,5 @@
-import { marshall } from "@aws-sdk/util-dynamodb";
-import { DynamoDBRecord } from "../db/db.types";
-import { Username } from "../user/user.types";
+import { DynamoDBRecord } from '../db/db.types';
+import { Username } from '../user/user.types';
 
 type BookingId = string;
 type BookingStartTime = number;
@@ -34,7 +33,7 @@ export interface IBookingDomain {
 }
 
 export const bookingMapperToDomain = (
-  bookingFromDB: IBookingFromDB
+  bookingFromDB: IBookingFromDB,
 ): IBookingDomain => {
   return {
     bookingId: bookingFromDB.pk,
@@ -62,5 +61,5 @@ export const bookingMapperToDAL = (bookingDomain: IBookingDomain) => {
     carParkLatitude: bookingDomain.bookingNotes.carParkLatitude,
   };
 
-  return marshall(bookingForDAL);
+  return bookingForDAL;
 };
