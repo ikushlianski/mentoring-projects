@@ -17,8 +17,8 @@ export class LoginService {
   ) {}
 
   getUserFromRequest = (
-    requestBody: string | null,
-    rawCookieString: string | undefined,
+    requestBody: string | undefined,
+    cookies: string[] | undefined,
   ): Maybe<IUserDomain> => {
     if (!requestBody) {
       return [noCredentialsError, undefined];
@@ -26,9 +26,10 @@ export class LoginService {
 
     let sessionId: SessionId = '';
 
-    if (rawCookieString) {
-      sessionId =
-        this.cookieService.getSessionIdFromCookie(rawCookieString);
+    if (cookies) {
+      sessionId = this.cookieService.getSessionIdFromCookies(cookies);
+
+      console.log('sessionId from request', sessionId);
     }
 
     try {

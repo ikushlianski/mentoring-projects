@@ -1,14 +1,16 @@
-import { APIGatewayEvent } from 'aws-lambda';
+import { APIGatewayProxyEventV2WithRequestContext } from 'aws-lambda/trigger/api-gateway-proxy';
 import { StatusCodes } from 'http-status-codes';
 import { CookieKeys, cookieService } from '../lambda/cookie.service';
 import { lambdaService } from '../lambda/lambda.service';
 import { wrongUserOrPassword } from './auth.errors';
 import { loginService } from './services/login.service';
 
-exports.handler = async function (event: APIGatewayEvent) {
+exports.handler = async function (
+  event: APIGatewayProxyEventV2WithRequestContext<unknown>,
+) {
   const [error, domainUser] = loginService.getUserFromRequest(
     event.body,
-    event.headers['Cookie'],
+    event.cookies,
   );
 
   if (error) {

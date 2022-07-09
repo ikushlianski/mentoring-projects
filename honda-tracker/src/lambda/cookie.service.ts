@@ -5,21 +5,19 @@ export enum CookieKeys {
 }
 
 export class CookieService {
-  getSessionIdFromCookie = (sessionCookies: string): SessionId => {
-    return sessionCookies
-      .split(';')
-      .reduce((acc: SessionId, cookieString) => {
-        const [key, value] = cookieString.split('=');
+  public getSessionIdFromCookies = (cookies: string[]): SessionId => {
+    return cookies.reduce((acc: SessionId, cookieString) => {
+      const [key, value] = cookieString.split('=');
 
-        if (key === CookieKeys.SESSION_ID) {
-          acc = value;
-        }
+      if (key === CookieKeys.SESSION_ID) {
+        acc = value;
+      }
 
-        return acc;
-      }, '');
+      return acc;
+    }, '');
   };
 
-  makeCookie = (key: string, value: string) => {
+  public makeCookie = (key: string, value: string) => {
     return `${key}=${value}`;
   };
 }

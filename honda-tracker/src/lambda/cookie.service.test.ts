@@ -1,19 +1,25 @@
 import { cookieService } from './cookie.service';
 
 describe('CookieService', () => {
-  describe('getSessionIdFromCookie', () => {
+  describe('getSessionIdFromCookies', () => {
     it('should return abc', () => {
-      const cookieString = 'mode=extreme;sessionId=abc;theme=dark';
+      const parsedCookies = [
+        'mode=extreme',
+        'sessionId=abc',
+        'theme=dark',
+      ];
 
-      const sessionId = cookieService.getSessionIdFromCookie(cookieString);
+      const sessionId =
+        cookieService.getSessionIdFromCookies(parsedCookies);
 
       expect(sessionId).toBe('abc');
     });
 
     it('should return empty string', () => {
-      const cookieString = 'mode=extreme;theme=dark';
+      const parsedCookies = ['mode=extreme', 'theme=dark'];
 
-      const sessionId = cookieService.getSessionIdFromCookie(cookieString);
+      const sessionId =
+        cookieService.getSessionIdFromCookies(parsedCookies);
 
       expect(sessionId).toBe('');
     });
