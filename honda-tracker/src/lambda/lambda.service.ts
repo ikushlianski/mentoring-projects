@@ -14,13 +14,11 @@ export class LambdaService {
 
     return {
       statusCode: code,
-      // todo for now we only support one cookie (sessionId)
       headers: {
         ...headers,
-        // 'Set-Cookie': `${cookies[0]}`
       },
       isBase64Encoded: false,
-      cookies: ['name1=value1', 'name2=value2'],
+      cookies,
       body: isBodyString(body) ? body : JSON.stringify(body),
     };
   };
@@ -28,19 +26,19 @@ export class LambdaService {
   toErrorResponse = (
     error: unknown,
     code: StatusCodes,
-    // cookies: string[] = [],
+    cookies: string[] = [],
   ): APIGatewayProxyStructuredResultV2 => {
     return error instanceof Error
       ? {
           statusCode: code,
           body: error.message,
-          // cookies,
+          cookies,
         }
       : {
           // should not happen
           statusCode: StatusCodes.INTERNAL_SERVER_ERROR,
           body: 'Unknown error',
-          // cookies,
+          cookies,
         };
   };
 }
