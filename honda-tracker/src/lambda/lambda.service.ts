@@ -15,7 +15,12 @@ export class LambdaService {
     return {
       statusCode: code,
       // todo for now we only support one cookie (sessionId)
-      headers: { ...headers, 'Set-Cookie': `${cookies[0]}` },
+      headers: {
+        ...headers,
+        // 'Set-Cookie': `${cookies[0]}`
+      },
+      isBase64Encoded: false,
+      cookies: ['name1=value1', 'name2=value2'],
       body: isBodyString(body) ? body : JSON.stringify(body),
     };
   };

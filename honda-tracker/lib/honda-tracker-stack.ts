@@ -1,10 +1,10 @@
+import { HttpApi } from '@aws-cdk/aws-apigatewayv2-alpha';
 import {
   aws_dynamodb,
   RemovalPolicy,
   Stack,
   StackProps,
 } from 'aws-cdk-lib';
-import { RestApi } from 'aws-cdk-lib/aws-apigateway';
 import { Table } from 'aws-cdk-lib/aws-dynamodb';
 import { ServicePrincipal } from 'aws-cdk-lib/aws-iam';
 import { Construct } from 'constructs';
@@ -14,7 +14,7 @@ import { mergeLambdas } from './utils';
 
 interface HondaStackProps extends StackProps {
   stage: Stages;
-  api: RestApi;
+  api: HttpApi;
   bookingLambdas: Lambdas;
   userLambdas: Lambdas;
   authLambdas: Lambdas;

@@ -1,6 +1,6 @@
+import { HttpApi, HttpMethod } from '@aws-cdk/aws-apigatewayv2-alpha';
+import { HttpLambdaIntegration } from '@aws-cdk/aws-apigatewayv2-integrations-alpha';
 import { Stack, StackProps } from 'aws-cdk-lib';
-import { RestApi } from 'aws-cdk-lib/aws-apigateway';
-import * as api from 'aws-cdk-lib/aws-apigateway';
 import { Runtime } from 'aws-cdk-lib/aws-lambda';
 import { NodejsFunction } from 'aws-cdk-lib/aws-lambda-nodejs';
 import { Construct } from 'constructs';
@@ -9,7 +9,7 @@ import { Lambdas } from './types';
 
 interface AuthLambdaStackProps extends StackProps {
   stage: Stages;
-  api: RestApi;
+  api: HttpApi;
 }
 
 export class AuthLambdaStack extends Stack {
@@ -21,7 +21,7 @@ export class AuthLambdaStack extends Stack {
     this.initLoginLambda(props.api, props.stage);
   }
 
-  private initLoginLambda(restApi: RestApi, stage: Stages) {
+  private initLoginLambda(httpApi: HttpApi, stage: Stages) {
     const loginLambda = new NodejsFunction(this, 'loginLambda', {
       runtime: Runtime.NODEJS_16_X,
       handler: 'handler',
@@ -34,12 +34,17 @@ export class AuthLambdaStack extends Stack {
 
     this.lambdas.set('login', loginLambda);
 
-    const loginLambdaIntegration = new api.LambdaIntegration(loginLambda);
+    const loginLambdaIntegration = new HttpLambdaIntegration(
+      'loginLambda',
+      loginLambda,
+    );
 
-    if (restApi) {
-      const loginPath = restApi.root.addResource('login');
-
-      loginPath.addMethod('POST', loginLambdaIntegration);
+    if (httpApi) {
+      httpApi.addRoutes({
+        path: 'login',
+        methods: [HttpMethod.POST],
+        integration: loginLambdaIntegration,
+      });
     }
 
     return loginLambda;

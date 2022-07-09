@@ -4,7 +4,7 @@ import * as cdk from 'aws-cdk-lib';
 import { AuthLambdaStack } from '../lib/auth-lambda-stack';
 import { BookingLambdaStack } from '../lib/booking-lambda-stack';
 import { HondaTrackerStack } from '../lib/honda-tracker-stack';
-import { RestApiStack } from '../lib/rest-api-stack';
+import { HttpApiStack } from '../lib/rest-api-stack';
 import { UserLambdaStack } from '../lib/user-lambda-stack';
 import { Stages } from '../src/constants';
 
@@ -17,30 +17,30 @@ if (!stage) {
 
 console.log(`Using stage "${stage}"`);
 
-const restApiStack = new RestApiStack(app, 'RestApiStack');
+const { restApi } = new HttpApiStack(app, 'RestApiStack');
 
 const bookingLambdasStack = new BookingLambdaStack(
   app,
   'bookingLambdaStack',
   {
     stage,
-    api: restApiStack.restApi,
+    api: restApi,
   },
 );
 
 const authLambdasStack = new AuthLambdaStack(app, 'authLambdaStack', {
   stage,
-  api: restApiStack.restApi,
+  api: restApi,
 });
 
 const userLambdasStack = new UserLambdaStack(app, 'userLambdaStack', {
   stage,
-  api: restApiStack.restApi,
+  api: restApi,
 });
 
 const hondaTrackerStack = new HondaTrackerStack(app, 'HondaTrackerStack', {
   stage,
-  api: restApiStack.restApi,
+  api: restApi,
   bookingLambdas: bookingLambdasStack.lambdas,
   userLambdas: userLambdasStack.lambdas,
   authLambdas: authLambdasStack.lambdas,

@@ -1,15 +1,15 @@
-import { Stack, StackProps } from "aws-cdk-lib";
-import { RestApi } from "aws-cdk-lib/aws-apigateway";
-import * as api from "aws-cdk-lib/aws-apigateway";
-import { Runtime } from "aws-cdk-lib/aws-lambda";
-import { NodejsFunction } from "aws-cdk-lib/aws-lambda-nodejs";
-import { Construct } from "constructs";
-import { Stages } from "../src/constants";
-import { Lambdas } from "./types";
+import { HttpApi, HttpMethod } from '@aws-cdk/aws-apigatewayv2-alpha';
+import { HttpLambdaIntegration } from '@aws-cdk/aws-apigatewayv2-integrations-alpha';
+import { Stack, StackProps } from 'aws-cdk-lib';
+import { Runtime } from 'aws-cdk-lib/aws-lambda';
+import { NodejsFunction } from 'aws-cdk-lib/aws-lambda-nodejs';
+import { Construct } from 'constructs';
+import { Stages } from '../src/constants';
+import { Lambdas } from './types';
 
 interface UserLambdaStackProps extends StackProps {
   stage: Stages;
-  api: RestApi;
+  api: HttpApi;
 }
 
 export class UserLambdaStack extends Stack {
@@ -21,25 +21,30 @@ export class UserLambdaStack extends Stack {
     this.initGetUserLambda(props.api, props.stage);
   }
 
-  private initGetUserLambda(restApi: RestApi, stage: Stages) {
-    const getUserLambda = new NodejsFunction(this, "getUserLambda", {
+  private initGetUserLambda(httpApi: HttpApi, stage: Stages) {
+    const getUserLambda = new NodejsFunction(this, 'getUserLambda', {
       runtime: Runtime.NODEJS_16_X,
-      handler: "handler",
-      entry: "./src/user/get-user.ts",
-      functionName: "getUserLambda",
+      handler: 'handler',
+      entry: './src/user/get-user.ts',
+      functionName: 'getUserLambda',
       environment: {
         stage,
       },
     });
 
-    this.lambdas.set("get-user", getUserLambda);
+    this.lambdas.set('get-user', getUserLambda);
 
-    const getUserLambdaIntegration = new api.LambdaIntegration(getUserLambda);
+    const getUserLambdaIntegration = new HttpLambdaIntegration(
+      'getUserLambda',
+      getUserLambda,
+    );
 
-    if (restApi) {
-      const usersPath = restApi.root.addResource("users").addResource("{id}");
-
-      usersPath.addMethod("GET", getUserLambdaIntegration);
+    if (httpApi) {
+      httpApi.addRoutes({
+        path: 'users/{id}',
+        methods: [HttpMethod.GET],
+        integration: getUserLambdaIntegration,
+      });
     }
 
     return getUserLambda;
