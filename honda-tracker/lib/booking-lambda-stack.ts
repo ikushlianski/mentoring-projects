@@ -42,7 +42,7 @@ export class BookingLambdaStack extends Stack {
 
     if (httpApi) {
       httpApi.addRoutes({
-        path: 'bookings/{id}',
+        path: '/bookings/{id}',
         methods: [HttpMethod.GET],
         integration: getBookingLambdaIntegration,
       });

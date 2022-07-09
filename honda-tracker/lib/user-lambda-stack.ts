@@ -41,7 +41,7 @@ export class UserLambdaStack extends Stack {
 
     if (httpApi) {
       httpApi.addRoutes({
-        path: 'users/{id}',
+        path: '/users/{id}',
         methods: [HttpMethod.GET],
         integration: getUserLambdaIntegration,
       });

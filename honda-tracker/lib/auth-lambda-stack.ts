@@ -41,7 +41,7 @@ export class AuthLambdaStack extends Stack {
 
     if (httpApi) {
       httpApi.addRoutes({
-        path: 'login',
+        path: '/login',
         methods: [HttpMethod.POST],
         integration: loginLambdaIntegration,
       });
