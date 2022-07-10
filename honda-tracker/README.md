@@ -24,7 +24,7 @@ After your stack is deployed, ensure you have these seeds in `./src/seeds` and r
 aws dynamodb batch-write-item --request-items file://src/seeds/defaultData_dev.json --profile <AWS profile for honda-tracker project>
 ```
 
-## Local testing
+## Local Lambda testing
 For local testing of lambdas, use AWS SAM CLI. For example, to run a getBookingLambda, use this code:
 
 ```
@@ -33,3 +33,8 @@ NODE_ENV=dev cdk synth --no-staging \
 -e ./src/user/getUser.event.json \
 -t ./cdk.out/userLambdaStack.template.json
 ```
+
+## Jest unit tests
+To test a particular file run `npm run test:watch <your-file-regexp>`.
+
+To run tests in non-dev mode, e.g. as part of your pipeline, run `npm run test`. It will build the project and run all Jest tests.

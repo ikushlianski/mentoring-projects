@@ -8,7 +8,8 @@
   "scripts": {
     "build": "tsc",
     "watch": "tsc -w",
-    "test": "tsc && jest",
+    "test": "npm run build && jest",
+    "test:watch": "npm run watch & jest --watchAll",
     "cdk": "cdk",
     "deploy": "npm run build && NODE_ENV=dev cdk deploy --all",
     "deploy:prod": "npm run build && NODE_ENV=prod cdk deploy --all",
