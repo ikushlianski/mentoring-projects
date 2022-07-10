@@ -35,6 +35,8 @@ NODE_ENV=dev cdk synth --no-staging \
 ```
 
 ## Jest unit tests
-To test a particular file run `npm run test:watch <your-file-regexp>`.
+To test a particular file run `npm run test:watch -- -- <your-file-regexp>`.
+
+The double `--` is because of how `concurrently` tool passes arguments and because of how `npm` scripts work.
 
 To run tests in non-dev mode, e.g. as part of your pipeline, run `npm run test`. It will build the project and run all Jest tests.
