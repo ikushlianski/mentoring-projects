@@ -26,17 +26,21 @@ export class BookingLambdaStack extends Stack {
   }
 
   private initGetBookingLambda(httpApi: HttpApi, stage: Stages) {
-    const getBookingLambda = new NodejsFunction(this, 'getBookingLambda', {
-      runtime: Runtime.NODEJS_16_X,
-      handler: 'handler',
-      entry: './src/booking/get-booking.ts',
-      functionName: `getBookingLambda_${stage}`,
-    });
+    const getBookingLambda = new NodejsFunction(
+      this,
+      `getBookingLambda_${stage}`,
+      {
+        runtime: Runtime.NODEJS_16_X,
+        handler: 'handler',
+        entry: './src/booking/get-booking.handler.ts',
+        functionName: `getBookingLambda_${stage}`,
+      },
+    );
 
     this.lambdas.set('get-booking', getBookingLambda);
 
     const getBookingLambdaIntegration = new HttpLambdaIntegration(
-      'getBookingLambda',
+      `getBookingLambda_${stage}`,
       getBookingLambda,
     );
 

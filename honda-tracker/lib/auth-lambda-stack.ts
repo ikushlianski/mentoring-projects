@@ -22,10 +22,10 @@ export class AuthLambdaStack extends Stack {
   }
 
   private initLoginLambda(httpApi: HttpApi, stage: Stages) {
-    const loginLambda = new NodejsFunction(this, 'loginLambda', {
+    const loginLambda = new NodejsFunction(this, `loginLambda_${stage}`, {
       runtime: Runtime.NODEJS_16_X,
       handler: 'handler',
-      entry: './src/auth/login.ts',
+      entry: './src/auth/login.handler.ts',
       functionName: `loginLambda_${stage}`,
       environment: {
         stage,
@@ -35,7 +35,7 @@ export class AuthLambdaStack extends Stack {
     this.lambdas.set('login', loginLambda);
 
     const loginLambdaIntegration = new HttpLambdaIntegration(
-      'loginLambda',
+      `loginLambda_${stage}`,
       loginLambda,
     );
 

@@ -17,31 +17,45 @@ if (!stage) {
 
 console.log(`Using stage "${stage}"`);
 
-const { restApi } = new HttpApiStack(app, 'RestApiStack');
+const { httpApi } = new HttpApiStack(app, `RestApiStack-${stage}`, {
+  stage,
+});
 
 const bookingLambdasStack = new BookingLambdaStack(
   app,
-  'bookingLambdaStack',
+  `bookingLambdaStack-${stage}`,
   {
     stage,
-    api: restApi,
+    api: httpApi,
   },
 );
 
-const authLambdasStack = new AuthLambdaStack(app, 'authLambdaStack', {
-  stage,
-  api: restApi,
-});
+const authLambdasStack = new AuthLambdaStack(
+  app,
+  `authLambdaStack-${stage}`,
+  {
+    stage,
+    api: httpApi,
+  },
+);
 
-const userLambdasStack = new UserLambdaStack(app, 'userLambdaStack', {
-  stage,
-  api: restApi,
-});
+const userLambdasStack = new UserLambdaStack(
+  app,
+  `userLambdaStack-${stage}`,
+  {
+    stage,
+    api: httpApi,
+  },
+);
 
-const hondaTrackerStack = new HondaTrackerStack(app, 'HondaTrackerStack', {
-  stage,
-  api: restApi,
-  bookingLambdas: bookingLambdasStack.lambdas,
-  userLambdas: userLambdasStack.lambdas,
-  authLambdas: authLambdasStack.lambdas,
-});
+const hondaTrackerStack = new HondaTrackerStack(
+  app,
+  `HondaTrackerStack-${stage}`,
+  {
+    stage,
+    api: httpApi,
+    bookingLambdas: bookingLambdasStack.lambdas,
+    userLambdas: userLambdasStack.lambdas,
+    authLambdas: authLambdasStack.lambdas,
+  },
+);

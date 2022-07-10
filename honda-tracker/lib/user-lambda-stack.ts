@@ -22,20 +22,24 @@ export class UserLambdaStack extends Stack {
   }
 
   private initGetUserLambda(httpApi: HttpApi, stage: Stages) {
-    const getUserLambda = new NodejsFunction(this, 'getUserLambda', {
-      runtime: Runtime.NODEJS_16_X,
-      handler: 'handler',
-      entry: './src/user/get-user.ts',
-      functionName: 'getUserLambda',
-      environment: {
-        stage,
+    const getUserLambda = new NodejsFunction(
+      this,
+      `getUserLambda_${stage}`,
+      {
+        runtime: Runtime.NODEJS_16_X,
+        handler: 'handler',
+        entry: './src/user/get-user.handler.ts',
+        functionName: `getUserLambda_${stage}`,
+        environment: {
+          stage,
+        },
       },
-    });
+    );
 
     this.lambdas.set('get-user', getUserLambda);
 
     const getUserLambdaIntegration = new HttpLambdaIntegration(
-      'getUserLambda',
+      `getUserLambda_${stage}`,
       getUserLambda,
     );
 

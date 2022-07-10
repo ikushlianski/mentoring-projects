@@ -3,19 +3,26 @@ import { Stack, StackProps } from 'aws-cdk-lib';
 import { Construct } from 'constructs';
 import { REST_API_NAME, Stages } from '../src/constants';
 
-export class HttpApiStack extends Stack {
-  restApi: HttpApi;
+interface HttpApiProps extends StackProps {
+  stage: Stages;
+}
 
-  constructor(scope: Construct, id: string, props?: StackProps) {
+export class HttpApiStack extends Stack {
+  httpApi: HttpApi;
+
+  constructor(scope: Construct, id: string, props: HttpApiProps) {
     super(scope, id, props);
 
-    this.restApi = new HttpApi(this, REST_API_NAME, {
-      apiName: REST_API_NAME,
-      createDefaultStage: true,
+    const { stage } = props;
+    const apiName = `${REST_API_NAME}_${stage}`;
+
+    this.httpApi = new HttpApi(this, apiName, {
+      apiName,
+      createDefaultStage: false,
     });
 
-    this.restApi.addStage(Stages.DEV, {
-      stageName: Stages.DEV,
+    this.httpApi.addStage(props.stage, {
+      stageName: stage,
       autoDeploy: true,
     });
   }
