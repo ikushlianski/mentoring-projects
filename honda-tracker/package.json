@@ -10,6 +10,7 @@
     "watch": "tsc -w",
     "test": "npm run build && jest",
     "test:watch": "concurrently -P --kill-others \"npm run watch\"  \"jest --watchAll -- {@} \"",
+    "e2e": "cucumber-js",
     "cdk": "cdk",
     "deploy": "npm run build && NODE_ENV=dev cdk deploy --all",
     "deploy:qa": "npm run build && NODE_ENV=qa cdk deploy --all",
@@ -18,6 +19,7 @@
     "destroy:prod": "NODE_ENV=prod cdk destroy --all"
   },
   "devDependencies": {
+    "@cucumber/cucumber": "^8.4.0",
     "@types/aws-lambda": "^8.10.101",
     "@types/jest": "^27.5.2",
     "@types/node": "^10.17.27",

@@ -1,5 +1,5 @@
+# generated Javascript and TS types
 *.js
-!jest.config.js
 *.d.ts
 node_modules
 
@@ -12,3 +12,10 @@ cdk.out
 
 # seed data
 src/seeds/*
+
+# Unit testing
+!jest.config.js
+
+# e2e testing
+!cucumber.js
+!features/**/*
