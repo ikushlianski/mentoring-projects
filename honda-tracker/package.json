@@ -10,7 +10,7 @@
     "watch": "tsc -w",
     "test": "npm run build && jest",
     "test:watch": "concurrently -P --kill-others \"npm run watch\"  \"jest --watchAll -- {@} \"",
-    "e2e": "cucumber-js",
+    "integration": "cucumber-js",
     "cdk": "cdk",
     "deploy": "npm run build && NODE_ENV=dev cdk deploy --all",
     "deploy:qa": "npm run build && NODE_ENV=qa cdk deploy --all",
