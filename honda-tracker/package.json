@@ -16,6 +16,7 @@
     "deploy:qa": "npm run build && NODE_ENV=qa cdk deploy --all",
     "deploy:prod": "npm run build && NODE_ENV=prod cdk deploy --all",
     "destroy": "NODE_ENV=dev cdk destroy --all",
+    "destroy:qa": "NODE_ENV=qa cdk destroy --all",
     "destroy:prod": "NODE_ENV=prod cdk destroy --all"
   },
   "devDependencies": {
