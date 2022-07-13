@@ -1,11 +1,15 @@
 Feature: Login
-  Scenario: Successful login
+  Background:
     Given the user is already registered
-    And the user did not log in previously
-    When the user logs in with correct credentials
-    Then they successfully log in
 
-  Scenario: Wrong username
-    Given the user is already registered
-    When the user logs in with incorrect credentials
-    Then they get a login error
+  Scenario: Successful login - first time
+    Given the user did not log in previously
+    When the user logs in with correct credentials
+    Then they get a generated session cookie
+    And login is successful
+
+  Scenario: Successful login - subsequent times
+    Given the user logged in before
+    When the user logs in with correct credentials
+    Then they get their session cookie back
+    And login is successful
