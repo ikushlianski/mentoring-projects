@@ -33,7 +33,7 @@ export class UserRepository {
       FilterExpression: 'password = :password',
     };
 
-    console.log({ input });
+    console.log({ input: JSON.stringify(input) });
 
     try {
       const { Items } = await client.send(new QueryCommand(input));

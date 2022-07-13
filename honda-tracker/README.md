@@ -26,6 +26,10 @@ After your stack is deployed, ensure you have these seeds in `./src/seeds` and r
 aws dynamodb batch-write-item --request-items file://src/seeds/defaultData_dev.json --profile <AWS profile for honda-tracker project>
 ```
 
+## Auth
+[//]: # (TODO add auth implementation docs)
+Auth is very simple, no registration required, as this is a family-only app. Users are assigned their usernames and passwords ahead of time. This data is in a non-VCS secret json file loaded into the DB (might need to put it into SSM when setting up a deployment pipeline).
+
 ## Testing
 
 ### Local Lambda testing
