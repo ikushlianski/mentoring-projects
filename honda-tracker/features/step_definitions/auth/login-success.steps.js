@@ -1,28 +1,15 @@
 const assert = require('assert');
 const { When, Then } = require('@cucumber/cucumber');
-const { correctCreds, loginUrl } = require('../test-data');
+const { correctCreds } = require('../test-data');
+const { makeRequest } = require('./login.utils');
 
 When('the user logs in with correct credentials', async function () {
-  // the user's request does not include a sessionId cookie, i.e. they log in for the first time and don't have a previously created session
-  const response = await fetch(loginUrl, {
-    method: 'POST',
-    headers: {
-      Cookie: this.sessionCookie || '',
-    },
-    body: JSON.stringify({
-      ...correctCreds,
-    }),
+  const { cookie, status } = await makeRequest(correctCreds, 'POST', {
+    Cookie: this.sessionCookie || '',
   });
 
-  console.log(
-    "response.headers.get('Set-Cookie')",
-    response.headers.get('Set-Cookie'),
-  );
-
-  console.log('response.headers', response.headers);
-
-  this.cookie = response.headers.get('Set-Cookie');
-  this.status = response.status;
+  this.cookie = cookie;
+  this.status = status;
 });
 
 Then('they get a generated session cookie', function () {

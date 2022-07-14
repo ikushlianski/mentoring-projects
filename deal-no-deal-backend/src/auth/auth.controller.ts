@@ -114,11 +114,11 @@ export class AuthController {
       });
     } catch (e: unknown) {
       if (e instanceof NotAuthorizedException) {
-        return response.status(HttpStatus.BAD_REQUEST).send(e.message);
+        return response.status(HttpStatus.UNAUTHORIZED).send(e.message);
       }
 
       return response
-        .status(HttpStatus.BAD_REQUEST)
+        .status(HttpStatus.UNAUTHORIZED)
         .send('Could not refresh the token');
     }
   }
