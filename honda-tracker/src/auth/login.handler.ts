@@ -27,7 +27,7 @@ exports.handler = async function (
       console.log({ loginError });
       return lambdaService.toErrorResponse(
         wrongUserOrPassword,
-        StatusCodes.BAD_REQUEST,
+        StatusCodes.UNAUTHORIZED,
       );
     }
 
@@ -40,12 +40,12 @@ exports.handler = async function (
         ])
       : lambdaService.toErrorResponse(
           wrongUserOrPassword,
-          StatusCodes.BAD_REQUEST,
+          StatusCodes.UNAUTHORIZED,
         );
   }
 
   return lambdaService.toErrorResponse(
     new Error('Unknown login error'),
-    StatusCodes.BAD_REQUEST,
+    StatusCodes.UNAUTHORIZED,
   );
 };
