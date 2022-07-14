@@ -56,9 +56,9 @@ export class HondaTrackerStack extends Stack {
       },
       billingMode: aws_dynamodb.BillingMode.PAY_PER_REQUEST,
       removalPolicy:
-        this.stage === Stages.DEV
-          ? RemovalPolicy.DESTROY
-          : RemovalPolicy.RETAIN,
+        this.stage === Stages.PROD
+          ? RemovalPolicy.RETAIN
+          : RemovalPolicy.DESTROY,
     });
   };
 
