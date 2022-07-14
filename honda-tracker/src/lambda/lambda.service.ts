@@ -19,7 +19,9 @@ export class LambdaService {
       },
       isBase64Encoded: false,
       cookies,
-      body: isBodyString(body) ? body : JSON.stringify(body),
+      body: isBodyString(body)
+        ? JSON.stringify({ status: body })
+        : JSON.stringify(body),
     };
   };
 
@@ -31,13 +33,13 @@ export class LambdaService {
     return error instanceof Error
       ? {
           statusCode: code,
-          body: error.message,
+          body: JSON.stringify({ status: error.message }),
           cookies,
         }
       : {
           // should not happen
           statusCode: StatusCodes.INTERNAL_SERVER_ERROR,
-          body: 'Unknown error',
+          body: JSON.stringify({ status: 'Unknown error' }),
           cookies,
         };
   };
