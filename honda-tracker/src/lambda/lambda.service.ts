@@ -19,6 +19,7 @@ export class LambdaService {
       },
       isBase64Encoded: false,
       cookies,
+      // todo improve this, I don't like it now
       body: isBodyString(body)
         ? JSON.stringify({ status: body })
         : JSON.stringify(body),
