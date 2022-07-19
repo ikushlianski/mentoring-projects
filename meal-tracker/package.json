@@ -35,10 +35,7 @@
       "react-app",
       "react-app/jest",
       "plugin:cypress/recommended"
-    ],
-    "globals": {
-      "cy": true
-    }
+    ]
   },
   "browserslist": {
     "production": [
