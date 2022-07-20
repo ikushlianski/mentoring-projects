@@ -22,11 +22,6 @@ jobs:
       - name: Cypress run
         uses: cypress-io/github-action@v4
         with:
-          build: npm run build
           start: npm start
           working-directory: ./meal-tracker
-      - uses: actions/upload-artifact@v2
-        with:
-          name: cypress-screenshots
-          path: cypress/screenshots
 
