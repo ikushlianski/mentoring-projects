@@ -27,4 +27,9 @@ jobs:
           build: npm run build
           start: npm start
           working-directory: ./meal-tracker
+      - uses: actions/upload-artifact@v2
+#        if: failure()
+        with:
+          name: cypress-screenshots
+          path: cypress/screenshots
 
