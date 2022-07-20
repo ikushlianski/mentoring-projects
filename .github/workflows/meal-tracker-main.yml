@@ -22,10 +22,9 @@ jobs:
       # Install NPM dependencies, cache them correctly
       # and run all Cypress tests
       - name: Cypress run
-        working-directory: ./meal-tracker
         uses: cypress-io/github-action@v4
         with:
           build: npm run build
           start: npm start
-        run: npx cypress run
+          working-directory: ./meal-tracker
 
