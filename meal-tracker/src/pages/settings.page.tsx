@@ -14,7 +14,7 @@ import { RoutesEnum } from "src/pages/routes.enum";
 export const SettingsPage = () => {
   const navigate = useNavigate();
 
-  const [mPd, setMPD] = useState<number>(
+  const [mealsPerDay, setMealsPerDay] = useState<number>(
     () =>
       settingsManager.getSetting("MealsPerDay") ||
       defaultAppSettings[ConfigurableAppSettings.MealsPerDay]
@@ -38,7 +38,7 @@ export const SettingsPage = () => {
     appState.setUsedAppBefore();
 
     settingsManager.saveUpdatedSettings({
-      [ConfigurableAppSettings.MealsPerDay]: mPd,
+      [ConfigurableAppSettings.MealsPerDay]: mealsPerDay,
       [ConfigurableAppSettings.IntervalBetweenMealsMinutes]: mealsInterval,
       [ConfigurableAppSettings.TimeFromWakeUpTillBreakfastMinutes]:
         timeTillBreakfast,
@@ -55,10 +55,10 @@ export const SettingsPage = () => {
           <Form.Control
             type="number"
             placeholder="How many meals per day do I need?"
-            value={mPd}
+            value={mealsPerDay || undefined}
             onChange={(event) => {
               // todo could validate user input in a real app
-              setMPD(Number(event.target.value));
+              setMealsPerDay(Number(event.target.value));
             }}
           />
 
@@ -68,7 +68,7 @@ export const SettingsPage = () => {
           <Form.Control
             type="number"
             placeholder="How much time between meals would I prefer?"
-            value={mealsInterval}
+            value={mealsInterval || undefined}
             onChange={(event) => {
               setMealsInterval(Number(event.target.value));
             }}
@@ -80,7 +80,7 @@ export const SettingsPage = () => {
           <Form.Control
             type="number"
             placeholder="How soon do I have breakfast after waking up?"
-            value={timeTillBreakfast}
+            value={timeTillBreakfast || undefined}
             onChange={(event) => {
               setTimeTillBreakfast(Number(event.target.value));
             }}
