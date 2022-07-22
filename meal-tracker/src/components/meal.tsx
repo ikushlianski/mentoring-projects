@@ -49,18 +49,19 @@ export const Meal: React.FC<Props> = ({
 
   return (
     <>
-      <div className={classes.meal}>
+      <div className={classes.meal} id={`meal-${index}`}>
         <span>{index}</span>
 
-        <div>{dayjs(mealData.time).format("HH:mm")}</div>
+        <div className={"time"}>{dayjs(mealData.time).format("HH:mm")}</div>
 
         <ButtonGroup aria-label="Basic example">
           {mealData.eaten ? (
-            <Button disabled={true} variant={"success"}>
+            <Button className={"eaten"} disabled={true} variant={"success"}>
               Eaten
             </Button>
           ) : (
             <Button
+              className={"eat"}
               variant="primary"
               disabled={mealData.isEatButtonDisabled}
               onClick={handleEat(mealData)}
@@ -70,12 +71,20 @@ export const Meal: React.FC<Props> = ({
           )}
 
           {
-            <Button variant="outline-secondary" onClick={handleLocalEdit}>
+            <Button
+              className={"edit"}
+              variant="outline-secondary"
+              onClick={handleLocalEdit}
+            >
               Edit
             </Button>
           }
           {mealData.isLastMeal && (
-            <Button variant="outline-danger" onClick={handleDelete(mealData)}>
+            <Button
+              className={"delete"}
+              variant="outline-danger"
+              onClick={handleDelete(mealData)}
+            >
               Delete
             </Button>
           )}
