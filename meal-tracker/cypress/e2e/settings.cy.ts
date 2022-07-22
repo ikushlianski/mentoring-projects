@@ -1,5 +1,4 @@
 import {
-  appSettingsLocalStorageKey,
   ConfigurableAppSettings,
   defaultAppSettings,
 } from "../../src/core/settings/constants";
