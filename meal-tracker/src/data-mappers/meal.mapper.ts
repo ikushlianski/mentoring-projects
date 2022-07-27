@@ -29,8 +29,8 @@ export const domainToUiMeal = (
 ): UIMeal => {
   return {
     ...meal,
-    key,
     isEatButtonDisabled,
+    key,
     isLastMeal,
   };
 };

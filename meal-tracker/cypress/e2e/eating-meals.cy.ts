@@ -27,6 +27,7 @@ describe("Eating meals", () => {
           const min31 = 1000 * 60 * 31;
 
           $clock.tick(min31);
+
           cy.get("#meal-1 .eat").click();
           cy.contains("#meal-1 > .time", "08:31");
         });
