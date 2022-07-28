@@ -17,7 +17,9 @@
     "deploy:prod": "npm run build && NODE_ENV=prod cdk deploy --all",
     "destroy": "NODE_ENV=dev cdk destroy --all",
     "destroy:qa": "NODE_ENV=qa cdk destroy --all",
-    "destroy:prod": "NODE_ENV=prod cdk destroy --all"
+    "destroy:prod": "NODE_ENV=prod cdk destroy --all",
+    "seed:dev": "stage=dev ts-node ./src/db/seeds/defaultData_dev.ts",
+    "seed:qa": "stage=qa ts-node ./src/db/seeds/defaultData_qa.ts"
   },
   "devDependencies": {
     "@cucumber/cucumber": "^8.4.0",

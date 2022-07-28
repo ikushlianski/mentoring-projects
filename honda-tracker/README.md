@@ -18,17 +18,17 @@ I started this project to practice hexagonal architecture, AWS CDK and Cucumber/
 ## Database
 DynamoDB is used for this project, a single-table design is attempted.
 
+### Interaction with DB
+DB queries use [ElectroDB](https://github.com/tywalch/electrodb).
+
 ### Seed data
 Seed data is located in unversioned files, as it contains secrets like passwords for initial users.
 
-After your stack is deployed, ensure you have these seeds in `./src/seeds` and run a similar following command to populate the DB:
-```
-aws dynamodb batch-write-item --request-items file://src/db/seeds/defaultData_dev.json --profile <AWS profile for honda-tracker project>
-```
+After your stack is deployed, ensure you have these seeds in `./src/db/seeds` and run `npm run seed:dev` in dev mode. For other modes, check scripts in `package.json`.
 
 ## Auth
 [//]: # (TODO add auth implementation docs)
-Auth is very simple, no registration required, as this is a family-only app. Users are assigned their usernames and passwords ahead of time. This data is in a non-VCS secret json file loaded into the DB (might need to put it into SSM when setting up a deployment pipeline).
+Auth is very simple, no registration required, as this is a family-only app. Users are assigned their usernames, passwords and roles ahead of time. This data is in a non-VCS secret json file loaded into the DB (might need to put it into SSM when setting up a deployment pipeline).
 
 ## Testing
 
