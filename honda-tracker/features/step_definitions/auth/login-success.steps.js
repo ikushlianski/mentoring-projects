@@ -20,7 +20,6 @@ Then('they get a generated session cookie', function () {
 });
 
 Then('they get their session cookie back', function () {
-  console.log({ cookie: this.cookie });
   const [key, value] = this.cookie.split('=');
   assert.strictEqual(key, 'sessionId');
   assert.strictEqual(value, correctCreds.sessionId);

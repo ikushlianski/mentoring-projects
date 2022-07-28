@@ -1,15 +1,17 @@
-import { DynamoDBClient, QueryCommand } from "@aws-sdk/client-dynamodb";
-import { marshall, unmarshall } from "@aws-sdk/util-dynamodb";
-import { APIGatewayEvent } from "aws-lambda";
-import { AWS_REGION, TABLE_NAME } from "../constants";
+import { DynamoDBClient, QueryCommand } from '@aws-sdk/client-dynamodb';
+import { marshall, unmarshall } from '@aws-sdk/util-dynamodb';
+import { APIGatewayEvent } from 'aws-lambda';
+import { AWS_REGION } from '../constants';
+import { TABLE_NAME } from '../db/db.constants';
 
+// todo remove all this
 const client = new DynamoDBClient({ region: AWS_REGION });
 
 exports.handler = async function (event: APIGatewayEvent) {
   if (!event.pathParameters) {
     return {
       statusCode: 400,
-      body: "No user found in request",
+      body: 'No user found in request',
     };
   }
 
@@ -19,9 +21,9 @@ exports.handler = async function (event: APIGatewayEvent) {
 
   const input = {
     TableName: tableName,
-    KeyConditionExpression: "pk = :pk",
+    KeyConditionExpression: 'pk = :pk',
     ExpressionAttributeValues: marshall({
-      ":pk": `user#${user}`,
+      ':pk': `user#${user}`,
     }),
   };
 
@@ -30,14 +32,14 @@ exports.handler = async function (event: APIGatewayEvent) {
   try {
     const { Items } = await client.send(command);
 
-    console.log("Items", Items);
+    console.log('Items', Items);
 
     if (Items?.[0]) {
       const user = JSON.stringify(unmarshall(Items[0]));
 
       return {
         statusCode: 200,
-        headers: { "Content-Type": "application/json" },
+        headers: { 'Content-Type': 'application/json' },
         body: user,
       };
     }
@@ -47,7 +49,7 @@ exports.handler = async function (event: APIGatewayEvent) {
       body: JSON.stringify([]),
     };
   } catch (error) {
-    console.error("Error in getBooking Lambda", error);
+    console.error('Error in getBooking Lambda', error);
 
     return {
       statusCode: 500,

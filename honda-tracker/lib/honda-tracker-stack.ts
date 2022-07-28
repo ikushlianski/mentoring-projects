@@ -8,7 +8,8 @@ import {
 import { Table } from 'aws-cdk-lib/aws-dynamodb';
 import { ServicePrincipal } from 'aws-cdk-lib/aws-iam';
 import { Construct } from 'constructs';
-import { Stages, TABLE_NAME } from '../src/constants';
+import { Stages } from '../src/constants';
+import { TABLE_NAME } from '../src/db/db.constants';
 import { Lambdas } from './types';
 import { mergeLambdas } from './utils';
 

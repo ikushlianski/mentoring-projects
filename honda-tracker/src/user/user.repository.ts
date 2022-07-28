@@ -5,7 +5,8 @@ import {
   UpdateItemCommand,
   UpdateItemCommandInput,
 } from '@aws-sdk/client-dynamodb';
-import { AWS_REGION, TABLE_NAME } from '../constants';
+import { AWS_REGION } from '../constants';
+import { TABLE_NAME } from '../db/db.constants';
 import { userMapToDAL, userMapToDomain } from './user.mapper';
 import { IUserDomain } from './user.types';
 
