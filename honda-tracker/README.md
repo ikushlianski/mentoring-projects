@@ -23,7 +23,7 @@ Seed data is located in unversioned files, as it contains secrets like passwords
 
 After your stack is deployed, ensure you have these seeds in `./src/seeds` and run a similar following command to populate the DB:
 ```
-aws dynamodb batch-write-item --request-items file://src/seeds/defaultData_dev.json --profile <AWS profile for honda-tracker project>
+aws dynamodb batch-write-item --request-items file://src/db/seeds/defaultData_dev.json --profile <AWS profile for honda-tracker project>
 ```
 
 ## Auth

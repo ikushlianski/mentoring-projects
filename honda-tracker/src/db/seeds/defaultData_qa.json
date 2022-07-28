@@ -1,0 +1,19 @@
+{
+  "honda_tracker_qa": [
+    {
+      "PutRequest": {
+        "Item": {
+          "pk": {
+            "S": "user#ilya"
+          },
+          "sk": {
+            "S": "user#ilya"
+          },
+          "password": {
+            "S": "aWx5YQ=="
+          }
+        }
+      }
+    }
+  ]
+}
