@@ -24,7 +24,7 @@ DB queries use [ElectroDB](https://github.com/tywalch/electrodb).
 ### Seed data
 Seed data is located in unversioned files, as it contains secrets like passwords for initial users.
 
-After your stack is deployed, ensure you have these seeds in `./src/db/seeds` and run `npm run seed:dev` in dev mode. For other modes, check scripts in `package.json`.
+After your stack is deployed, ensure you have these seeds in `./src/db/seeds/defaultData_<stage>.ts` and run `npm run seed:dev` to seed data in your <stage> (dev, qa, prod).
 
 ## Auth
 [//]: # (TODO add auth implementation docs)
