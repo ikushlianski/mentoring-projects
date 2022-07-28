@@ -12,6 +12,7 @@ cdk.out
 
 # seed data
 src/db/seeds/*
+!src/db/seeds/defaultData_*.ts
 
 # Unit testing
 !jest.config.js
