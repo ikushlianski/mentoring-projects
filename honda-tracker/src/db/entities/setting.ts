@@ -15,10 +15,10 @@ export const SettingModel = new Entity({
     notifications: {
       type: 'map',
       properties: {
-        notifyWhenBookingCreated: {
+        getNotifiedWhenBookingCreated: {
           type: 'boolean',
         },
-        notifyWhenBookingChanged: {
+        getNotifiedWhenBookingChanged: {
           type: 'boolean',
         },
       },

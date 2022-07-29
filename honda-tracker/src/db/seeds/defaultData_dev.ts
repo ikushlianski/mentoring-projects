@@ -35,8 +35,8 @@ import { UserRoles } from '../../user/user.constants';
       username: 'papa',
       rideCompletionText: 'Машина в гараже',
       notifications: {
-        notifyWhenBookingChanged: false,
-        notifyWhenBookingCreated: false,
+        getNotifiedWhenBookingChanged: false,
+        getNotifiedWhenBookingCreated: false,
       },
     })
     .go();
@@ -46,8 +46,8 @@ import { UserRoles } from '../../user/user.constants';
       username: 'ilya',
       rideCompletionText: 'Машина в гараже',
       notifications: {
-        notifyWhenBookingChanged: true,
-        notifyWhenBookingCreated: true,
+        getNotifiedWhenBookingChanged: true,
+        getNotifiedWhenBookingCreated: true,
       },
     })
     .go();
