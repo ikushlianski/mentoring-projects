@@ -1,10 +1,11 @@
 import { Entity } from 'electrodb';
+import { ELECTRO_DB_SERVICE } from '../db.constants';
 
 export const CarModel = new Entity({
   model: {
     entity: 'cars',
     version: '1',
-    service: 'honda-service',
+    service: ELECTRO_DB_SERVICE,
   },
   attributes: {
     carId: {

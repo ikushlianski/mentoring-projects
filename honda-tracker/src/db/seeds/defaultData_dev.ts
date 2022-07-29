@@ -30,7 +30,7 @@ import { UserRoles } from '../../user/user.constants';
     })
     .go();
 
-  await Promise.all([insertCarHonda, insertUserIlya, insertUserPapa]);
+  await Promise.all([insertCarHonda, insertUserPapa, insertUserIlya]);
 
   console.log('done');
 })();

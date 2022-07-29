@@ -73,7 +73,7 @@ export class LoginService {
         console.log('sessionId updated successfully');
 
         const loginSuccess: ILoginSuccess = {
-          sessionId: userFromDB.sessionId,
+          sessionId: userFromDB.sessionId!,
         };
 
         return [undefined, loginSuccess];

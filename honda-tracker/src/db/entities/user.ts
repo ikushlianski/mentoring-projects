@@ -1,11 +1,11 @@
 import { Entity } from 'electrodb';
-import { UserRoles } from '../../user/user.constants';
+import { ELECTRO_DB_SERVICE } from '../db.constants';
 
 export const UserModel = new Entity({
   model: {
     entity: 'users',
     version: '1',
-    service: 'honda-service',
+    service: ELECTRO_DB_SERVICE,
   },
   attributes: {
     username: {
@@ -15,7 +15,9 @@ export const UserModel = new Entity({
     password: {
       type: 'string',
       required: true,
-      hidden: true,
+    },
+    sessionId: {
+      type: 'string',
     },
     roles: {
       type: 'list',

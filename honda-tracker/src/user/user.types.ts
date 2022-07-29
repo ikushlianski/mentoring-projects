@@ -1,4 +1,4 @@
-import { DynamoDBRecord } from "../db/db.types";
+import { DynamoDBRecord } from '../db/db.types';
 
 export type Username = string;
 export type Password = string;
@@ -14,5 +14,5 @@ export interface IUserFromDB extends DynamoDBRecord {
 export interface IUserDomain {
   username: Username;
   password: Password;
-  sessionId: SessionId;
+  sessionId?: SessionId;
 }

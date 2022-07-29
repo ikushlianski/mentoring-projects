@@ -1,11 +1,11 @@
 import { Entity } from 'electrodb';
-import { UserRoles } from '../../user/user.constants';
+import { ELECTRO_DB_SERVICE } from '../db.constants';
 
 export const BookingModel = new Entity({
   model: {
     entity: 'bookings',
     version: '1',
-    service: 'honda-service',
+    service: ELECTRO_DB_SERVICE,
   },
   attributes: {
     username: {
