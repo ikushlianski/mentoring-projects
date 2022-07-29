@@ -30,7 +30,35 @@ import { UserRoles } from '../../user/user.constants';
     })
     .go();
 
-  await Promise.all([insertCarHonda, insertUserPapa, insertUserIlya]);
+  const insertIlyaSettings = HondaTrackerDynamoService.entities.setting
+    .create({
+      username: 'papa',
+      rideCompletionText: 'Машина в гараже',
+      notifications: {
+        notifyWhenBookingChanged: false,
+        notifyWhenBookingCreated: false,
+      },
+    })
+    .go();
+
+  const insertPapaSettings = HondaTrackerDynamoService.entities.setting
+    .create({
+      username: 'ilya',
+      rideCompletionText: 'Машина в гараже',
+      notifications: {
+        notifyWhenBookingChanged: true,
+        notifyWhenBookingCreated: true,
+      },
+    })
+    .go();
+
+  await Promise.all([
+    insertCarHonda,
+    insertUserPapa,
+    insertUserIlya,
+    insertIlyaSettings,
+    insertPapaSettings,
+  ]);
 
   console.log('done');
 })();
