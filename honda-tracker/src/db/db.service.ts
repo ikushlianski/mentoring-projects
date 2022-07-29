@@ -9,8 +9,6 @@ import { UserModel } from './entities/user';
 
 const client = new DynamoDBClient({ region: AWS_REGION });
 
-console.log(`${TABLE_NAME}_${process.env.stage || 'dev'}`);
-
 export const HondaTrackerDynamoService = new Service(
   {
     user: UserModel,
@@ -19,6 +17,6 @@ export const HondaTrackerDynamoService = new Service(
   },
   {
     client,
-    table: `${TABLE_NAME}_${process.env.stage}`,
+    table: `${TABLE_NAME}_${process.env.NODE_ENV}`,
   },
 );

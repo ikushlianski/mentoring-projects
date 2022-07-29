@@ -1,7 +1,8 @@
 const { DynamoDBClient } = require('@aws-sdk/client-dynamodb');
+const { AWS_REGION } = require('../../src/constants');
 
 module.exports = {
-  client: new DynamoDBClient({ region: 'eu-west-1' }),
+  client: new DynamoDBClient({ region: AWS_REGION }),
   correctCreds: {
     username: 'correct-username',
     password: 'correct-password',

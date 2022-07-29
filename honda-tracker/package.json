@@ -10,7 +10,7 @@
     "watch": "tsc -w",
     "test": "npm run build && jest",
     "test:watch": "concurrently -P --kill-others \"npm run watch\"  \"jest --watchAll -- {@} \"",
-    "integration": "cucumber-js",
+    "integration": "NODE_ENV=qa cucumber-js",
     "cdk": "cdk",
     "deploy": "npm run deploy:dev",
     "deploy:dev": "npm run build && NODE_ENV=dev cdk deploy --all",
@@ -19,7 +19,8 @@
     "destroy": "NODE_ENV=dev cdk destroy --all",
     "destroy:qa": "NODE_ENV=qa cdk destroy --all",
     "destroy:prod": "NODE_ENV=prod cdk destroy --all",
-    "seed:dev": "./src/db/seeds/seed_dev.sh"
+    "seed:dev": "NODE_ENV=dev ./src/db/seeds/seed_dev.sh",
+    "unseed:dev": "NODE_ENV=dev ./src/db/seeds/unseed_dev.sh"
   },
   "devDependencies": {
     "@cucumber/cucumber": "^8.4.0",
