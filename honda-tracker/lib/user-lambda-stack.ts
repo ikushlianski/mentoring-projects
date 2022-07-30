@@ -28,7 +28,7 @@ export class UserLambdaStack extends Stack {
       {
         runtime: Runtime.NODEJS_16_X,
         handler: 'handler',
-        entry: './src/user/get-user.handler.ts',
+        entry: './src/user/getUser.handler.ts',
         functionName: `getUserLambda_${stage}`,
         environment: {
           stage,
@@ -36,7 +36,7 @@ export class UserLambdaStack extends Stack {
       },
     );
 
-    this.lambdas.set('get-user', getUserLambda);
+    this.lambdas.set('getUser', getUserLambda);
 
     const getUserLambdaIntegration = new HttpLambdaIntegration(
       `getUserLambda_${stage}`,

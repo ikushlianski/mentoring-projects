@@ -32,12 +32,12 @@ export class BookingLambdaStack extends Stack {
       {
         runtime: Runtime.NODEJS_16_X,
         handler: 'handler',
-        entry: './src/booking/get-booking.handler.ts',
+        entry: './src/booking/getBooking.handler.ts',
         functionName: `getBookingLambda_${stage}`,
       },
     );
 
-    this.lambdas.set('get-booking', getBookingLambda);
+    this.lambdas.set('getBooking', getBookingLambda);
 
     const getBookingLambdaIntegration = new HttpLambdaIntegration(
       `getBookingLambda_${stage}`,

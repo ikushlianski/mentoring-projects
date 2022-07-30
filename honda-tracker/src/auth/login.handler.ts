@@ -3,7 +3,7 @@ import { StatusCodes } from 'http-status-codes';
 import { CookieKeys, cookieService } from '../lambda/cookie.service';
 import { lambdaService } from '../lambda/lambda.service';
 import { wrongUserOrPassword } from './auth.errors';
-import { loginService } from './services/login.service';
+import { loginService } from './login.service';
 
 exports.handler = async function (
   event: APIGatewayProxyEventV2WithRequestContext<unknown>,

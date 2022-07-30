@@ -59,18 +59,17 @@ export const UserModel = new Entity({
         composite: [],
       },
     },
-    // coworkers: {
-    //   index: "gsi1pk-gsi1sk-index",
-    //   collection: "workplaces",
-    //   pk: {
-    //     field: "gsi1pk",
-    //     composite: ["office"],
-    //   },
-    //   sk: {
-    //     field: "gsi1sk",
-    //     composite: ["team", "title", "employee"],
-    //   },
-    // },
+    auth: {
+      index: 'gsi1pk-gsi1sk-index',
+      pk: {
+        field: 'gsi1pk',
+        composite: ['sessionId'],
+      },
+      sk: {
+        field: 'gsi1sk',
+        composite: [],
+      },
+    },
     // teams: {
     //   index: "gsi2pk-gsi2sk-index",
     //   pk: {

@@ -1,12 +1,9 @@
-import { CookieService, cookieService } from '../../lambda/cookie.service';
-import { Maybe } from '../../types';
-import {
-  userRepository,
-  UserRepository,
-} from '../../user/user.repository';
-import { IUserDomain, SessionId } from '../../user/user.types';
-import { noCredentialsError, wrongUserOrPassword } from '../auth.errors';
-import { ILoginSuccess } from '../auth.types';
+import { CookieService, cookieService } from '../lambda/cookie.service';
+import { Maybe } from '../types';
+import { userRepository, UserRepository } from '../user/user.repository';
+import { IUserDomain, SessionId } from '../user/user.types';
+import { noCredentialsError, wrongUserOrPassword } from './auth.errors';
+import { ILoginSuccess } from './auth.types';
 
 const crypto = require('crypto');
 
