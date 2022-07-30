@@ -15,11 +15,20 @@ I started this project to practice hexagonal architecture, AWS CDK and Cucumber/
 * `cdk diff`        compare deployed stack with current state
 * `cdk synth`       emits the synthesized CloudFormation template
 
+## Project file structure
+Most folders inside `src` are business entities. Each entity contains the following elements:
+- {entity}.types.ts - interfaces and types for this entity
+- {entity}.constants.ts - constants related to this entity
+- {entity}.mapper.ts - mappers 1) network <-> business logic 2) business logic <-> database
+- {entity}.service.ts - business logic concerning this entity
+- {entity}.repository.ts - layer for DB queries and data mapping from and to the data access layer
+- {operation-with-entity}.handler.ts - a Lambda handler that knows about API Gateway event structure and delegates work to services and repositories
+
 ## Database
 DynamoDB is used for this project, a single-table design is attempted.
 
 ### Interaction with DB
-DB queries use [ElectroDB](https://github.com/tywalch/electrodb).
+DB queries use [ElectroDB](https://github.com/tywalch/electrodb) for easier interaction with DynamoDB API.
 
 ### Seed data
 Seed data is located in unversioned files, as it contains secrets like passwords for initial users.
