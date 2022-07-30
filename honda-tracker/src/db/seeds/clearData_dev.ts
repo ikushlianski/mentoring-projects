@@ -16,15 +16,6 @@ import { HondaTrackerDynamoService } from '../db.service';
       .delete({ carId: FAMILY_HONDA_CAR_NUMBER })
       .go(),
 
-    // remove settings
-    HondaTrackerDynamoService.entities.setting
-      .delete({ username: 'ilya' })
-      .go(),
-
-    HondaTrackerDynamoService.entities.setting
-      .delete({ username: 'papa' })
-      .go(),
-
     // todo remove bookings
   ]);
 })();

@@ -18,6 +18,11 @@ import { UserRoles } from '../../user/user.constants';
       password: process.env.ILYA_PASSWORD as string,
       roles: [UserRoles.DRIVER],
       availableCarIds: [FAMILY_HONDA_CAR_NUMBER],
+      rideCompletionText: 'Машина в гараже',
+      notifications: {
+        getNotifiedWhenBookingChanged: true,
+        getNotifiedWhenBookingCreated: true,
+      },
     })
     .go();
 
@@ -27,23 +32,6 @@ import { UserRoles } from '../../user/user.constants';
       password: process.env.PAPA_PASSWORD as string,
       roles: [UserRoles.CAR_PROVIDER, UserRoles.DRIVER],
       availableCarIds: [FAMILY_HONDA_CAR_NUMBER],
-    })
-    .go();
-
-  const insertIlyaSettings = HondaTrackerDynamoService.entities.setting
-    .create({
-      username: 'papa',
-      rideCompletionText: 'Машина в гараже',
-      notifications: {
-        getNotifiedWhenBookingChanged: false,
-        getNotifiedWhenBookingCreated: false,
-      },
-    })
-    .go();
-
-  const insertPapaSettings = HondaTrackerDynamoService.entities.setting
-    .create({
-      username: 'ilya',
       rideCompletionText: 'Машина в гараже',
       notifications: {
         getNotifiedWhenBookingChanged: true,
@@ -52,13 +40,7 @@ import { UserRoles } from '../../user/user.constants';
     })
     .go();
 
-  await Promise.all([
-    insertCarHonda,
-    insertUserPapa,
-    insertUserIlya,
-    insertIlyaSettings,
-    insertPapaSettings,
-  ]);
+  await Promise.all([insertCarHonda, insertUserPapa, insertUserIlya]);
 
   console.log('done');
 })();
