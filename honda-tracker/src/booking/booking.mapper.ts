@@ -1,36 +1,4 @@
-import { DynamoDBRecord } from '../db/db.types';
-import { Username } from '../user/user.types';
-
-type BookingId = string;
-type BookingStartTime = number;
-type BookingEndTime = number;
-type BookingDate = Date;
-type BookingOwner = Username;
-type BookingNotes = {
-  carParkLocationText: string;
-  carParkLongitude: string;
-  carParkLatitude: string;
-};
-
-export interface IBookingFromDB extends DynamoDBRecord {
-  pk: BookingId;
-  sk: BookingDate;
-  bookingStartTime: BookingStartTime;
-  bookingEndTime: BookingEndTime;
-  bookingOwner: BookingOwner;
-  carParkLocationText: string;
-  carParkLongitude: string;
-  carParkLatitude: string;
-}
-
-export interface IBookingDomain {
-  bookingId: BookingId;
-  bookingStartTime: BookingStartTime;
-  bookingEndTime: BookingEndTime;
-  bookingDate: BookingDate;
-  bookingOwner: BookingOwner;
-  bookingNotes: BookingNotes;
-}
+import { IBookingDomain, IBookingFromDB } from './booking.types';
 
 export const bookingMapperToDomain = (
   bookingFromDB: IBookingFromDB,
@@ -49,7 +17,7 @@ export const bookingMapperToDomain = (
   };
 };
 
-export const bookingMapperToDAL = (bookingDomain: IBookingDomain) => {
+export const bookingMapperToDb = (bookingDomain: IBookingDomain) => {
   const bookingForDAL: IBookingFromDB = {
     pk: bookingDomain.bookingId,
     sk: bookingDomain.bookingDate,
