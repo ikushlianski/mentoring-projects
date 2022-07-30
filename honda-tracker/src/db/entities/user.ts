@@ -33,6 +33,20 @@ export const UserModel = new Entity({
         type: 'string',
       },
     },
+    notifications: {
+      type: 'map',
+      properties: {
+        getNotifiedWhenBookingCreated: {
+          type: 'boolean',
+        },
+        getNotifiedWhenBookingChanged: {
+          type: 'boolean',
+        },
+      },
+    },
+    rideCompletionText: {
+      type: 'string',
+    },
   },
   indexes: {
     username: {
