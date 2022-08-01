@@ -1,7 +1,0 @@
-{
-  "path": "/users/ilya",
-  "httpMethod": "GET",
-  "pathParameters": {
-    "id": "ilya"
-  }
-}

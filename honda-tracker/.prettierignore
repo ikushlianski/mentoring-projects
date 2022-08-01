@@ -1,3 +1,0 @@
-**/*.js
-!features/**/*.js
-**/*.d.ts
